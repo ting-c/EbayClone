@@ -4,6 +4,59 @@
     "/home/ting/Projects/EbayClone/EbayClone.Data/EbayClone.Data.csproj": {}
   },
   "projects": {
+    "/home/ting/Projects/EbayClone/EbayClone.Core/EbayClone.Core.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/home/ting/Projects/EbayClone/EbayClone.Core/EbayClone.Core.csproj",
+        "projectName": "EbayClone.Core",
+        "projectPath": "/home/ting/Projects/EbayClone/EbayClone.Core/EbayClone.Core.csproj",
+        "packagesPath": "/home/ting/.nuget/packages/",
+        "outputPath": "/home/ting/Projects/EbayClone/EbayClone.Core/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/home/ting/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "netstandard2.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netstandard2.0": {
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netstandard2.0": {
+          "dependencies": {
+            "NETStandard.Library": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[2.0.3, )",
+              "autoReferenced": true
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/3.1.404/RuntimeIdentifierGraph.json"
+        }
+      }
+    },
     "/home/ting/Projects/EbayClone/EbayClone.Data/EbayClone.Data.csproj": {
       "version": "1.0.0",
       "restore": {
@@ -24,7 +77,11 @@
         },
         "frameworks": {
           "netstandard2.0": {
-            "projectReferences": {}
+            "projectReferences": {
+              "/home/ting/Projects/EbayClone/EbayClone.Core/EbayClone.Core.csproj": {
+                "projectPath": "/home/ting/Projects/EbayClone/EbayClone.Core/EbayClone.Core.csproj"
+              }
+            }
           }
         },
         "warningProperties": {

@@ -1,11 +1,68 @@
 {
   "version": 3,
   "targets": {
-    ".NETCoreApp,Version=v3.1": {}
+    ".NETCoreApp,Version=v3.1": {
+      "EbayClone.Core/1.0.0": {
+        "type": "project",
+        "framework": ".NETStandard,Version=v2.0",
+        "compile": {
+          "bin/placeholder/EbayClone.Core.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/EbayClone.Core.dll": {}
+        }
+      },
+      "EbayClone.Data/1.0.0": {
+        "type": "project",
+        "framework": ".NETStandard,Version=v2.0",
+        "dependencies": {
+          "EbayClone.Core": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/EbayClone.Data.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/EbayClone.Data.dll": {}
+        }
+      },
+      "EbayClone.Services/1.0.0": {
+        "type": "project",
+        "framework": ".NETStandard,Version=v2.0",
+        "dependencies": {
+          "EbayClone.Core": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/EbayClone.Services.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/EbayClone.Services.dll": {}
+        }
+      }
+    }
   },
-  "libraries": {},
+  "libraries": {
+    "EbayClone.Core/1.0.0": {
+      "type": "project",
+      "path": "../EbayClone.Core/EbayClone.Core.csproj",
+      "msbuildProject": "../EbayClone.Core/EbayClone.Core.csproj"
+    },
+    "EbayClone.Data/1.0.0": {
+      "type": "project",
+      "path": "../EbayClone.Data/EbayClone.Data.csproj",
+      "msbuildProject": "../EbayClone.Data/EbayClone.Data.csproj"
+    },
+    "EbayClone.Services/1.0.0": {
+      "type": "project",
+      "path": "../EbayClone.Services/EbayClone.Services.csproj",
+      "msbuildProject": "../EbayClone.Services/EbayClone.Services.csproj"
+    }
+  },
   "projectFileDependencyGroups": {
-    ".NETCoreApp,Version=v3.1": []
+    ".NETCoreApp,Version=v3.1": [
+      "EbayClone.Core >= 1.0.0",
+      "EbayClone.Data >= 1.0.0",
+      "EbayClone.Services >= 1.0.0"
+    ]
   },
   "packageFolders": {
     "/home/ting/.nuget/packages/": {}
@@ -30,7 +87,17 @@
       },
       "frameworks": {
         "netcoreapp3.1": {
-          "projectReferences": {}
+          "projectReferences": {
+            "/home/ting/Projects/EbayClone/EbayClone.Core/EbayClone.Core.csproj": {
+              "projectPath": "/home/ting/Projects/EbayClone/EbayClone.Core/EbayClone.Core.csproj"
+            },
+            "/home/ting/Projects/EbayClone/EbayClone.Data/EbayClone.Data.csproj": {
+              "projectPath": "/home/ting/Projects/EbayClone/EbayClone.Data/EbayClone.Data.csproj"
+            },
+            "/home/ting/Projects/EbayClone/EbayClone.Services/EbayClone.Services.csproj": {
+              "projectPath": "/home/ting/Projects/EbayClone/EbayClone.Services/EbayClone.Services.csproj"
+            }
+          }
         }
       },
       "warningProperties": {

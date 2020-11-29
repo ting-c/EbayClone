@@ -25,6 +25,16 @@
         "build": {
           "build/netstandard2.0/NETStandard.Library.targets": {}
         }
+      },
+      "EbayClone.Core/1.0.0": {
+        "type": "project",
+        "framework": ".NETStandard,Version=v2.0",
+        "compile": {
+          "bin/placeholder/EbayClone.Core.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/EbayClone.Core.dll": {}
+        }
       }
     }
   },
@@ -172,10 +182,16 @@
         "netstandard.library.2.0.3.nupkg.sha512",
         "netstandard.library.nuspec"
       ]
+    },
+    "EbayClone.Core/1.0.0": {
+      "type": "project",
+      "path": "../EbayClone.Core/EbayClone.Core.csproj",
+      "msbuildProject": "../EbayClone.Core/EbayClone.Core.csproj"
     }
   },
   "projectFileDependencyGroups": {
     ".NETStandard,Version=v2.0": [
+      "EbayClone.Core >= 1.0.0",
       "NETStandard.Library >= 2.0.3"
     ]
   },
@@ -202,7 +218,11 @@
       },
       "frameworks": {
         "netstandard2.0": {
-          "projectReferences": {}
+          "projectReferences": {
+            "/home/ting/Projects/EbayClone/EbayClone.Core/EbayClone.Core.csproj": {
+              "projectPath": "/home/ting/Projects/EbayClone/EbayClone.Core/EbayClone.Core.csproj"
+            }
+          }
         }
       },
       "warningProperties": {

@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "b80B3ZrUW1xtNFgA+qi2GqFWrc0WRSWHj0PLGrB4Q5MzphOrWhbGqSwjO6Hs3r91CMbfsAGtp+QDyh6AVeU40A==",
+  "success": true,
+  "projectFilePath": "/home/ting/Projects/EbayClone/EbayClone.Data/EbayClone.Data.csproj",
+  "expectedPackageFiles": [
+    "/home/ting/.nuget/packages/microsoft.netcore.platforms/1.1.0/microsoft.netcore.platforms.1.1.0.nupkg.sha512",
+    "/home/ting/.nuget/packages/netstandard.library/2.0.3/netstandard.library.2.0.3.nupkg.sha512"
+  ],
+  "logs": []
+}

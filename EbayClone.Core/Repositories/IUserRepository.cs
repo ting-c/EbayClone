@@ -7,6 +7,6 @@ namespace EbayClone.Core.Repositories
     public interface IUserRepository : IRepository<User>
     {
          Task<IEnumerable<User>> GetAllWithItemsAsync();
-         Task<User> GetWithItemByIdAsync(int itemId);
+         Task<User> GetWithItemByIdAsync(int userId);
     }
 }

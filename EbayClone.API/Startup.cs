@@ -2,6 +2,8 @@ using EbayClone.Core;
 using EbayClone.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -20,6 +22,17 @@ namespace EbayClone.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var builder = new SqlConnectionStringBuilder(
+                Configuration.GetConnectionString("Dev"));
+        
+            // add user secret password for DB
+            builder.Password = Configuration["EbayCloneSQL:Password"];
+
+            // add DbContext and run migrations in EbayClone.Data
+            services.AddDbContext<EbayCloneDbContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("Dev"),
+                x => x.MigrationsAssembly("EbayClone.Data")));
+
             services.AddControllers();
 
             // add dependency injection so it injects UnitOfWork when IUnitOfWork is used

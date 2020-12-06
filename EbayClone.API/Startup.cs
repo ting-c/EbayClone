@@ -26,11 +26,13 @@ namespace EbayClone.API
                 Configuration.GetConnectionString("Dev"));
         
             // add user secret password for DB
-            builder.Password = Configuration["EbayCloneSQL:Password"];
+            builder.Password = Configuration["EbayCloneSQLPassword"];
+
+            var connectionString = builder.ToString();
 
             // add DbContext and run migrations in EbayClone.Data
             services.AddDbContext<EbayCloneDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("Dev"),
+                options.UseSqlServer(connectionString,
                 x => x.MigrationsAssembly("EbayClone.Data")));
 
             services.AddControllers();

@@ -1,14 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk.Web">
-
   <ItemGroup>
     <ProjectReference Include="..\EbayClone.Core\EbayClone.Core.csproj" />
     <ProjectReference Include="..\EbayClone.Data\EbayClone.Data.csproj" />
     <ProjectReference Include="..\EbayClone.Services\EbayClone.Services.csproj" />
   </ItemGroup>
-
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UserSecretsId>628b79ad-5707-4f99-b14f-573f18d9f4cd</UserSecretsId>
   </PropertyGroup>
-
-
 </Project>

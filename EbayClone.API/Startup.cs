@@ -1,5 +1,7 @@
 using EbayClone.Core;
+using EbayClone.Core.Services;
 using EbayClone.Data;
+using EbayClone.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Data.SqlClient;
@@ -39,6 +41,8 @@ namespace EbayClone.API
 
             // add dependency injection so it injects UnitOfWork when IUnitOfWork is used
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddTransient<IItemService, ItemService>();
+            services.AddTransient<IUserService, UserService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

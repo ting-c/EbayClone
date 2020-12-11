@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
 
 namespace EbayClone.API
 {
@@ -43,6 +44,15 @@ namespace EbayClone.API
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddTransient<IItemService, ItemService>();
             services.AddTransient<IUserService, UserService>();
+
+            services.AddSwaggerGen(options => 
+            {
+                options.SwaggerDoc("v1", new OpenApiInfo 
+                {
+                    Title = "Ebay Clone",
+                    Version = "v1"
+                });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -54,6 +64,16 @@ namespace EbayClone.API
             }
 
             app.UseHttpsRedirection();
+
+            // Middleware to serve generated Swagger as a JSON endpoint
+            app.UseSwagger();
+
+            // Middleware to serve SwaggerUI, specify the Swagger JSON Endpoint
+            app.UseSwaggerUI(c => 
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Ebay Clone V1");
+                c.RoutePrefix = string.Empty;
+            });
 
             app.UseRouting();
 

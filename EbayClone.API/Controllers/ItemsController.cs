@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using AutoMapper;
 using EbayClone.Core.Models;
 using EbayClone.Core.Services;
 using Microsoft.AspNetCore.Mvc;

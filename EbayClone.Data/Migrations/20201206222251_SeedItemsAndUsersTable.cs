@@ -20,7 +20,7 @@ namespace EbayClone.Data.Migrations
             migrationBuilder
                 .Sql("INSERT INTO Items (Title, SellerId) Values ('New Adidas Ladies Trainers Size 4', (SELECT Id FROM Users WHERE Name = 'Adam Smith'))");
             migrationBuilder
-                .Sql("INSERT INTO Items (Title, SellerId) Values ('New Fila Men's Camalfi Trainers Size 8', (SELECT Id FROM Users WHERE Name = 'Adam Smith'))");
+                .Sql("INSERT INTO Items (Title, SellerId) Values ('New Fila Men''s Camalfi Trainers Size 8', (SELECT Id FROM Users WHERE Name = 'Adam Smith'))");
 
             migrationBuilder
                 .Sql("INSERT INTO Items (Title, SellerId) Values ('Lindens Pro Billion X20 Capsules 20bn CFU(60 pack)', (SELECT Id FROM Users WHERE Name = 'Brad Johnson'))");
@@ -34,7 +34,7 @@ namespace EbayClone.Data.Migrations
             migrationBuilder
                 .Sql("INSERT INTO Items (Title, SellerId) Values ('Assassins Creed Valhalla (PS4)', (SELECT Id FROM Users WHERE Name = 'Charles Moore'))");
             migrationBuilder
-                .Sql("INSERT INTO Items (Title, SellerId) Values ('Marvel's Spider-Man: Miles Morales (PS5) Brand New & Sealed', (SELECT Id FROM Users WHERE Name = 'Charles Moore'))");
+                .Sql("INSERT INTO Items (Title, SellerId) Values ('Marvel''s Spider-Man: Miles Morales (PS5) Brand New & Sealed', (SELECT Id FROM Users WHERE Name = 'Charles Moore'))");
 
             migrationBuilder
                 .Sql("INSERT INTO Items (Title, SellerId) Values ('Duck Feather Pillows 100% Cotton Cover Filled Luxury Hotel Quality Pillow - 4 Pack', (SELECT Id FROM Users WHERE Name = 'Darren Bentley'))");

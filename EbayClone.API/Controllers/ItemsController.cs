@@ -26,7 +26,17 @@ namespace EbayClone.API.Controllers
         {
             var items = await _itemService.GetAllWithUser();
             var itemResources = _mapper.Map<IEnumerable<Item>, IEnumerable<ItemResource>>(items);
+
             return Ok(itemResources);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<ItemResource>> GetItemById(int id)
+        {
+            var item = await _itemService.GetItemById(id);
+            var itemResource = _mapper.Map<Item, ItemResource>(item);
+
+            return Ok(itemResource);
         }
 			
     }

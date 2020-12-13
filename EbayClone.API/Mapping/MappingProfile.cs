@@ -15,6 +15,8 @@ namespace EbayClone.API.Mapping
             //Resource to Domain
             CreateMap<ItemResource, Item>();
             CreateMap<UserResource, User>();
+            CreateMap<SaveItemResource, Item>();
+            CreateMap<SaveUserResource, User>();
         }
     }
 }

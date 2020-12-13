@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
+using EbayClone.API.Resources;
 using EbayClone.Core.Models;
 using EbayClone.Core.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -12,17 +13,20 @@ namespace EbayClone.API.Controllers
     public class ItemsController : ControllerBase
     {
         private readonly IItemService _itemService;
+        private readonly IMapper _mapper;
 
         public ItemsController(IItemService itemService, IMapper mapper)
         {
+            this._mapper = mapper;
             this._itemService = itemService;
         }
         
         [HttpGet("")]
-        public async Task<ActionResult<IEnumerable<Item>>> GetAllItems()
+        public async Task<ActionResult<IEnumerable<ItemResource>>> GetAllItems()
         {
             var items = await _itemService.GetAllWithUser();
-            return Ok(items);
+            var itemResources = _mapper.Map<IEnumerable<Item>, IEnumerable<ItemResource>>(items);
+            return Ok(itemResources);
         }
 			
     }

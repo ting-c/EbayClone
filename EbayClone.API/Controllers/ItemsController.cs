@@ -2,8 +2,10 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using EbayClone.API.Resources;
+using EbayClone.API.Validators;
 using EbayClone.Core.Models;
 using EbayClone.Core.Services;
+using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EbayClone.API.Controllers
@@ -35,6 +37,27 @@ namespace EbayClone.API.Controllers
         {
             var item = await _itemService.GetItemById(id);
             var itemResource = _mapper.Map<Item, ItemResource>(item);
+
+            return Ok(itemResource);
+        }
+
+        [HttpPost("")]
+        public async Task<ActionResult<ItemResource>> CreateItem([FromBody] SaveItemResource saveItemResource)
+        {
+            var validator = new SaveItemResourceValidator();
+            ValidationResult results = await validator.ValidateAsync(saveItemResource);
+
+            if (!results.IsValid)
+                return BadRequest(results.Errors);
+
+            Item itemToCreate = _mapper.Map<SaveItemResource, Item>(saveItemResource);
+
+            var newItem = await _itemService.CreateItem(itemToCreate);
+
+            var item = await _itemService.GetItemById(newItem.Id);
+
+            // map item to itemResource before returning in an OkResult object
+            ItemResource itemResource = _mapper.Map<Item, ItemResource>(item);
 
             return Ok(itemResource);
         }

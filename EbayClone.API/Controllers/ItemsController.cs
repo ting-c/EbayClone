@@ -61,6 +61,30 @@ namespace EbayClone.API.Controllers
 
             return Ok(itemResource);
         }
-			
+
+        [HttpPut("{id}")]
+		public async Task<ActionResult<ItemResource>> UpdateItem(int id, [FromBody] SaveItemResource saveItemResource)
+        {
+            var validator = new SaveItemResourceValidator();
+            ValidationResult results = await validator.ValidateAsync(saveItemResource);
+
+            if (!results.IsValid)
+                return BadRequest(results.Errors);
+
+            var itemToBeUpdated = await _itemService.GetItemById(id);
+
+            if (itemToBeUpdated != null)
+                return NotFound();
+
+            Item item = _mapper.Map<SaveItemResource, Item>(saveItemResource);
+
+            await _itemService.UpdateItem(itemToBeUpdated, item);
+
+            Item updatedItem = await _itemService.GetItemById(id);
+
+            ItemResource updatedItemResource = _mapper.Map<Item, ItemResource>(updatedItem);
+
+            return Ok(updatedItemResource);
+        }
     }
 }

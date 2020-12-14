@@ -86,5 +86,18 @@ namespace EbayClone.API.Controllers
 
             return Ok(updatedItemResource);
         }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<ItemResource>> DeleteItem(int id)
+        {
+            var item = await _itemService.GetItemById(id);
+
+            if (item == null)
+                return NotFound();
+
+            await _itemService.DeleteItem(item);
+
+            return NoContent();
+        }
     }
 }

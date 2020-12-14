@@ -45,7 +45,7 @@ namespace EbayClone.Services
 		public async Task UpdateItem(Item itemToBeUpdated, Item item)
 		{
 			itemToBeUpdated.Title = item.Title;
-            itemToBeUpdated.Id = item.Id;
+            itemToBeUpdated.SellerId = item.SellerId;
 
             await _unitOfWork.CommitAsync();
 		}

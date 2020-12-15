@@ -85,5 +85,18 @@ namespace EbayClone.API.Controllers
 
 			return Ok(updatedUserResource);
         }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteUser(int id)
+        {
+            var user = await _userService.GetUserById(id);
+
+            if (user == null)
+                return NotFound();
+
+            await _userService.DeleteUser(user);
+
+            return NoContent();
+        }
     }
 }

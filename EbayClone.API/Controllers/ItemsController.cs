@@ -88,7 +88,7 @@ namespace EbayClone.API.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<ItemResource>> DeleteItem(int id)
+        public async Task<IActionResult> DeleteItem(int id)
         {
             var item = await _itemService.GetItemById(id);
 

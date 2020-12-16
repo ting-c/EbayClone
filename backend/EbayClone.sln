@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EbayClone.Data", "EbayClone
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EbayClone.Services", "EbayClone.Services\EbayClone.Services.csproj", "{0C3051E4-5BE2-4E57-B43D-F9A900B6C372}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{536F61B3-7FD8-42D3-99EA-2EF25CD48AC1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -72,5 +74,17 @@ Global
 		{0C3051E4-5BE2-4E57-B43D-F9A900B6C372}.Release|x64.Build.0 = Release|Any CPU
 		{0C3051E4-5BE2-4E57-B43D-F9A900B6C372}.Release|x86.ActiveCfg = Release|Any CPU
 		{0C3051E4-5BE2-4E57-B43D-F9A900B6C372}.Release|x86.Build.0 = Release|Any CPU
+		{536F61B3-7FD8-42D3-99EA-2EF25CD48AC1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{536F61B3-7FD8-42D3-99EA-2EF25CD48AC1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{536F61B3-7FD8-42D3-99EA-2EF25CD48AC1}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{536F61B3-7FD8-42D3-99EA-2EF25CD48AC1}.Debug|x64.Build.0 = Debug|Any CPU
+		{536F61B3-7FD8-42D3-99EA-2EF25CD48AC1}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{536F61B3-7FD8-42D3-99EA-2EF25CD48AC1}.Debug|x86.Build.0 = Debug|Any CPU
+		{536F61B3-7FD8-42D3-99EA-2EF25CD48AC1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{536F61B3-7FD8-42D3-99EA-2EF25CD48AC1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{536F61B3-7FD8-42D3-99EA-2EF25CD48AC1}.Release|x64.ActiveCfg = Release|Any CPU
+		{536F61B3-7FD8-42D3-99EA-2EF25CD48AC1}.Release|x64.Build.0 = Release|Any CPU
+		{536F61B3-7FD8-42D3-99EA-2EF25CD48AC1}.Release|x86.ActiveCfg = Release|Any CPU
+		{536F61B3-7FD8-42D3-99EA-2EF25CD48AC1}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

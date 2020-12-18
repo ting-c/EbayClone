@@ -22,7 +22,6 @@ namespace Tests.API.Controllers
         public ItemsControllerTests()
         {
             this._mockItemService = new Mock<IItemService>();
-
             // create mapper using MappingProfile in API
 			var mappingProfile = new MappingProfile();
 			var config = new MapperConfiguration(config => 
@@ -33,14 +32,11 @@ namespace Tests.API.Controllers
         [Fact]
         public async Task GetAllItems_ReturnWithAListOfItemResources()
         {
-            var expectedObject = GetTestItemResources();
-
             //Arrange
-            // mock IItemService and its GetAllWithUser method
-            var _mockItemService = new Mock<IItemService>();
+            var expectedObject = GetTestItemResources();
+            // setup GetAllWithUser method to return test items
             _mockItemService.Setup(service => service.GetAllWithUser())
                 .ReturnsAsync(GetTestItems());
-            
             // inject mocked IItemService and _mapper in controller
             var controller = new ItemsController(_mockItemService.Object, _mapper);
             

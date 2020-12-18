@@ -26,8 +26,7 @@ namespace Tests.API.Controllers
         }
 
         [Fact]
-        // Test GetAllItems method
-        public async Task Get_ReturnWithAListOfItemResources()
+        public async Task GetAllItems_ReturnWithAListOfItemResources()
         {
             var expectedObject = GetTestItemResources();
 
@@ -47,7 +46,6 @@ namespace Tests.API.Controllers
             //Assert
             Assert.IsType<ActionResult<IEnumerable<ItemResource>>>(actionResult);
             Assert.Equal(serializeObject(expectedObject), serializeObject(resultObject));
-
         }
         
         private string serializeObject<T>(T obj)

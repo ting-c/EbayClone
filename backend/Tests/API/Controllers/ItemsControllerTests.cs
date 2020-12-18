@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -15,9 +16,13 @@ namespace Tests.API.Controllers
 {
     public class ItemsControllerTests
     {
+        private readonly Mock<IItemService> _mockItemService;
         private readonly IMapper _mapper;
+
         public ItemsControllerTests()
         {
+            this._mockItemService = new Mock<IItemService>();
+
             // create mapper using MappingProfile in API
 			var mappingProfile = new MappingProfile();
 			var config = new MapperConfiguration(config => 
@@ -32,12 +37,12 @@ namespace Tests.API.Controllers
 
             //Arrange
             // mock IItemService and its GetAllWithUser method
-            var mockService = new Mock<IItemService>();
-            mockService.Setup(service => service.GetAllWithUser())
+            var _mockItemService = new Mock<IItemService>();
+            _mockItemService.Setup(service => service.GetAllWithUser())
                 .ReturnsAsync(GetTestItems());
             
             // inject mocked IItemService and _mapper in controller
-            var controller = new ItemsController(mockService.Object, _mapper);
+            var controller = new ItemsController(_mockItemService.Object, _mapper);
             
             //Act
             var actionResult = await controller.GetAllItems();
@@ -46,6 +51,29 @@ namespace Tests.API.Controllers
             //Assert
             Assert.IsType<ActionResult<IEnumerable<ItemResource>>>(actionResult);
             Assert.Equal(serializeObject(expectedObject), serializeObject(resultObject));
+        }
+
+        [Fact]
+        public async Task GetItemById_ReturnWithExpectedItemResource()
+        {
+			// Arrange
+            var testItemId = 1;
+            var itemResources = GetTestItemResources();
+			var _mockItemService = new Mock<IItemService>();
+			_mockItemService.Setup(service => service.GetItemById(testItemId))
+				.ReturnsAsync(GetTestItems().FirstOrDefault(
+                    i => i.Id == testItemId));
+            var controller = new ItemsController(_mockItemService.Object, _mapper);
+
+            // Act
+            var actionResult = await controller.GetItemById(testItemId);
+            var resultObject = GetObjectResultContent<ItemResource>(actionResult);
+
+			// Assert
+			Assert.IsType<ActionResult<ItemResource>>(actionResult);
+			Assert.Equal(1, resultObject.Id);
+			Assert.Equal("Test 1", resultObject.Title);
+
         }
         
         private string serializeObject<T>(T obj)

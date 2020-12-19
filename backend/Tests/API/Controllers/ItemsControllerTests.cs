@@ -78,11 +78,6 @@ namespace Tests.API.Controllers
             {
                 Title = null
             };
-            var item = _mapper.Map<SaveItemResource, Item>(saveItemResource);
-            _mockItemService.Setup(service => service.CreateItem(item))
-                .ReturnsAsync(item);
-			_mockItemService.Setup(service => service.GetItemById(item.Id))
-                .ReturnsAsync(item);
 			var controller = new ItemsController(_mockItemService.Object, _mapper);
             
 			// Act

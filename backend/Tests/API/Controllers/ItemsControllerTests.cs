@@ -55,7 +55,6 @@ namespace Tests.API.Controllers
 			// Arrange
             var testItemId = 1;
             var itemResources = GetTestItemResources();
-			var _mockItemService = new Mock<IItemService>();
 			_mockItemService.Setup(service => service.GetItemById(testItemId))
 				.ReturnsAsync(GetTestItems().FirstOrDefault(
                     i => i.Id == testItemId));
@@ -69,7 +68,28 @@ namespace Tests.API.Controllers
 			Assert.IsType<ActionResult<ItemResource>>(actionResult);
 			Assert.Equal(1, resultObject.Id);
 			Assert.Equal("Test 1", resultObject.Title);
+        }
 
+        [Fact]
+        public async Task CreateItem_ReturnBadRequestResult_WhenSaveItemResourceIsInvalid()
+        {
+            //Arrange
+            var saveItemResource = new SaveItemResource()
+            {
+                Title = null
+            };
+            var item = _mapper.Map<SaveItemResource, Item>(saveItemResource);
+            _mockItemService.Setup(service => service.CreateItem(item))
+                .ReturnsAsync(item);
+			_mockItemService.Setup(service => service.GetItemById(item.Id))
+                .ReturnsAsync(item);
+			var controller = new ItemsController(_mockItemService.Object, _mapper);
+            
+			// Act
+			var actionResult = await controller.CreateItem(saveItemResource);
+
+			// Assert
+			Assert.IsType<BadRequestObjectResult>(actionResult);
         }
         
         private string serializeObject<T>(T obj)

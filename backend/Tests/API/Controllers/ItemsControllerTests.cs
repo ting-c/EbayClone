@@ -85,7 +85,31 @@ namespace Tests.API.Controllers
 
 			// Assert
 			Assert.IsType<BadRequestObjectResult>(actionResult);
-        }
+		}
+
+		[Fact]
+		public async Task CreateItem_ReturnNotFoundObject_WhenCreateItemMethodReturnsNull()
+		{
+			//Arrange
+			var itemToCreate = GetTestItems().FirstOrDefault(
+				i => i.Id == 1);
+			var saveItemResource = new SaveItemResource()
+			{
+				Title = "Test 1",
+				SellerId = 1
+			};
+
+			_mockItemService.Setup(service => service.CreateItem(itemToCreate))
+				.ReturnsAsync((Item)null);
+
+			var controller = new ItemsController(_mockItemService.Object, _mapper);
+
+			// Act
+			var actionResult = await controller.CreateItem(saveItemResource);
+
+			// Assert
+			Assert.IsType<NotFoundResult>(actionResult);
+		}
         
         private string serializeObject<T>(T obj)
         {

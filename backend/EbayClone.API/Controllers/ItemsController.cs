@@ -54,6 +54,9 @@ namespace EbayClone.API.Controllers
 
             var newItem = await _itemService.CreateItem(itemToCreate);
 
+			if (newItem == null)
+				return NotFound();
+
             var item = await _itemService.GetItemById(newItem.Id);
 
             // map item to itemResource before returning in an OkResult object

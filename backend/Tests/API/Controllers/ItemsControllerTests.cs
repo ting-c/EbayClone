@@ -153,6 +153,45 @@ namespace Tests.API.Controllers
 			Assert.IsType<NotFoundResult>(result);
 		}
 
+		[Fact]
+		public async Task UpdateItem_ReturnItemResourceInOkObjectResult_WhenUpdateIsSuccess()
+		{
+			//Arrange
+			var itemToBeUpdated = GetTestItems().FirstOrDefault(
+				i => i.Id == 1);
+			var saveItemResource = new SaveItemResource()
+			{
+				Title = "Updated Test 1",
+                SellerId = 10
+			};
+            var updatedItem = new Item()
+            {
+                Id = itemToBeUpdated.Id,
+                Title = saveItemResource.Title,
+                SellerId = saveItemResource.SellerId
+            };
+            var expectedItemResource = new ItemResource()
+            {
+                Id = 1,
+                Title = saveItemResource.Title
+            };
+
+			_mockItemService.SetupSequence(service => service.GetItemById(itemToBeUpdated.Id))
+				.ReturnsAsync(itemToBeUpdated)
+                .ReturnsAsync(updatedItem);
+
+			var controller = new ItemsController(_mockItemService.Object, _mapper);
+
+			// Act
+			var result = await controller.UpdateItem(itemToBeUpdated.Id, saveItemResource);
+            var objectResult = result as OkObjectResult;
+            var value = objectResult.Value as ItemResource;
+
+			// Assert
+			Assert.IsType<OkObjectResult>(result);
+			Assert.Equal(serializeObject(expectedItemResource), serializeObject(value));
+		}
+
 		private string serializeObject<T>(T obj)
         {
             return JsonConvert.SerializeObject(obj);

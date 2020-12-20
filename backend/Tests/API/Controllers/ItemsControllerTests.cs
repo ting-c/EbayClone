@@ -110,8 +110,26 @@ namespace Tests.API.Controllers
 			// Assert
 			Assert.IsType<NotFoundResult>(actionResult);
 		}
-        
-        private string serializeObject<T>(T obj)
+
+		[Fact]
+		public async Task UpdateItem_ReturnBadRequestResult_WhenSaveItemResourceIsInvalid()
+		{
+			//Arrange
+            var itemId = 1;
+			var saveItemResource = new SaveItemResource()
+			{
+				Title = null
+			};
+			var controller = new ItemsController(_mockItemService.Object, _mapper);
+
+			// Act
+			var actionResult = await controller.UpdateItem(itemId, saveItemResource);
+
+			// Assert
+			Assert.IsType<BadRequestObjectResult>(actionResult);
+		}
+
+		private string serializeObject<T>(T obj)
         {
             return JsonConvert.SerializeObject(obj);
         }

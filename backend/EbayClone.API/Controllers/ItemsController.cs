@@ -66,7 +66,7 @@ namespace EbayClone.API.Controllers
         }
 
         [HttpPut("{id}")]
-		public async Task<ActionResult<ItemResource>> UpdateItem(int id, [FromBody] SaveItemResource saveItemResource)
+		public async Task<IActionResult> UpdateItem(int id, [FromBody] SaveItemResource saveItemResource)
         {
             var validator = new SaveItemResourceValidator();
             ValidationResult results = await validator.ValidateAsync(saveItemResource);

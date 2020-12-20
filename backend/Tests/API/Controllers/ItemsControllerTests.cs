@@ -129,6 +129,30 @@ namespace Tests.API.Controllers
 			Assert.IsType<BadRequestObjectResult>(actionResult);
 		}
 
+		[Fact]
+		public async Task UpdateItem_ReturnNotFoundObject_WhenGetItemByIdReturnsNull()
+		{
+			//Arrange
+			var itemToBeUpdated = GetTestItems().FirstOrDefault(
+				i => i.Id == 1);
+			var saveItemResource = new SaveItemResource()
+			{
+				Title = "Test 1",
+				SellerId = 1
+			};
+
+			_mockItemService.Setup(service => service.GetItemById(itemToBeUpdated.Id))
+				.ReturnsAsync((Item)null);
+
+			var controller = new ItemsController(_mockItemService.Object, _mapper);
+
+			// Act
+			var result = await controller.UpdateItem(itemToBeUpdated.Id, saveItemResource);
+
+			// Assert
+			Assert.IsType<NotFoundResult>(result);
+		}
+
 		private string serializeObject<T>(T obj)
         {
             return JsonConvert.SerializeObject(obj);

@@ -76,7 +76,7 @@ namespace EbayClone.API.Controllers
 
             var itemToBeUpdated = await _itemService.GetItemById(id);
 
-            if (itemToBeUpdated != null)
+            if (itemToBeUpdated == null)
                 return NotFound();
 
             Item item = _mapper.Map<SaveItemResource, Item>(saveItemResource);

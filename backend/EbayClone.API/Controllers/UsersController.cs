@@ -81,7 +81,7 @@ namespace EbayClone.API.Controllers
 
 			var userToBeUpdated = await _userService.GetUserById(id);
 
-			if (userToBeUpdated != null)
+			if (userToBeUpdated == null)
 				return NotFound();
 
 			User user = _mapper.Map<SaveUserResource, User>(saveUserResource);

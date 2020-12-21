@@ -175,6 +175,26 @@ namespace Tests.API.Controllers
 			Assert.IsType<BadRequestObjectResult>(actionResult);
 		}
 
+		[Fact]
+		public async Task UpdateUser_ReturnNotFoundResult_WhenUserToBeUpdatedIsNotFound()
+		{
+			//Arrange
+			var testUserId = 1;
+			var saveUserResource = new SaveUserResource()
+			{
+				Name = "New Name"
+			};
+			_mockUserService.Setup(service => service.GetUserById(testUserId))
+				.ReturnsAsync((User)null);
+			var controller = new UsersController(_mockUserService.Object, _mapper);
+
+			//Act
+			var actionResult = await controller.UpdateUser(testUserId, saveUserResource);
+
+			//Assert
+			Assert.IsType<NotFoundResult>(actionResult);
+		}
+
 		private string serializeObject<T>(T obj)
 		{
 			return JsonConvert.SerializeObject(obj);

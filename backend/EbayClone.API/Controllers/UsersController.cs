@@ -24,9 +24,12 @@ namespace EbayClone.API.Controllers
         }
 
         [HttpGet("")]
-        public async Task<ActionResult<IEnumerable<UserResource>>> GetAllUsers()
+        public async Task<IActionResult> GetAllUsers()
         {
             var users = await _userService.GetAllUsers();
+            if (users == null)
+                return NotFound();
+
             var userResources = _mapper.Map<IEnumerable<User>, IEnumerable<UserResource>>(users);
 
             return Ok(userResources);

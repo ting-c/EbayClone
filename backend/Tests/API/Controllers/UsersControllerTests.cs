@@ -67,12 +67,34 @@ namespace Tests.API.Controllers
 			var controller = new UsersController(_mockUserService.Object, _mapper);
 
 			//Act
-			var actionResult = await controller.GetUserById(testUserId);
+			var actionResult = await controller.GetUserById(testUserId) as OkObjectResult;
 			var userResource = GetObjectResultContent<UserResource>(actionResult);
 
 			//Assert
-			Assert.IsType<ActionResult<UserResource>>(actionResult);
+			Assert.IsType<OkObjectResult>(actionResult);
 			Assert.Equal(serializeObject(expectedUserResource), serializeObject(userResource));
+		}
+
+		[Fact]
+		public async Task GetUserById_ReturnNotFoundResult_WhenUserIsNotFound()
+		{
+			//Arrange
+            var testUserId = 3;
+            // expectedUser should be null
+            var expectedUser = GetTestUsers().FirstOrDefault(
+				u => u.Id == testUserId
+			);
+			// setup GetAllUsers method to return test users
+			_mockUserService.Setup(service => service.GetUserById(testUserId))
+				.ReturnsAsync(expectedUser);
+			// inject mocked IUSerService and _mapper in controller
+			var controller = new UsersController(_mockUserService.Object, _mapper);
+
+			//Act
+			var actionResult = await controller.GetUserById(testUserId);
+
+			//Assert
+			Assert.IsType<NotFoundResult>(actionResult);
 		}
 
 		private string serializeObject<T>(T obj)

@@ -30,7 +30,7 @@ namespace Tests.API.Controllers
 		}
 
 		[Fact]
-		public async Task GetAllUsers_ReturnWithAListOfUserResources()
+		public async Task GetAllUsers_ReturnWithAListOfUserResources_WhenSuccess()
 		{
 			//Arrange
 			var expectedObject = GetTestUserResources();
@@ -41,12 +41,30 @@ namespace Tests.API.Controllers
 			var controller = new UsersController(_mockUserService.Object, _mapper);
 
 			//Act
-			var actionResult = await controller.GetAllUsers();
+			var actionResult = await controller.GetAllUsers() as OkObjectResult;
 			var userResources = GetObjectResultContent<IEnumerable<UserResource>>(actionResult);
 
 			//Assert
-			Assert.IsType<ActionResult<IEnumerable<UserResource>>>(actionResult);
+			Assert.IsType<OkObjectResult>(actionResult);
 			Assert.Equal(serializeObject(expectedObject), serializeObject(userResources));
+		}
+
+		[Fact]
+		public async Task GetAllUsers_ReturnNotFound_WhenUsersAreNotFound()
+		{
+			//Arrange
+			var expectedObject = GetTestUserResources();
+			// setup GetAllUsers method to return null
+			_mockUserService.Setup(service => service.GetAllUsers())
+				.ReturnsAsync((IEnumerable<User>)null);
+			// inject mocked IUSerService and _mapper in controller
+			var controller = new UsersController(_mockUserService.Object, _mapper);
+
+			//Act
+			var actionResult = await controller.GetAllUsers();
+
+			//Assert
+			Assert.IsType<NotFoundResult>(actionResult);
 		}
 
 		[Fact]

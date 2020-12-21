@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -41,11 +42,37 @@ namespace Tests.API.Controllers
 
 			//Act
 			var actionResult = await controller.GetAllUsers();
-			var resultObject = GetObjectResultContent<IEnumerable<UserResource>>(actionResult);
+			var userResources = GetObjectResultContent<IEnumerable<UserResource>>(actionResult);
 
 			//Assert
 			Assert.IsType<ActionResult<IEnumerable<UserResource>>>(actionResult);
-			Assert.Equal(serializeObject(expectedObject), serializeObject(resultObject));
+			Assert.Equal(serializeObject(expectedObject), serializeObject(userResources));
+		}
+
+		[Fact]
+		public async Task GetUserById_ReturnUserResource_WhenUserIsFound()
+		{
+			//Arrange
+            var testUserId = 1;
+            var expectedUser = GetTestUsers().FirstOrDefault(
+				u => u.Id == testUserId
+			);
+			var expectedUserResource = GetTestUserResources().FirstOrDefault(
+                u => u.Id == testUserId
+            );
+			// setup GetAllUsers method to return test users
+			_mockUserService.Setup(service => service.GetUserById(testUserId))
+				.ReturnsAsync(expectedUser);
+			// inject mocked IUSerService and _mapper in controller
+			var controller = new UsersController(_mockUserService.Object, _mapper);
+
+			//Act
+			var actionResult = await controller.GetUserById(testUserId);
+			var userResource = GetObjectResultContent<UserResource>(actionResult);
+
+			//Assert
+			Assert.IsType<ActionResult<UserResource>>(actionResult);
+			Assert.Equal(serializeObject(expectedUserResource), serializeObject(userResource));
 		}
 
 		private string serializeObject<T>(T obj)

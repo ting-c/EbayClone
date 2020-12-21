@@ -48,12 +48,12 @@ namespace EbayClone.API.Controllers
         }
 
         [HttpPost("")]
-        public async Task<ActionResult<UserResource>> CreateUser([FromBody] SaveUserResource saveUserResource)
+        public async Task<IActionResult> CreateUser([FromBody] SaveUserResource saveUserResource)
         {
             var validator = new SaveUserResourceValidator();
             ValidationResult results = await validator.ValidateAsync(saveUserResource);
 
-            if (results.IsValid)
+            if (!results.IsValid)
                 return BadRequest(results.Errors);
 
             User userToCreate = _mapper.Map<SaveUserResource, User>(saveUserResource);
@@ -68,7 +68,7 @@ namespace EbayClone.API.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<UserResource>> UpdateUser(int id, [FromBody] SaveUserResource saveUserResource)
+        public async Task<IActionResult> UpdateUser(int id, [FromBody] SaveUserResource saveUserResource)
         {
 			var validator = new SaveUserResourceValidator();
 			ValidationResult results = await validator.ValidateAsync(saveUserResource);

@@ -29,7 +29,7 @@ namespace Tests.API.Controllers
 		}
 
 		[Fact]
-		public async Task GetAllItems_ReturnWithAListOfUserResources()
+		public async Task GetAllUsers_ReturnWithAListOfUserResources()
 		{
 			//Arrange
 			var expectedObject = GetTestUserResources();

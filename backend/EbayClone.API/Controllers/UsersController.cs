@@ -58,7 +58,10 @@ namespace EbayClone.API.Controllers
 
             User userToCreate = _mapper.Map<SaveUserResource, User>(saveUserResource);
 
-            var newUser = await _userService.CreateUser(userToCreate); 
+            var newUser = await _userService.CreateUser(userToCreate);
+
+            if (newUser == null)
+                return NotFound(); 
 
             var user = await _userService.GetUserById(newUser.Id);
 

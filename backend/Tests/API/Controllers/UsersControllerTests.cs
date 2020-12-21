@@ -132,6 +132,31 @@ namespace Tests.API.Controllers
 			Assert.IsType<BadRequestObjectResult>(actionResult);
 		}
 
+		[Fact]
+		public async Task CreateUser_ReturnNotFoundResult_WhenNewUserIsNull()
+		{
+			//Arrange
+			var saveUserResource = new SaveUserResource()
+			{
+				Name = "User 3"
+			};
+			var userToCreate = new User()
+			{
+				Id = 3,
+				Name = "User 3",
+			};
+			// setup GetAllUsers method to return null
+			_mockUserService.Setup(service => service.CreateUser(userToCreate))
+				.ReturnsAsync((User)null);
+			var controller = new UsersController(_mockUserService.Object, _mapper);
+
+			//Act
+			var actionResult = await controller.CreateUser(saveUserResource);
+
+			//Assert
+			Assert.IsType<NotFoundResult>(actionResult);
+		}
+
 		private string serializeObject<T>(T obj)
 		{
 			return JsonConvert.SerializeObject(obj);

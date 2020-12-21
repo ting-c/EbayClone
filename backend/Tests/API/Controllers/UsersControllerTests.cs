@@ -126,10 +126,12 @@ namespace Tests.API.Controllers
 			userResources.Add(new UserResource()
 			{
 				Id = 1,
+                Name = "User 1"
 			});
 			userResources.Add(new UserResource()
 			{
 				Id = 2,
+                Name = "User 2"
 			});
 
 			return userResources;
@@ -141,10 +143,22 @@ namespace Tests.API.Controllers
 			users.Add(new User()
 			{
 				Id = 1,
+                Name = "User 1",
+				SellingItems = new List<Item>()
+				{
+					new Item(){ Id = 1, Title = "Title 1", SellerId = 1 },
+					new Item(){ Id = 2, Title = "Title 2", SellerId = 1 }
+				}
 			});
 			users.Add(new User()
 			{
 				Id = 2,
+                Name = "User 2",
+                SellingItems = new List<Item>()
+                {
+                    new Item(){ Id = 3, Title = "Title 3", SellerId = 2 },    
+                    new Item(){ Id = 4, Title = "Title 4", SellerId = 2 }    
+                }
 			});
 
 			return users;

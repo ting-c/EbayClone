@@ -30,7 +30,7 @@ namespace Tests.API.Controllers
         }
 
         [Fact]
-        public async Task GetAllItems_ReturnWithAListOfItemResources()
+        public async Task GetAllItems_ReturnWithAListOfItemResources_WhenSuccess()
         {
             //Arrange
             var expectedObject = GetTestItemResources();
@@ -41,19 +41,39 @@ namespace Tests.API.Controllers
             var controller = new ItemsController(_mockItemService.Object, _mapper);
             
             //Act
-            var actionResult = await controller.GetAllItems();
+            var actionResult = await controller.GetAllItems() as OkObjectResult;
             var resultObject = GetObjectResultContent<IEnumerable<ItemResource>>(actionResult);
 
             //Assert
-            Assert.IsType<ActionResult<IEnumerable<ItemResource>>>(actionResult);
+            Assert.IsType<OkObjectResult>(actionResult);
             Assert.Equal(serializeObject(expectedObject), serializeObject(resultObject));
         }
 
         [Fact]
-        public async Task GetItemById_ReturnWithExpectedItemResource()
+        public async Task GetAllItems_ReturnNotFoundResult_WhenItemsAreNotFound()
+        {
+            //Arrange
+            // setup GetAllWithUser method to return null
+            _mockItemService.Setup(service => service.GetAllWithUser())
+                .ReturnsAsync((IEnumerable<Item>)null);
+            // inject mocked IItemService and _mapper in controller
+            var controller = new ItemsController(_mockItemService.Object, _mapper);
+            
+            //Act
+            var actionResult = await controller.GetAllItems();
+
+            //Assert
+            Assert.IsType<NotFoundResult>(actionResult);
+        }
+
+        [Fact]
+        public async Task GetItemById_ReturnWithExpectedItemResource_WhenSuccess()
         {
 			// Arrange
             var testItemId = 1;
+            var expectedItemResource = GetTestItemResources().FirstOrDefault(
+                i => i.Id == testItemId
+            );
             var itemResources = GetTestItemResources();
 			_mockItemService.Setup(service => service.GetItemById(testItemId))
 				.ReturnsAsync(GetTestItems().FirstOrDefault(
@@ -61,13 +81,30 @@ namespace Tests.API.Controllers
             var controller = new ItemsController(_mockItemService.Object, _mapper);
 
             // Act
-            var actionResult = await controller.GetItemById(testItemId);
-            var resultObject = GetObjectResultContent<ItemResource>(actionResult);
+            var actionResult = await controller.GetItemById(testItemId) as OkObjectResult;
+            var itemResource = GetObjectResultContent<ItemResource>(actionResult);
 
 			// Assert
-			Assert.IsType<ActionResult<ItemResource>>(actionResult);
-			Assert.Equal(1, resultObject.Id);
-			Assert.Equal("Test 1", resultObject.Title);
+			Assert.IsType<OkObjectResult>(actionResult);
+			Assert.Equal(serializeObject(expectedItemResource), serializeObject(itemResource));
+        }
+
+        [Fact]
+        public async Task GetItemById_ReturnNotFoundResult_WhenItemIsNull()
+        {
+			// Arrange
+            var testItemId = 3;
+            var itemResources = GetTestItemResources();
+            // setup GetItemById to return null
+			_mockItemService.Setup(service => service.GetItemById(testItemId))
+				.ReturnsAsync((Item)null);
+            var controller = new ItemsController(_mockItemService.Object, _mapper);
+
+            // Act
+            var actionResult = await controller.GetItemById(testItemId);
+
+			// Assert
+			Assert.IsType<NotFoundResult>(actionResult);
         }
 
         [Fact]

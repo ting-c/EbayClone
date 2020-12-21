@@ -33,9 +33,12 @@ namespace EbayClone.API.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<UserResource>> GetUserById(int id)
+        public async Task<IActionResult> GetUserById(int id)
         {
             var user = await _userService.GetUserById(id);
+            if (user == null) 
+                return NotFound();
+            
             var userResource = _mapper.Map<User, UserResource>(user);
 
             return Ok(userResource);

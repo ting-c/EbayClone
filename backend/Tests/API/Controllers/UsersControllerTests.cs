@@ -195,6 +195,40 @@ namespace Tests.API.Controllers
 			Assert.IsType<NotFoundResult>(actionResult);
 		}
 
+		[Fact]
+		public async Task UpdateUser_ReturnUserResource_WhenUpdateIsSuccess()
+		{
+			//Arrange
+			var testUserId = 1;
+			var userToBeUpdated = GetTestUsers().FirstOrDefault(
+				u => u.Id == testUserId
+			);
+			var saveUserResource = new SaveUserResource()
+			{
+				Name = "New Name"
+			};
+			var user = _mapper.Map<SaveUserResource, User>(saveUserResource);
+			var updatedUser = new User()
+			{
+				Id = 1,
+				Name = "New Name"
+			};
+			var expectedUserResource = _mapper.Map<User, UserResource>(updatedUser);
+			_mockUserService.SetupSequence(service => service.GetUserById(testUserId))
+				.ReturnsAsync(userToBeUpdated)
+				.ReturnsAsync(updatedUser);
+			var controller = new UsersController(_mockUserService.Object, _mapper);
+
+			//Act
+			var actionResult = await controller.UpdateUser(testUserId, saveUserResource);
+			var updatedUserResource = (actionResult as OkObjectResult).Value;
+
+			//Assert
+			Assert.IsType<OkObjectResult>(actionResult);
+			Assert.IsType<UserResource>(updatedUserResource);
+			Assert.Equal(serializeObject(expectedUserResource), serializeObject(updatedUserResource));
+		}
+
 		private string serializeObject<T>(T obj)
 		{
 			return JsonConvert.SerializeObject(obj);

@@ -44,5 +44,26 @@ namespace Tests.Services
             // Assert
             Assert.Equal<IEnumerable<Item>>(items, result);
         }
+
+        [Fact]
+        public async Task GetItemById_ReturnItem()
+        {
+            // Arrange
+            var item = new Item()
+            {   
+                Id = 1,
+                Title = "Title 1",
+                SellerId = 1
+            };
+            _mockUnitOfWork.Setup(u => u.Items.GetWithUserByIdAsync(item.Id))
+                .ReturnsAsync(item);
+            var itemService = new ItemService(_mockUnitOfWork.Object);
+
+            // Act
+            var result = await itemService.GetItemById(item.Id);
+
+            // Assert
+            Assert.Equal<Item>(item, result);
+        }
     }
 }

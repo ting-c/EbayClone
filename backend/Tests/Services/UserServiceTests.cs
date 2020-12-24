@@ -44,5 +44,27 @@ namespace Tests.Services
 			// Assert
 			Assert.Equal<IEnumerable<User>>(users, result);
 		}
+
+		[Fact]
+		public async Task GetUserById_ReturnUser()
+		{
+			// Arrange
+			var user = new User()
+			{
+				Id = 1,
+				Name = "User 1"
+			};
+			_mockUnitOfWork.Setup(u => u.Users.GetByIdAsync(user.Id))
+				.ReturnsAsync(user);
+			var userService = new UserService(_mockUnitOfWork.Object);
+
+			// Act
+			var result = await userService.GetUserById(user.Id);
+
+			// Assert
+			Assert.Equal<User>(user, result);
+		}
+
+
     }
 }

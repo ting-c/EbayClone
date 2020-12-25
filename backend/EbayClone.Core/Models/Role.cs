@@ -1,8 +1,8 @@
 using System;
 using Microsoft.AspNetCore.Identity;
 
-namespace EbayClone.Core.Auth
+namespace EbayClone.Core.Models
 {
-    public class Role : IdentityRole<Guid>
+    public class Role : IdentityRole<int>
     {}
 }

@@ -14,6 +14,9 @@ namespace EbayClone.Data
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+			// apply Identity’s configuration when generating migrations and configurations
+			base.OnModelCreating(builder);
+
             builder
                 .ApplyConfiguration(new ItemConfiguration());
 

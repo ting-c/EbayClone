@@ -1,13 +1,14 @@
 using EbayClone.Core.Models;
 using EbayClone.Data.Configurations;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace EbayClone.Data
 {
-    public class EbayCloneDbContext : DbContext
+    public class EbayCloneDbContext : IdentityDbContext<User, Role, int>
     {
         public DbSet<Item> Items { get; set; }
-        public DbSet<User> Users { get; set; }
+        public override DbSet<User> Users { get; set; }
 
         public EbayCloneDbContext(DbContextOptions<EbayCloneDbContext> options) : base(options) {}
 

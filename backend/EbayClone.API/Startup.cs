@@ -41,7 +41,7 @@ namespace EbayClone.API
 
             services.AddControllers();
 
-            // add dependency injection so it injects UnitOfWork when IUnitOfWork is used
+            // add dependency injection so it injects UnitOfWork when IUnitOfWork is useda
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddTransient<IItemService, ItemService>();
             services.AddTransient<IUserService, UserService>();

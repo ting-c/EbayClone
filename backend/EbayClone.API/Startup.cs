@@ -1,10 +1,12 @@
 using AutoMapper;
 using EbayClone.Core;
+using EbayClone.Core.Models;
 using EbayClone.Core.Services;
 using EbayClone.Data;
 using EbayClone.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -39,9 +41,19 @@ namespace EbayClone.API
                 options.UseSqlServer(connectionString,
                 x => x.MigrationsAssembly("EbayClone.Data")));
 
+            // add Identity with additional config
+			services.AddIdentity<User, Role>(options => 
+            {
+				options.Password.RequiredLength = 8;
+            })
+                // add EF implementation
+	            .AddEntityFrameworkStores<EbayCloneDbContext>()
+				//default token providers - generate tokens for a password reset, 2 factor authentication, change email and telephone
+	            .AddDefaultTokenProviders();
+
             services.AddControllers();
 
-            // add dependency injection so it injects UnitOfWork when IUnitOfWork is useda
+            // add dependency injection so it injects UnitOfWork when IUnitOfWork is use
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddTransient<IItemService, ItemService>();
             services.AddTransient<IUserService, UserService>();

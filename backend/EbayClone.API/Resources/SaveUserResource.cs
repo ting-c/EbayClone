@@ -1,7 +1,8 @@
 namespace EbayClone.API.Resources
 {
-    public class SaveUserResource
+    public class SaveUserResource : UserSignUpResource
     {
-        public string Name { get; set; }
+		public string Address { get; set; }
+		public string PhoneNumber { get; set; }
     }
 }

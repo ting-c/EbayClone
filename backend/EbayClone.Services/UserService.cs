@@ -38,7 +38,7 @@ namespace EbayClone.Services
 
 		public async Task UpdateUser(User userToBeUpdated, User user)
 		{
-			userToBeUpdated.Name = user.Name;
+			userToBeUpdated = user;
             await _unitOfWork.CommitAsync();
 		}
 	}

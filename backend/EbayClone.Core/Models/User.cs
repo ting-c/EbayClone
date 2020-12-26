@@ -1,3 +1,4 @@
+using System.Linq;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -12,9 +13,16 @@ namespace EbayClone.Core.Models
             SellingItems = new Collection<Item>();
         }
 
-        public string Name { get; set; }
+        public string Name 
+        {
+            get
+            {
+                return this.FirstName + " " + LastName;
+            }
+        }
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public string Address { get; set; }
         public ICollection<Item> SellingItems { get; set; }
     }
 }

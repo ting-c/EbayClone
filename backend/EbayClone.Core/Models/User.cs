@@ -12,14 +12,6 @@ namespace EbayClone.Core.Models
         {
             SellingItems = new Collection<Item>();
         }
-
-        public string Name 
-        {
-            get
-            {
-                return this.FirstName + " " + LastName;
-            }
-        }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Address { get; set; }

@@ -11,13 +11,6 @@ namespace EbayClone.API.Resources
 			SellingItems = new Collection<Item>();
 		}
         public int Id { get; set; }
-		public string Name
-		{
-			get
-			{
-				return this.FirstName + " " + LastName;
-			}
-		}
 		public string Email { get; set; }
 		public string FirstName { get; set; }
 		public string LastName { get; set; }

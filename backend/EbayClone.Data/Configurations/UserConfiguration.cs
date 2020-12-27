@@ -16,9 +16,9 @@ namespace EbayClone.Data.Configurations
                 .UseIdentityColumn();
             
             builder
-                .Property(u => u.Name)
+                .Property(u => u.Address)
                 .IsRequired()
-                .HasMaxLength(50);
+                .HasMaxLength(300);
 
             builder
                 .ToTable("Users");

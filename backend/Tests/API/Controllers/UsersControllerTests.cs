@@ -121,7 +121,7 @@ namespace Tests.API.Controllers
 			//Arrange
             var saveUserResource = new SaveUserResource()
             {
-                Name = null
+                FirstName = null
             };
 			var controller = new UsersController(_mockUserService.Object, _mapper);
 
@@ -138,12 +138,22 @@ namespace Tests.API.Controllers
 			//Arrange
 			var saveUserResource = new SaveUserResource()
 			{
-				Name = "User 3"
+				Email = "user3@gmail.com",
+				FirstName = "user3",
+				LastName = "lastname",
+				UserName = "user3",
+				Address = "3 test road",
+				PhoneNumber = "01233333333"
 			};
 			var userToCreate = new User()
 			{
 				Id = 3,
-				Name = "User 3",
+				Email = "user3@gmail.com",
+				FirstName = "user3",
+				LastName = "lastname",
+				UserName = "user3",
+				Address = "3 test road",
+				PhoneNumber = "01233333333"
 			};
 			// setup GetAllUsers method to return null
 			_mockUserService.Setup(service => service.CreateUser(userToCreate))
@@ -164,7 +174,7 @@ namespace Tests.API.Controllers
 			var testUserId = 1;
 			var saveUserResource = new SaveUserResource()
 			{
-				Name = null
+				FirstName = null
 			};
 			var controller = new UsersController(_mockUserService.Object, _mapper);
 
@@ -182,7 +192,17 @@ namespace Tests.API.Controllers
 			var testUserId = 1;
 			var saveUserResource = new SaveUserResource()
 			{
-				Name = "New Name"
+				Email = "user1@gmail.com",
+				FirstName = "user1",
+				LastName = "lastname",
+				UserName = "user1",
+				Address = "1 test road",
+				PhoneNumber = "01233111111",
+				SellingItems = new List<Item>()
+				{
+					new Item(){ Id = 1, Title = "Title 1", SellerId = 1 },
+					new Item(){ Id = 2, Title = "Title 2", SellerId = 1 }
+				}
 			};
 			_mockUserService.Setup(service => service.GetUserById(testUserId))
 				.ReturnsAsync((User)null);
@@ -205,14 +225,22 @@ namespace Tests.API.Controllers
 			);
 			var saveUserResource = new SaveUserResource()
 			{
-				Name = "New Name"
+
+				Email = "user1@gmail.com",
+				FirstName = "user1",
+				LastName = "lastname",
+				UserName = "user1",
+				Address = "1 test road",
+				PhoneNumber = "01233111111",
+				SellingItems = new List<Item>()
+				{
+					new Item(){ Id = 1, Title = "Title 1", SellerId = 1 },
+					new Item(){ Id = 2, Title = "Title 2", SellerId = 1 }
+				}
 			};
 			var user = _mapper.Map<SaveUserResource, User>(saveUserResource);
-			var updatedUser = new User()
-			{
-				Id = 1,
-				Name = "New Name"
-			};
+			user.FirstName = "New Name";
+			var updatedUser = user;
 			var expectedUserResource = _mapper.Map<User, UserResource>(updatedUser);
 			_mockUserService.SetupSequence(service => service.GetUserById(testUserId))
 				.ReturnsAsync(userToBeUpdated)
@@ -240,12 +268,32 @@ namespace Tests.API.Controllers
 			userResources.Add(new UserResource()
 			{
 				Id = 1,
-                Name = "User 1"
+				Email = "user1@gmail.com",
+				FirstName = "user1",
+				LastName = "lastname",
+				UserName = "user1",
+				Address = "1 test road",
+				PhoneNumber = "01233111111",
+				SellingItems = new List<Item>()
+				{
+					new Item(){ Id = 1, Title = "Title 1", SellerId = 1 },
+					new Item(){ Id = 2, Title = "Title 2", SellerId = 1 }
+				}
 			});
 			userResources.Add(new UserResource()
 			{
 				Id = 2,
-                Name = "User 2"
+				Email = "user2@gmail.com",
+				FirstName = "user2",
+				LastName = "lastname",
+				UserName = "user2",
+				Address = "2 test road",
+				PhoneNumber = "01233222222",
+				SellingItems = new List<Item>()
+				{
+					new Item(){ Id = 3, Title = "Title 3", SellerId = 2 },
+					new Item(){ Id = 4, Title = "Title 4", SellerId = 2 }
+				}
 			});
 
 			return userResources;
@@ -257,7 +305,12 @@ namespace Tests.API.Controllers
 			users.Add(new User()
 			{
 				Id = 1,
-                Name = "User 1",
+				Email = "user1@gmail.com",
+				FirstName = "user1",
+				LastName = "lastname",
+				UserName = "user1",
+				Address = "1 test road",
+				PhoneNumber = "01233111111",
 				SellingItems = new List<Item>()
 				{
 					new Item(){ Id = 1, Title = "Title 1", SellerId = 1 },
@@ -267,7 +320,12 @@ namespace Tests.API.Controllers
 			users.Add(new User()
 			{
 				Id = 2,
-                Name = "User 2",
+				Email = "user2@gmail.com",
+				FirstName = "user2",
+				LastName = "lastname",
+				UserName = "user2",
+				Address = "2 test road",
+				PhoneNumber = "01233222222",
                 SellingItems = new List<Item>()
                 {
                     new Item(){ Id = 3, Title = "Title 3", SellerId = 2 },    

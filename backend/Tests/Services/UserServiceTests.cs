@@ -23,12 +23,12 @@ namespace Tests.Services
                 new User()
                 {
                     Id = 1,
-                    Name = "User 1"
+                    FirstName = "User 1"
                 },
 				new User()
 				{
 					Id = 2,
-					Name = "User 2"
+					FirstName = "User 2"
 				}
             };
         }

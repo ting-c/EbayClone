@@ -2,9 +2,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using EbayClone.API.Resources;
+using EbayClone.API.Settings;
 using EbayClone.Core.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 
 namespace EbayClone.API.Controllers
 {
@@ -15,12 +17,18 @@ namespace EbayClone.API.Controllers
         private readonly IMapper _mapper;
         private readonly UserManager<User> _userManager;
         private readonly RoleManager<Role> _roleManager;
+        private readonly JwtSettings _jwtSettings;
 
-        public AuthController(IMapper mapper, UserManager<User> userManager, RoleManager<Role> roleManager)
+        public AuthController(
+            IMapper mapper, 
+            UserManager<User> userManager, 
+            RoleManager<Role> roleManager, 
+            IOptionsSnapshot<JwtSettings> jwtSettings)
         {
             this._mapper = mapper;
             this._userManager = userManager;
             this._roleManager = roleManager;
+            this._jwtSettings = jwtSettings.Value;
         }
 
         [HttpPost("signup")]

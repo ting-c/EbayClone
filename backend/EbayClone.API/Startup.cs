@@ -1,4 +1,5 @@
 using AutoMapper;
+using EbayClone.API.Settings;
 using EbayClone.Core;
 using EbayClone.Core.Models;
 using EbayClone.Core.Services;
@@ -28,6 +29,17 @@ namespace EbayClone.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // get jwt settings from appsettings.json as JwtSettings type
+			var jwtSettings = Configuration.GetSection("Jwt").Get<JwtSettings>();
+            // add secret for jwt from user secret
+            jwtSettings.Secret = Configuration["JwtSecret"];
+            // bind JwtSettings type to IConfigurationSection
+            Configuration.Bind("Jwt", jwtSettings);
+            // make the jwt settings available in app
+			services.Configure<JwtSettings>(Configuration.GetSection("Jwt"));
+
+            services.AddControllers();
+            
             var builder = new SqlConnectionStringBuilder(
                 Configuration.GetConnectionString("Dev"));
         
@@ -51,7 +63,6 @@ namespace EbayClone.API
 				//default token providers - generate tokens for a password reset, 2 factor authentication, change email and telephone
 	            .AddDefaultTokenProviders();
 
-            services.AddControllers();
 
             // add dependency injection so it injects UnitOfWork when IUnitOfWork is use
             services.AddScoped<IUnitOfWork, UnitOfWork>();

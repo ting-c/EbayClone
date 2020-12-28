@@ -35,5 +35,30 @@ namespace EbayClone.API.Controllers
             // return empty CreatedResult object
             return Created(string.Empty, null);
         }
+
+        [HttpPost("signin")]
+        public async Task<IActionResult> SignIn(UserSignInResource userSignInResource)
+        {
+            var user = FindUserByEmail(userSignInResource.Email);
+
+            if (user == null)
+                return NotFound("User not found");
+
+            var isCorrect = await IsUserPasswordCorrect(user, userSignInResource.Password);
+
+            if (!isCorrect)
+                return BadRequest("Email or password is incorrect");
+
+            return Ok();
+        }
+
+        private User FindUserByEmail(string email)
+        {
+            return _userManager.Users.SingleOrDefault(u => u.Email == email);
+        }
+        private async Task<bool> IsUserPasswordCorrect(User user, string password)
+        {
+            return await _userManager.CheckPasswordAsync(user, password);
+        }
     }
 }

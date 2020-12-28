@@ -19,6 +19,9 @@ namespace EbayClone.API.Validators
 			RuleFor(u => u.Email)
 				.NotEmpty()
 				.MaximumLength(50);
+			RuleFor(u => u.Password)
+				.NotEmpty()
+				.MaximumLength(20);
 		}
     }
 }

@@ -24,13 +24,11 @@ namespace EbayClone.API.Controllers
         [HttpPost("signup")]
         public async Task<IActionResult> SignUp(UserSignUpResource userSignUpResource)
         {
-            var user = _mapper.Map<UserSignUpResource, User>(userSignUpResource);
+            var result = await IsCreateUserSuccess(userSignUpResource);
 
-            var userCreateResult = await _userManager.CreateAsync(user, userSignUpResource.Password);
-
-            if (!userCreateResult.Succeeded)
+            if (!result.Succeeded)
                 // return first error description with 500 status code
-                return Problem(userCreateResult.Errors.First().Description, null, 500);
+                return Problem(result.Errors.First().Description, null, 500);
 
             // return empty CreatedResult object
             return Created(string.Empty, null);
@@ -56,9 +54,19 @@ namespace EbayClone.API.Controllers
         {
             return _userManager.Users.SingleOrDefault(u => u.Email == email);
         }
+
         private async Task<bool> IsUserPasswordCorrect(User user, string password)
         {
             return await _userManager.CheckPasswordAsync(user, password);
         }
+
+        private async Task<IdentityResult> IsCreateUserSuccess(UserSignUpResource userSignUpResource)
+        {
+			var user = _mapper.Map<UserSignUpResource, User>(userSignUpResource);
+
+			var userCreateResult = await _userManager.CreateAsync(user, userSignUpResource.Password);
+
+            return userCreateResult;
+		}
     }
 }

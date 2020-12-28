@@ -14,11 +14,13 @@ namespace EbayClone.API.Controllers
     {
         private readonly IMapper _mapper;
         private readonly UserManager<User> _userManager;
+        private readonly RoleManager<Role> _roleManager;
 
-        public AuthController(IMapper mapper, UserManager<User> userManager)
+        public AuthController(IMapper mapper, UserManager<User> userManager, RoleManager<Role> roleManager)
         {
             this._mapper = mapper;
             this._userManager = userManager;
+            this._roleManager = roleManager;
         }
 
         [HttpPost("signup")]
@@ -48,6 +50,32 @@ namespace EbayClone.API.Controllers
                 return BadRequest("Email or password is incorrect");
 
             return Ok();
+        }
+
+        [HttpPost("roles")]
+        public async Task<IActionResult> CreateRole(string roleName)
+        {
+            if (string.IsNullOrWhiteSpace(roleName))
+                return BadRequest("Role name must be provided");
+            
+;           var result = await CreateNewRole(roleName);
+
+            if (!result.Succeeded)
+                return Problem(result.Errors.FirstOrDefault().Description, null, 500);
+
+            return Ok();
+        }
+
+        private async Task<IdentityResult> CreateNewRole(string roleName)
+        {
+            var newRole = new Role
+            {
+                Name = roleName
+            };
+
+            var roleResult = await _roleManager.CreateAsync(newRole);
+
+            return roleResult;
         }
 
         private User FindUserByEmail(string email)

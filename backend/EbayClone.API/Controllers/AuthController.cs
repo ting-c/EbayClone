@@ -61,7 +61,23 @@ namespace EbayClone.API.Controllers
 ;           var result = await CreateNewRole(roleName);
 
             if (!result.Succeeded)
-                return Problem(result.Errors.FirstOrDefault().Description, null, 500);
+                return Problem(result.Errors.First().Description, null, 500);
+
+            return Ok();
+        }
+
+        [HttpPost("user/{userEmail}/role")]
+        public async Task<IActionResult> AddUserToRole(string userEmail, [FromBody] string roleName)
+        {
+            var user = FindUserByEmail(userEmail);
+            
+            if (user == null)
+                return NotFound("User not found");
+                
+            var result = await AddToRole(user, roleName);
+
+            if (!result.Succeeded)
+                return Problem(result.Errors.First().Description, null, 500);
 
             return Ok();
         }
@@ -76,6 +92,12 @@ namespace EbayClone.API.Controllers
             var roleResult = await _roleManager.CreateAsync(newRole);
 
             return roleResult;
+        }
+
+        private async Task<IdentityResult> AddToRole(User user, string roleName)
+        {
+            var result = await _userManager.AddToRoleAsync(user, roleName);
+            return result;
         }
 
         private User FindUserByEmail(string email)

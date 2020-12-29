@@ -2,11 +2,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using EbayClone.API.Resources;
-using EbayClone.API.Settings;
 using EbayClone.Core.Models;
-using Microsoft.AspNetCore.Identity;
+using EbayClone.Core.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
 
 namespace EbayClone.API.Controllers
 {
@@ -15,26 +13,19 @@ namespace EbayClone.API.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IMapper _mapper;
-        private readonly UserManager<User> _userManager;
-        private readonly RoleManager<Role> _roleManager;
-        private readonly JwtSettings _jwtSettings;
+        private readonly IAuthService _authService;
 
-        public AuthController(
-            IMapper mapper, 
-            UserManager<User> userManager, 
-            RoleManager<Role> roleManager, 
-            IOptionsSnapshot<JwtSettings> jwtSettings)
+        public AuthController(IMapper mapper, IAuthService authService)
         {
             this._mapper = mapper;
-            this._userManager = userManager;
-            this._roleManager = roleManager;
-            this._jwtSettings = jwtSettings.Value;
+            this._authService = authService;
         }
 
         [HttpPost("signup")]
         public async Task<IActionResult> SignUp(UserSignUpResource userSignUpResource)
         {
-            var result = await IsCreateUserSuccess(userSignUpResource);
+            var user = _mapper.Map<UserSignUpResource, User>(userSignUpResource);
+            var result = await _authService.CreateNewUser(user, userSignUpResource.Password);
 
             if (!result.Succeeded)
                 // return first error description with 500 status code
@@ -47,12 +38,12 @@ namespace EbayClone.API.Controllers
         [HttpPost("signin")]
         public async Task<IActionResult> SignIn(UserSignInResource userSignInResource)
         {
-            var user = FindUserByEmail(userSignInResource.Email);
+            var user = await _authService.FindUserByEmail(userSignInResource.Email);
 
             if (user == null)
                 return NotFound("User not found");
 
-            var isCorrect = await IsUserPasswordCorrect(user, userSignInResource.Password);
+            var isCorrect = await _authService.IsUserPasswordCorrect(user, userSignInResource.Password);
 
             if (!isCorrect)
                 return BadRequest("Email or password is incorrect");
@@ -61,12 +52,12 @@ namespace EbayClone.API.Controllers
         }
 
         [HttpPost("roles")]
-        public async Task<IActionResult> CreateRole(string roleName)
+        public async Task<IActionResult> CreateNewRole(string roleName)
         {
             if (string.IsNullOrWhiteSpace(roleName))
                 return BadRequest("Role name must be provided");
             
-;           var result = await CreateNewRole(roleName);
+;           var result = await _authService.CreateNewRole(roleName);
 
             if (!result.Succeeded)
                 return Problem(result.Errors.First().Description, null, 500);
@@ -77,54 +68,17 @@ namespace EbayClone.API.Controllers
         [HttpPost("user/{userEmail}/role")]
         public async Task<IActionResult> AddUserToRole(string userEmail, [FromBody] string roleName)
         {
-            var user = FindUserByEmail(userEmail);
+            var user = await _authService.FindUserByEmail(userEmail);
             
             if (user == null)
                 return NotFound("User not found");
                 
-            var result = await AddToRole(user, roleName);
+            var result = await _authService.AddUserToRole(user, roleName);
 
             if (!result.Succeeded)
                 return Problem(result.Errors.First().Description, null, 500);
 
             return Ok();
         }
-
-        private async Task<IdentityResult> CreateNewRole(string roleName)
-        {
-            var newRole = new Role
-            {
-                Name = roleName
-            };
-
-            var roleResult = await _roleManager.CreateAsync(newRole);
-
-            return roleResult;
-        }
-
-        private async Task<IdentityResult> AddToRole(User user, string roleName)
-        {
-            var result = await _userManager.AddToRoleAsync(user, roleName);
-            return result;
-        }
-
-        private User FindUserByEmail(string email)
-        {
-            return _userManager.Users.SingleOrDefault(u => u.Email == email);
-        }
-
-        private async Task<bool> IsUserPasswordCorrect(User user, string password)
-        {
-            return await _userManager.CheckPasswordAsync(user, password);
-        }
-
-        private async Task<IdentityResult> IsCreateUserSuccess(UserSignUpResource userSignUpResource)
-        {
-			var user = _mapper.Map<UserSignUpResource, User>(userSignUpResource);
-
-			var userCreateResult = await _userManager.CreateAsync(user, userSignUpResource.Password);
-
-            return userCreateResult;
-		}
     }
 }

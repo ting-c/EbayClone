@@ -68,6 +68,7 @@ namespace EbayClone.API
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddTransient<IItemService, ItemService>();
             services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IAuthService, AuthService>();
 
             services.AddSwaggerGen(options => 
             {

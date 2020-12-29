@@ -47,8 +47,12 @@ namespace EbayClone.API.Controllers
 
             if (!isCorrect)
                 return BadRequest("Email or password is incorrect");
+            
+            var roles = await _authService.GetUserRoles(user);
 
-            return Ok();
+            var jwtString = _authService.GenerateJwt(user, roles);
+
+            return Ok(jwtString);
         }
 
         [HttpPost("roles")]

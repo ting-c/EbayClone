@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using EbayClone.Core.Models;
 using Microsoft.AspNetCore.Identity;
@@ -11,5 +12,7 @@ namespace EbayClone.Core.Services
         Task<bool> IsUserPasswordCorrect(User user, string password);
         Task<IdentityResult> CreateNewRole(string roleName);
         Task<IdentityResult> AddUserToRole(User user, string roleName);
+        Task<IList<string>> GetUserRoles(User user);
+		string GenerateJwt(User user, IList<string> roles);
     }
 }

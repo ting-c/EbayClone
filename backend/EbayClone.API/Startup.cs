@@ -1,4 +1,5 @@
 using AutoMapper;
+using EbayClone.Api.Extensions;
 using EbayClone.API.Settings;
 using EbayClone.Core;
 using EbayClone.Core.Models;
@@ -37,6 +38,8 @@ namespace EbayClone.API
             Configuration.Bind("Jwt", jwtSettings);
             // make the jwt settings available in app
 			services.Configure<JwtSettings>(Configuration.GetSection("Jwt"));
+
+            services.AddAuth(jwtSettings);
 
             services.AddControllers();
             
@@ -105,6 +108,8 @@ namespace EbayClone.API
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseAuth();
 
             app.UseEndpoints(endpoints =>
             {

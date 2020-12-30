@@ -6,10 +6,12 @@ using EbayClone.API.Validators;
 using EbayClone.Core.Models;
 using EbayClone.Core.Services;
 using FluentValidation.Results;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EbayClone.API.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class ItemsController : ControllerBase

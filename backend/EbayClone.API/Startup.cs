@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using AutoMapper;
 using EbayClone.Api.Extensions;
 using EbayClone.API.Settings;
@@ -80,6 +81,32 @@ namespace EbayClone.API
                     Title = "Ebay Clone",
                     Version = "v1"
                 });
+                // config to test Bearer token through SwaggerUI
+				options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+				{
+					Description = "JWT containing userid claim",
+					Name = "Authorization",
+					In = ParameterLocation.Header,
+					Type = SecuritySchemeType.ApiKey,
+				});
+
+				var security =
+					new OpenApiSecurityRequirement
+					{
+						{
+							new OpenApiSecurityScheme
+							{
+								Reference = new OpenApiReference
+								{
+									Id = "Bearer",
+									Type = ReferenceType.SecurityScheme
+								},
+								UnresolvedReference = true
+							},
+							new List<string>()
+						}
+					};
+				options.AddSecurityRequirement(security);
             });
 
             services.AddAutoMapper(typeof(Startup));

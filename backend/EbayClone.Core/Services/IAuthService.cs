@@ -9,6 +9,7 @@ namespace EbayClone.Core.Services
     {
         Task<IdentityResult> CreateNewUser(User user, string password);
         Task<User> FindUserByEmail(string email);
+        Task<User> FindUserByUsername(string userName);
         Task<bool> IsUserPasswordCorrect(User user, string password);
         Task<IdentityResult> CreateNewRole(string roleName);
         Task<IdentityResult> AddUserToRole(User user, string roleName);

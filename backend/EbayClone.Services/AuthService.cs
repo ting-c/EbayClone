@@ -57,6 +57,11 @@ namespace EbayClone.Services
 			var result = await _userManager.FindByEmailAsync(email);
 			return result;
 		}
+		public async Task<User> FindUserByUsername(string userName)
+		{
+			var result = await _userManager.FindByNameAsync(userName);
+			return result;
+		}
 
 		public async Task<bool> IsUserPasswordCorrect(User user, string password)
 		{

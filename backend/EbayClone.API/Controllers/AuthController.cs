@@ -24,6 +24,12 @@ namespace EbayClone.API.Controllers
         [HttpPost("signup")]
         public async Task<IActionResult> SignUp(UserSignUpResource userSignUpResource)
         {
+            if (_authService.FindUserByEmail(userSignUpResource.Email) == null)
+                return Conflict("Email has already been taken");
+
+            if (_authService.FindUserByUsername(userSignUpResource.UserName) == null)
+                return Conflict("Username has already been taken");
+                
             var user = _mapper.Map<UserSignUpResource, User>(userSignUpResource);
             var result = await _authService.CreateNewUser(user, userSignUpResource.Password);
 

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using AutoMapper;
 using EbayClone.Api.Extensions;
-using EbayClone.API.Settings;
+using EbayClone.Services.Settings;
 using EbayClone.Core;
 using EbayClone.Core.Models;
 using EbayClone.Core.Services;
@@ -26,20 +26,18 @@ namespace EbayClone.API
             Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
+        public IConfiguration Configuration { get; set; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
-        {
-            // get jwt settings from appsettings.json as JwtSettings type
-			var jwtSettings = Configuration.GetSection("Jwt").Get<JwtSettings>();
+        {   
             // add secret for jwt from user secret
+            var jwtSettings = Configuration.GetSection("Jwt").Get<JwtSettings>();
             jwtSettings.Secret = Configuration["JwtSecret"];
-            // bind JwtSettings type to IConfigurationSection
-            Configuration.Bind("Jwt", jwtSettings);
-            // make the jwt settings available in app
-			services.Configure<JwtSettings>(Configuration.GetSection("Jwt"));
-
+            
+            // inject updated jwtSetting
+            services.AddSingleton(jwtSettings);
+            
             services.AddAuth(jwtSettings);
 
             services.AddControllers();

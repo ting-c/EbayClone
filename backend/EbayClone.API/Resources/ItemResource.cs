@@ -8,6 +8,6 @@ namespace EbayClone.API.Resources
 		public string Price { get; set; }
 		public string Condition { get; set; }
 		public bool IsAuction { get; set; }
-		public UserResource Seller { get; set; }
+		public int SellerId { get; set; }
     }
 } 

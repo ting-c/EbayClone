@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -22,7 +23,7 @@ namespace EbayClone.API.Controllers
         }
 
         [HttpPost("signup")]
-        public async Task<IActionResult> SignUp(UserSignUpResource userSignUpResource)
+        public async Task<IActionResult> SignUp(UserSignUpResource userSignUpResource, string roleName="client")
         {
             if (_authService.FindUserByEmail(userSignUpResource.Email) == null)
                 return Conflict("Email has already been taken");
@@ -31,14 +32,12 @@ namespace EbayClone.API.Controllers
                 return Conflict("Username has already been taken");
                 
             var user = _mapper.Map<UserSignUpResource, User>(userSignUpResource);
-            var result = await _authService.CreateNewUser(user, userSignUpResource.Password);
+            bool IsSuccess = await _authService.CreateNewUser(user, userSignUpResource.Password, roleName);
+            
+            if (!IsSuccess)
+                return Problem("Sign up error", null, 500);
 
-            if (!result.Succeeded)
-                // return first error description with 500 status code
-                return Problem(result.Errors.First().Description, null, 500);
-
-            // return empty CreatedResult object
-            return Created(string.Empty, null);
+            return Created(string.Empty, "Sign up success");
         }
 
         [HttpPost("signin")]

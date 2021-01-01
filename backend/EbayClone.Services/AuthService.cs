@@ -5,9 +5,9 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using EbayClone.API.Settings;
 using EbayClone.Core.Models;
 using EbayClone.Core.Services;
+using EbayClone.Services.Settings;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -23,11 +23,11 @@ namespace EbayClone.Services
 		public AuthService(
 			UserManager<User> userManager, 
 			RoleManager<Role> roleManager, 
-			IOptionsSnapshot<JwtSettings> jwtSettings)
+			JwtSettings jwtSettings)
 		{
 			this._userManager = userManager;
 			this._roleManager = roleManager;
-			this._jwtSettings = jwtSettings.Value;
+			this._jwtSettings = jwtSettings;
 		}
 
 		public async Task<IdentityResult> AddUserToRole(User user, string roleName)
@@ -43,12 +43,35 @@ namespace EbayClone.Services
 				Name = roleName
 			};
 			var result = await _roleManager.CreateAsync(newRole);
+
 			return result;
 		}
 
-		public async Task<IdentityResult> CreateNewUser(User user, string password)
+		public async Task<bool> CreateNewUser(User user, string password, string roleName)
 		{
+			// create new user
 			var result = await _userManager.CreateAsync(user, password);
+
+			// check if role exists
+			bool isExists = await IsRoleExists(roleName);
+			if (!isExists)
+			{
+				var createRoleResult = await CreateNewRole(roleName);
+				if (!createRoleResult.Succeeded)
+					throw new Exception(createRoleResult.Errors.First().Description);
+			}
+
+			// add user to role
+			var addToRoleResult = await AddUserToRole(user, roleName);
+			if (!addToRoleResult.Succeeded)
+				throw new Exception(addToRoleResult.Errors.First().Description);
+			
+			return true;
+		}
+
+		public async Task<bool> IsRoleExists(string roleName)
+		{
+			var result = await _roleManager.RoleExistsAsync(roleName);
 			return result;
 		}
 
@@ -57,6 +80,7 @@ namespace EbayClone.Services
 			var result = await _userManager.FindByEmailAsync(email);
 			return result;
 		}
+		
 		public async Task<User> FindUserByUsername(string userName)
 		{
 			var result = await _userManager.FindByNameAsync(userName);

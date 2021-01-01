@@ -1,4 +1,4 @@
-namespace EbayClone.API.Settings
+namespace EbayClone.Services.Settings
 {
     public class JwtSettings
     {

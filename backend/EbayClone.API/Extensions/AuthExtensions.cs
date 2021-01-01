@@ -4,7 +4,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System;
 using Microsoft.AspNetCore.Builder;
-using EbayClone.API.Settings;
+using EbayClone.Services.Settings;
 
 namespace EbayClone.Api.Extensions
 {

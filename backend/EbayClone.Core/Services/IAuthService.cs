@@ -7,9 +7,10 @@ namespace EbayClone.Core.Services
 {
     public interface IAuthService
     {
-        Task<IdentityResult> CreateNewUser(User user, string password);
+        Task<bool> CreateNewUser(User user, string password, string roleName);
         Task<User> FindUserByEmail(string email);
         Task<User> FindUserByUsername(string userName);
+        Task<bool> IsRoleExists(string roleName);
         Task<bool> IsUserPasswordCorrect(User user, string password);
         Task<IdentityResult> CreateNewRole(string roleName);
         Task<IdentityResult> AddUserToRole(User user, string roleName);

@@ -34,11 +34,8 @@ namespace EbayClone.API
             // add secret for jwt from user secret
             var jwtSettings = Configuration.GetSection("Jwt").Get<JwtSettings>();
             jwtSettings.Secret = Configuration["JwtSecret"];
-            
             // inject updated jwtSetting
             services.AddSingleton(jwtSettings);
-            
-            services.AddAuth(jwtSettings);
 
             services.AddControllers();
             
@@ -71,6 +68,7 @@ namespace EbayClone.API
             services.AddTransient<IItemService, ItemService>();
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IAuthService, AuthService>();
+            
 
             services.AddSwaggerGen(options => 
             {
@@ -108,6 +106,8 @@ namespace EbayClone.API
             });
 
             services.AddAutoMapper(typeof(Startup));
+
+            services.AddAuth(jwtSettings);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -132,9 +132,9 @@ namespace EbayClone.API
 
             app.UseRouting();
 
-            app.UseAuthorization();
-
             app.UseAuth();
+            
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

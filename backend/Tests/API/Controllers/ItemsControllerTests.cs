@@ -128,13 +128,18 @@ namespace Tests.API.Controllers
 		public async Task CreateItem_ReturnNotFoundObject_WhenCreateItemMethodReturnsNull()
 		{
 			//Arrange
-			var itemToCreate = GetTestItems().FirstOrDefault(
-				i => i.Id == 1);
+			// var itemToCreate = GetTestItems().FirstOrDefault(
+			// 	i => i.Id == 1);
 			var saveItemResource = new SaveItemResource()
 			{
-				Title = "Test 1",
+				Title = "Item 1",
+                Description = "Description",
+				Price = 30.00M,
+				Condition = "New",
+				IsAuction = false,
 				SellerId = 1
 			};
+            var itemToCreate = _mapper.Map<SaveItemResource, Item>(saveItemResource);
 
 			_mockItemService.Setup(service => service.CreateItem(itemToCreate))
 				.ReturnsAsync((Item)null);
@@ -170,15 +175,19 @@ namespace Tests.API.Controllers
 		public async Task UpdateItem_ReturnNotFoundObject_WhenGetItemByIdReturnsNull()
 		{
 			//Arrange
+            var testItemId = 1;
 			var itemToBeUpdated = GetTestItems().FirstOrDefault(
-				i => i.Id == 1);
+				i => i.Id == testItemId);
 			var saveItemResource = new SaveItemResource()
-			{
-				Title = "Test 1",
-				SellerId = 1
+            {
+                Title = "Item 1",
+                Price = 30.00m,
+                Condition = "New",
+                IsAuction = false,
+                SellerId = 1
 			};
 
-			_mockItemService.Setup(service => service.GetItemById(itemToBeUpdated.Id))
+			_mockItemService.Setup(service => service.GetItemById(testItemId))
 				.ReturnsAsync((Item)null);
 
 			var controller = new ItemsController(_mockItemService.Object, _mapper);
@@ -194,24 +203,26 @@ namespace Tests.API.Controllers
 		public async Task UpdateItem_ReturnItemResourceInOkObjectResult_WhenUpdateIsSuccess()
 		{
 			//Arrange
-			var itemToBeUpdated = GetTestItems().FirstOrDefault(
-				i => i.Id == 1);
 			var saveItemResource = new SaveItemResource()
 			{
-				Title = "Updated Test 1",
+				Title = "Updated Item 1",
+				Price = 30.00M,
+				Condition = "New",
+				IsAuction = false,
                 SellerId = 10
 			};
-            var updatedItem = new Item()
-            {
-                Id = itemToBeUpdated.Id,
-                Title = saveItemResource.Title,
-                SellerId = saveItemResource.SellerId
-            };
+			var itemToBeUpdated = GetTestItems().FirstOrDefault(
+				i => i.Id == 1);
             var expectedItemResource = new ItemResource()
             {
                 Id = 1,
-                Title = saveItemResource.Title
+				Title = "Updated Item 1",
+				Price = 30.00M,
+				Condition = "New",
+				IsAuction = false,
+				SellerId = 10
             };
+            var updatedItem = _mapper.Map<ItemResource, Item>(expectedItemResource);
 
 			_mockItemService.SetupSequence(service => service.GetItemById(itemToBeUpdated.Id))
 				.ReturnsAsync(itemToBeUpdated)
@@ -240,14 +251,20 @@ namespace Tests.API.Controllers
 			itemResources.Add(new ItemResource()
             {
                 Id = 1,
-                Title = "Test 1",
-                Seller = new UserResource()
+                Title = "Item 1",
+                Price = 30.00M,
+                Condition = "New",
+                IsAuction = false,
+                SellerId = 1
             });
 			itemResources.Add(new ItemResource()
             {
-                Id = 2,
-                Title = "Test 2",
-                Seller = new UserResource()
+				Id = 2,
+				Title = "Item 2",
+				Price = 40.00M,
+				Condition = "New",
+				IsAuction = false,
+				SellerId = 1
             });
 
             return itemResources;
@@ -259,14 +276,20 @@ namespace Tests.API.Controllers
 			items.Add(new Item()
             {
                 Id = 1,
-                Title = "Test 1",
-                Seller = new User()
+				Title = "Item 1",
+				Price = 30.00M,
+				Condition = "New",
+				IsAuction = false,
+				SellerId = 1
             });
 			items.Add(new Item()
             {
                 Id = 2,
-                Title = "Test 2",
-                Seller = new User()
+				Title = "Item 2",
+				Price = 40.00M,
+				Condition = "New",
+				IsAuction = false,
+				SellerId = 1
             });
 
             return items;

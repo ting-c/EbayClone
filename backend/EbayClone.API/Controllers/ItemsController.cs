@@ -53,7 +53,7 @@ namespace EbayClone.API.Controllers
         public async Task<IActionResult> CreateItem([FromBody] SaveItemResource saveItemResource)
         {
             var validator = new SaveItemResourceValidator();
-            ValidationResult results = await validator.ValidateAsync(saveItemResource);
+            ValidationResult results = validator.Validate(saveItemResource);
 
             if (!results.IsValid)
                 return BadRequest(results.Errors);

@@ -11,17 +11,16 @@ namespace EbayClone.API.Validators
                 .NotEmpty()
                 .MaximumLength(50);
             RuleFor(i => i.Description)
-                .NotEmpty()
                 .MaximumLength(200);
             RuleFor(i => i.Price)
-                .NotEmpty();
+                .NotNull();
             RuleFor(i => i.Condition)
                 .NotEmpty()
                 .MaximumLength(50);
             RuleFor(i => i.IsAuction)
-                .NotEmpty();
+                .NotNull();
             RuleFor(i => i.SellerId)
-                .NotEmpty()
+                .NotNull()
                 .WithMessage("'Seller Id' cannot be 0.");
         }
     }

@@ -16,6 +16,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using CloudinaryDotNet;
 
 namespace EbayClone.API
 {
@@ -63,12 +64,20 @@ namespace EbayClone.API
 	            .AddDefaultTokenProviders();
 
 
-            // add dependency injection so it injects UnitOfWork when IUnitOfWork is use
+            // dependency injection for interfaces
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddTransient<IItemService, ItemService>();
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IAuthService, AuthService>();
             
+            // Cloudinary config
+            var cloudName = Configuration["CloudinaryCloudName"];
+            var key = Configuration["CloudinaryKey"];
+            var secret = Configuration["CloudinarySecret"];
+            var account = new Account(cloudName, key, secret);
+            var cloudinary = new Cloudinary(account);
+            // inject cloudinary
+            services.AddSingleton(cloudinary);
 
             services.AddSwaggerGen(options => 
             {

@@ -16,5 +16,6 @@ namespace EbayClone.Core.Models
         public string LastName { get; set; }
         public string Address { get; set; }
         public ICollection<Item> SellingItems { get; set; }
+        public ICollection<FilePath> ImageUrl { get; set; }
     }
 }

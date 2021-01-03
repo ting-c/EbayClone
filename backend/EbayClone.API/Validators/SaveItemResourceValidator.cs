@@ -9,9 +9,9 @@ namespace EbayClone.API.Validators
         {
             RuleFor(i => i.Title)
                 .NotEmpty()
-                .MaximumLength(50);
+                .MaximumLength(100);
             RuleFor(i => i.Description)
-                .MaximumLength(200);
+                .MaximumLength(800);
             RuleFor(i => i.Price)
                 .NotNull();
             RuleFor(i => i.Condition)

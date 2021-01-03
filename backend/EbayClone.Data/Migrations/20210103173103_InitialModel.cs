@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace EbayClone.Data.Migrations
 {
-    public partial class InitialModelWithIdentity : Migration
+    public partial class InitialModel : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -164,9 +164,9 @@ namespace EbayClone.Data.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Title = table.Column<string>(maxLength: 100, nullable: false),
-                    Description = table.Column<string>(nullable: true),
-                    Price = table.Column<string>(nullable: true),
-                    Condition = table.Column<string>(nullable: true),
+                    Description = table.Column<string>(maxLength: 800, nullable: true),
+                    Price = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
+                    Condition = table.Column<string>(maxLength: 50, nullable: false),
                     IsAuction = table.Column<bool>(nullable: false),
                     SellerId = table.Column<int>(nullable: false)
                 },
@@ -179,6 +179,32 @@ namespace EbayClone.Data.Migrations
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "FilePaths",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UrlPath = table.Column<string>(nullable: false),
+                    ItemId = table.Column<int>(nullable: false),
+                    UserId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FilePaths", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_FilePaths_Items_ItemId",
+                        column: x => x.ItemId,
+                        principalTable: "Items",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_FilePaths_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(
@@ -207,6 +233,16 @@ namespace EbayClone.Data.Migrations
                 name: "IX_AspNetUserRoles_RoleId",
                 table: "AspNetUserRoles",
                 column: "RoleId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FilePaths_ItemId",
+                table: "FilePaths",
+                column: "ItemId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FilePaths_UserId",
+                table: "FilePaths",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Items_SellerId",
@@ -256,10 +292,13 @@ namespace EbayClone.Data.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Items");
+                name: "FilePaths");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "Items");
 
             migrationBuilder.DropTable(
                 name: "Users");

@@ -9,6 +9,7 @@ namespace EbayClone.Data
     {
         public DbSet<Item> Items { get; set; }
         public override DbSet<User> Users { get; set; }
+        public DbSet<FilePath> FilePaths { get; set; }
 
         public EbayCloneDbContext(DbContextOptions<EbayCloneDbContext> options) : base(options) {}
 
@@ -22,6 +23,9 @@ namespace EbayClone.Data
 
             builder
                 .ApplyConfiguration(new UserConfiguration());
+
+            builder
+                .ApplyConfiguration(new FilePathConfiguration());
         }
     }
 }

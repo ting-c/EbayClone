@@ -4,7 +4,7 @@ namespace EbayClone.Data.Migrations
 {
     public partial class SeedItemsAndUsersData : Migration
     {
-        protected override void Up(MigrationBuilder migrationBuilder)
+protected override void Up(MigrationBuilder migrationBuilder)
 		{
 			migrationBuilder
 				.Sql("INSERT INTO Users (FirstName, LastName, UserName, Email, EmailConfirmed, PhoneNumber, PhoneNumberConfirmed, TwoFactorEnabled, LockoutEnabled, AccessFailedCount, Address) Values ('Adam', 'Smith', 'adamsmith123', 'adamsmith@gmail.com', 'TRUE', '01233111111', 'TRUE', 'FALSE', 'FALSE', 0, '1 London Road, Greater London, UK')");

@@ -19,7 +19,23 @@ namespace EbayClone.Data.Configurations
                 .Property(i => i.Title)
                 .IsRequired()
                 .HasMaxLength(100);
+            builder
+                .Property(i => i.Description)
+                .HasMaxLength(800);
+            builder
+                .Property(i => i.Price)
+                .IsRequired();
+            builder
+                .Property(i => i.Condition)
+                .IsRequired()
+                .HasMaxLength(50);
+            builder
+                .Property(i => i.IsAuction)
+                .IsRequired();
 
+            builder
+                .Property(i => i.SellerId)
+                .IsRequired();
             builder
                 .HasOne(i => i.Seller)
                 .WithMany(u => u.SellingItems)

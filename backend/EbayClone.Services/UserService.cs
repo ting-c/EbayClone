@@ -36,9 +36,13 @@ namespace EbayClone.Services
 			return await _unitOfWork.Users.GetByIdAsync(id);
 		}
 
-		public async Task UpdateUser(User userToBeUpdated, User user)
+		public async Task UpdateUser(User currentUser, User modifiedUser)
 		{
-			userToBeUpdated = user;
+			// to avoid error as modifiedUser.Id = null
+			modifiedUser.Id = currentUser.Id;
+
+			_unitOfWork.Users.Update(currentUser, modifiedUser);
+
             await _unitOfWork.CommitAsync();
 		}
 	}

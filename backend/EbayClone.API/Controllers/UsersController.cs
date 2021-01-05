@@ -79,14 +79,14 @@ namespace EbayClone.API.Controllers
 			if (!results.IsValid)
 				return BadRequest(results.Errors);
 
-			var userToBeUpdated = await _userService.GetUserById(id);
+			var currentUser = await _userService.GetUserById(id);
 
-			if (userToBeUpdated == null)
+			if (currentUser == null)
 				return NotFound();
 
-			User user = _mapper.Map<SaveUserResource, User>(saveUserResource);
+			User modifiedUser = _mapper.Map<SaveUserResource, User>(saveUserResource);
 
-			await _userService.UpdateUser(userToBeUpdated, user);
+			await _userService.UpdateUser(currentUser, modifiedUser);
 
 			User updatedUser = await _userService.GetUserById(id);
 

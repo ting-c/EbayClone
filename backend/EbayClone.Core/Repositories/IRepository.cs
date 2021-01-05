@@ -15,5 +15,6 @@ namespace EbayClone.Core.Repositories
         Task AddRangeAsync(IEnumerable<TEntity> entities);
         void Remove(TEntity entity);
         void RemoveRange(IEnumerable<TEntity> entities);
+        void Update(TEntity currentEntity, TEntity modifiedEntity);
     }
 }

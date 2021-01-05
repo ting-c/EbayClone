@@ -82,14 +82,14 @@ namespace EbayClone.API.Controllers
             if (!results.IsValid)
                 return BadRequest(results.Errors);
 
-            var itemToBeUpdated = await _itemService.GetItemById(id);
+            var currentItem = await _itemService.GetItemById(id);
 
-            if (itemToBeUpdated == null)
+            if (currentItem == null)
                 return NotFound();
 
-            Item item = _mapper.Map<SaveItemResource, Item>(saveItemResource);
+            Item modifiedItem = _mapper.Map<SaveItemResource, Item>(saveItemResource);
 
-            await _itemService.UpdateItem(itemToBeUpdated, item);
+            await _itemService.UpdateItem(currentItem, modifiedItem);
 
             Item updatedItem = await _itemService.GetItemById(id);
 

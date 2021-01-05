@@ -43,10 +43,12 @@ namespace EbayClone.Services
 			return await _unitOfWork.Items.GetAllWithUserbyUserIdAsync(userId);
 		}
 
-		public async Task UpdateItem(Item itemToBeUpdated, Item item)
+		public async Task UpdateItem(Item currentItem, Item modifiedItem)
 		{
-			itemToBeUpdated.Title = item.Title;
-            itemToBeUpdated.SellerId = item.SellerId;
+			// to avoid error as modifiedItem.Id = null
+			modifiedItem.Id = currentItem.Id;
+
+			_unitOfWork.Items.Update(currentItem, modifiedItem);
 
             await _unitOfWork.CommitAsync();
 		}

@@ -9,7 +9,7 @@ namespace EbayClone.Core.Services
          Task<IEnumerable<User>> GetAllUsers();
          Task<User> GetUserById(int id);
          Task<User> CreateUser(User newUser);
-         Task UpdateUser(User userToBeUpdated, User user);
+         Task UpdateUser(User currentUser, User modifiedUser);
          Task DeleteUser(User user);
     }
 }

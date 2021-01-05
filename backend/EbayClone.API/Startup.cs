@@ -69,6 +69,7 @@ namespace EbayClone.API
             services.AddTransient<IItemService, ItemService>();
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IAuthService, AuthService>();
+            services.AddTransient<IFilePathService, FilePathService>();
             
             // Cloudinary config
             var cloudName = Configuration["CloudinaryCloudName"];

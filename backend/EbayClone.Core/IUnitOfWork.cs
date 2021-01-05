@@ -8,6 +8,7 @@ namespace EbayClone.Core
     {
          IItemRepository Items { get; }
          IUserRepository Users { get; }
+         IFilePathRepository FilePaths { get; }
          Task<int> CommitAsync();
     }
 }

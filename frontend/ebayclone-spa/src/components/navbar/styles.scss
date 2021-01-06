@@ -1,0 +1,27 @@
+.navbar{
+	color: black;
+	padding: 0 10rem;
+	height: 30px;
+	border-bottom: 1px solid rgb(221, 221, 221);
+	font-family: Helvetica Neue ,Helvetica,Arial,Verdana,Sans-serif;
+	vertical-align: middle;
+
+	.dropdown-menu{
+		padding: 0.4rem 1rem;
+	}
+
+	a{
+		color: black;
+		text-decoration:none;
+	}
+
+	.navbar-right{
+		float: right;
+		background-color: white;
+	}
+
+	button{
+		background-color: white;
+		border: none;
+	}
+}

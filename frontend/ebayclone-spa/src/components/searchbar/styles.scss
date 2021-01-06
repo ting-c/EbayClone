@@ -1,0 +1,16 @@
+.searchbar{
+	max-width: 1200px;
+	width: 100vw;
+	margin: 0 auto;
+	height: 5.5rem;
+
+	input{
+		border: 1px solid black;
+	}
+
+	.search-button{
+		margin: 0 0.5rem;
+		min-width: 168px;
+		font-size: 14px;
+	}
+}

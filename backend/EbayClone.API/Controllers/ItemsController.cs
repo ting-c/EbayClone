@@ -11,7 +11,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EbayClone.API.Controllers
 {
-    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class ItemsController : ControllerBase
@@ -49,6 +48,7 @@ namespace EbayClone.API.Controllers
             return Ok(itemResource);
         }
 
+		[Authorize]
         [HttpPost("")]
         public async Task<IActionResult> CreateItem([FromBody] SaveItemResource saveItemResource)
         {
@@ -73,16 +73,21 @@ namespace EbayClone.API.Controllers
             return Ok(itemResource);
         }
 
+		[Authorize]
         [HttpPut("{id}")]
-		public async Task<IActionResult> UpdateItem(int id, [FromBody] SaveItemResource saveItemResource)
+		public async Task<IActionResult> UpdateItem(int userId, int itemId, [FromBody] SaveItemResource saveItemResource)
         {
+			bool IsValid = await CheckIfUserIsItemSeller(userId, itemId);
+			if (!IsValid)
+				return Unauthorized();
+
             var validator = new SaveItemResourceValidator();
             ValidationResult results = await validator.ValidateAsync(saveItemResource);
 
             if (!results.IsValid)
                 return BadRequest(results.Errors);
 
-            var currentItem = await _itemService.GetItemById(id);
+            var currentItem = await _itemService.GetItemById(itemId);
 
             if (currentItem == null)
                 return NotFound();
@@ -98,17 +103,30 @@ namespace EbayClone.API.Controllers
             return Ok(updatedItemResource);
         }
 
+		[Authorize]
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteItem(int id)
+        public async Task<IActionResult> DeleteItem(int userId, int itemId)
         {
-            var item = await _itemService.GetItemById(id);
+            bool IsValid = await CheckIfUserIsItemSeller(userId, itemId);
+            if (!IsValid)
+                return Unauthorized();
 
+            var item = await _itemService.GetItemById(itemId);
             if (item == null)
                 return NotFound();
 
             await _itemService.DeleteItem(item);
 
             return NoContent();
+        }
+
+        private async Task<bool> CheckIfUserIsItemSeller(int userId, int itemId)
+        {
+            var item = await _itemService.GetItemById(itemId);
+            if (item.SellerId == userId)
+                return true;
+            
+            return false;
         }
     }
 }

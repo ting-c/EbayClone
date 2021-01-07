@@ -31,9 +31,21 @@ namespace EbayClone.API
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
-        {   
-            // add secret for jwt from user secret
-            var jwtSettings = Configuration.GetSection("Jwt").Get<JwtSettings>();
+        {
+			// cors
+			services.AddCors(options =>
+            {
+                options.AddPolicy(name: "localhost",
+                    builder =>
+                    {
+                        builder.WithOrigins("http://localhost:3000")
+                            .AllowAnyHeader()
+                            .AllowAnyMethod();
+                    });
+            });
+
+			// add secret for jwt from user secret
+			var jwtSettings = Configuration.GetSection("Jwt").Get<JwtSettings>();
             jwtSettings.Secret = Configuration["JwtSecret"];
             // inject updated jwtSetting
             services.AddSingleton(jwtSettings);
@@ -141,6 +153,8 @@ namespace EbayClone.API
             });
 
             app.UseRouting();
+
+            app.UseCors("localhost");
 
             app.UseAuth();
             

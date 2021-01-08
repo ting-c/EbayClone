@@ -12,12 +12,12 @@ const SignUp = () => {
 	return (
 		<form>
 			<div class="mb-3">
-				<label for="firstNameInput" class="form-label">
+				<label for="firstNameInput" className="form-label">
 					First Name
 				</label>
 				<input
 					type="text"
-					class="form-control"
+					className="form-control"
 					id="firstNameInput"
 					aria-describedby="firstNameInput"
 					value={firstName}
@@ -25,12 +25,12 @@ const SignUp = () => {
 				/>
 			</div>
 			<div class="mb-3">
-				<label for="lastNameInput" class="form-label">
+				<label for="lastNameInput" className="form-label">
 					Last Name
 				</label>
 				<input
 					type="text"
-					class="form-control"
+					className="form-control"
 					id="lastNameInput"
 					aria-describedby="lastNameInput"
 					value={lastName}
@@ -38,12 +38,12 @@ const SignUp = () => {
 				/>
 			</div>
 			<div class="mb-3">
-				<label for="emailInput" class="form-label">
+				<label for="emailInput" className="form-label">
 					Email address
 				</label>
 				<input
 					type="email"
-					class="form-control"
+					className="form-control"
 					id="emailInput"
 					aria-describedby="emailInput"
 					value={email}
@@ -56,7 +56,7 @@ const SignUp = () => {
 				</label>
 				<input
 					type="text"
-					class="form-control"
+					className="form-control"
 					id="addressInput"
 					aria-describedby="addressInput"
 					value={address}
@@ -69,38 +69,38 @@ const SignUp = () => {
 				</label>
 				<input
 					type="text"
-					class="form-control"
+					className="form-control"
 					id="usernameInput"
 					aria-describedby="usernameInput"
 					value={username}
 					onChange={(e) => setUsername(e.target.value)}
 				/>
 			</div>
-			<div class="mb-3">
+			<div className="mb-3">
 				<label for="passwordInput" class="form-label">
 					Password
 				</label>
 				<input
 					type="password"
-					class="form-control"
+					className="form-control"
 					id="passwordInput"
 					value={password}
 					onChange={(e) => setPassword(e.target.value)}
 				/>
 			</div>
-			<div class="mb-3">
-				<label for="confirmPasswordInput" class="form-label">
+			<div className="mb-3">
+				<label for="confirmPasswordInput" className="form-label">
 					Confirm Password
 				</label>
 				<input
 					type="password"
-					class="form-control"
+					className="form-control"
 					id="confirmPasswordInput"
 					value={confirmPassword}
 					onChange={(e) => setConfirmPassword(e.target.value)}
 				/>
 			</div>
-			<button type="submit" class="btn btn-primary">
+			<button type="submit" className="btn btn-primary">
 				Submit
 			</button>
 		</form>

@@ -3,11 +3,11 @@ import './styles.scss'
 
 const NavBar = () => {
 	return (
-		<nav class="navbar navbar-expand-lg">
-			<div class="container-fluid">
-				<div class="dropdown">
+		<nav className="navbar navbar-expand-lg">
+			<div className="container-fluid">
+				<div className="dropdown">
 					<button
-						class="dropdown-toggle"
+						className="dropdown-toggle"
 						id="dropdownMenuButton"
 						data-bs-toggle="dropdown"
 						aria-expanded="false"
@@ -15,23 +15,23 @@ const NavBar = () => {
 						Hello.
 					</button>
 					<ul
-						class="dropdown-menu"
+						className="dropdown-menu"
 						aria-labelledby="dropdownMenuButton"
 					>
 						<li><a href='/signin'>Sign in</a></li>
 					</ul>
 				</div>
 
-				<ul class="navbar-right navbar-nav mr-auto mb-2 mb-lg-0">
-					<li class="nav-item">
-						<a class="nav-link" href="/">
+				<ul className="navbar-right navbar-nav mr-auto mb-2 mb-lg-0">
+					<li className="nav-item">
+						<a className="nav-link" href="/">
 							Sell
 						</a>
 					</li>
-					<li class="nav-item nav-link">
-						<div class="dropdown">
+					<li className="nav-item nav-link">
+						<div className="dropdown">
 							<button
-								class="dropdown-toggle"
+								className="dropdown-toggle"
 								id="dropdownMenuButton"
 								data-bs-toggle="dropdown"
 								aria-expanded="false"
@@ -39,7 +39,7 @@ const NavBar = () => {
 								My eBay
 							</button>
 							<ul
-								class="dropdown-menu"
+								className="dropdown-menu"
 								aria-labelledby="dropdownMenuButton"
 							>
 								<li></li>

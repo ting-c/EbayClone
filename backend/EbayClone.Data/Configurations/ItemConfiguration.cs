@@ -40,7 +40,7 @@ namespace EbayClone.Data.Configurations
                 .HasOne(i => i.Seller)
                 .WithMany(u => u.SellingItems)
                 .HasForeignKey(i => i.SellerId);
-
+                
             builder
                 .ToTable("Items");
         }

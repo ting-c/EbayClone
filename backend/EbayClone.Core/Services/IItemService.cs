@@ -8,6 +8,7 @@ namespace EbayClone.Core.Services
     {
         Task<IEnumerable<Item>> GetAllWithUser();
         Task<Item> GetItemById(int id);
+        Task<IEnumerable<Item>> GetItemsByTitle(string title);
         Task<IEnumerable<Item>> GetItemsByUserId(int userId);
         Task<Item> CreateItem(Item newItem);
         Task UpdateItem(Item itemToBeUpdated, Item item);

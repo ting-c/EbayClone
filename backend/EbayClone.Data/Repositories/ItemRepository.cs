@@ -16,6 +16,16 @@ namespace EbayClone.Data.Repositories
         {
             return await EbayCloneDbContext.Items
                 .Include(i => i.Seller)
+                .Include(i => i.ImageUrl)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<Item>> GetItemsByTitleAsync(string title)
+        {
+            return await EbayCloneDbContext.Items
+                .Where(i => i.Title.Contains(title))
+                .Include(i => i.Seller)
+                .Include(i => i.ImageUrl)
                 .ToListAsync();
         }
 

@@ -9,23 +9,23 @@ namespace EbayClone.Services
 {
     public class ItemService : IItemService
     {
-        private readonly IUnitOfWork _unitOfWork;
-        public ItemService(IUnitOfWork unitOfWork)
-        {
-            this._unitOfWork = unitOfWork;
-        }
+      private readonly IUnitOfWork _unitOfWork;
+      public ItemService(IUnitOfWork unitOfWork)
+      {
+         this._unitOfWork = unitOfWork;
+      }
 
-        public async Task<Item> CreateItem(Item newItem)
-        {
+      public async Task<Item> CreateItem(Item newItem)
+      {
 			await _unitOfWork.Items.AddAsync(newItem);
 			await _unitOfWork.CommitAsync();
 			return newItem;
-        }
+      }
 
 		public async Task DeleteItem(Item item)
 		{
 			_unitOfWork.Items.Remove(item);
-            await _unitOfWork.CommitAsync();
+         await _unitOfWork.CommitAsync();
 		}
 
 		public async Task<IEnumerable<Item>> GetAllWithUser()
@@ -36,6 +36,11 @@ namespace EbayClone.Services
 		public async Task<Item> GetItemById(int id)
 		{
 			return await _unitOfWork.Items.GetWithUserByIdAsync(id);
+		}
+
+		public async Task<IEnumerable<Item>> GetItemsByTitle(string title)
+		{
+			return await _unitOfWork.Items.GetItemsByTitleAsync(title);
 		}
 
 		public async Task<IEnumerable<Item>> GetItemsByUserId(int userId)
@@ -50,7 +55,7 @@ namespace EbayClone.Services
 
 			_unitOfWork.Items.Update(currentItem, modifiedItem);
 
-            await _unitOfWork.CommitAsync();
+         await _unitOfWork.CommitAsync();
 		}
 	}
 }

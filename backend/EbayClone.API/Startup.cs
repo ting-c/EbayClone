@@ -50,7 +50,11 @@ namespace EbayClone.API
             // inject updated jwtSetting
             services.AddSingleton(jwtSettings);
 
-            services.AddControllers();
+            services.AddControllers()
+                // prevent potential loop warning
+                .AddNewtonsoftJson(options => 
+                    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+                );
             
             var builder = new SqlConnectionStringBuilder(
                 Configuration.GetConnectionString("Dev"));

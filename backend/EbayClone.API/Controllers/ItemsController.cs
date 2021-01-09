@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using EbayClone.API.Resources;
@@ -8,6 +9,8 @@ using EbayClone.Core.Services;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.NewtonsoftJson;
+using Newtonsoft.Json;
 
 namespace EbayClone.API.Controllers
 {
@@ -44,6 +47,18 @@ namespace EbayClone.API.Controllers
 				return NotFound();
 
             var itemResource = _mapper.Map<Item, ItemResource>(item);
+
+            return Ok(itemResource);
+        }
+
+        [HttpGet("search/{title}")]
+        public async Task<IActionResult> GetItemsByTitle(string title)
+        {
+            var items = await _itemService.GetItemsByTitle(title);
+			if (items == null)
+				return NotFound();
+
+            var itemResource = _mapper.Map<IEnumerable<Item>, IEnumerable<ItemResource>>(items);
 
             return Ok(itemResource);
         }
@@ -96,7 +111,7 @@ namespace EbayClone.API.Controllers
 
             await _itemService.UpdateItem(currentItem, modifiedItem);
 
-            Item updatedItem = await _itemService.GetItemById(id);
+            Item updatedItem = await _itemService.GetItemById(itemId);
 
             ItemResource updatedItemResource = _mapper.Map<Item, ItemResource>(updatedItem);
 

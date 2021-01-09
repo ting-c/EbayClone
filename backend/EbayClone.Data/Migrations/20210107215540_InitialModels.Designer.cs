@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EbayClone.Data.Migrations
 {
     [DbContext(typeof(EbayCloneDbContext))]
-    [Migration("20210103173220_SeedItemsAndUsersData")]
-    partial class SeedItemsAndUsersData
+    [Migration("20210107215540_InitialModels")]
+    partial class InitialModels
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

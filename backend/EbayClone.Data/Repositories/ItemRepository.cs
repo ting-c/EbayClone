@@ -33,6 +33,7 @@ namespace EbayClone.Data.Repositories
         {
             return await EbayCloneDbContext.Items
 				.Include(i => i.Seller)
+                .Include(i => i.ImageUrl)
                 .SingleOrDefaultAsync(i => i.Id == itemId);
         }
 

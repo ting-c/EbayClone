@@ -10,14 +10,21 @@
 		padding: 0.4rem 1rem;
 	}
 
-	a{
-		color: black;
-		text-decoration:none;
+	.signin-signup a{
+		text-decoration: none;
+	}
+	.signin-signup a:hover{
+		text-decoration: underline;
 	}
 
 	.navbar-right{
 		float: right;
 		background-color: white;
+
+		a{
+			color: rgb(49, 49, 49);
+			text-decoration: none;
+		}
 	}
 
 	button{

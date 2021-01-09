@@ -1,7 +1,8 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import './styles.scss'
 
-const NavBar = () => {
+const NavBar = ({ user }) => {
 	return (
 		<nav className="navbar navbar-expand-lg">
 			<div className="container-fluid">
@@ -12,7 +13,11 @@ const NavBar = () => {
 						data-bs-toggle="dropdown"
 						aria-expanded="false"
 					>
-						Hello.
+						Hello. { user ? user.firstName : (
+							<span className='signin-signup'>
+								<Link to='/signin'>Sign in</Link> or <Link to='/signup'>register</Link>
+							</span>
+							)}
 					</button>
 					<ul
 						className="dropdown-menu"
@@ -23,10 +28,10 @@ const NavBar = () => {
 				</div>
 
 				<ul className="navbar-right navbar-nav mr-auto mb-2 mb-lg-0">
-					<li className="nav-item">
-						<a className="nav-link" href="/">
+					<li className="nav-item nav-link">
+						<Link to={user ? '/selling' : '/signin'}>
 							Sell
-						</a>
+						</Link>
 					</li>
 					<li className="nav-item nav-link">
 						<div className="dropdown">

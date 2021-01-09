@@ -11,15 +11,16 @@ import SearchResults from './pages/searchResults/SearchResults';
 function App() {
 
   const [items, setItems] = useState([]);
+  const [user, setUser] = useState(null);
 
   return (
     <Router>
-      <NavBar />
+      <NavBar user={user}/>
       <div className="App">
-        <SearchBar setItems={setItems}/>
+        <SearchBar  setItems={setItems}/>
         <Switch>
-          <Route path='/'><Home /></Route>
-          <Route path='/'><SearchResults items={items}/></Route>
+          <Route exact path='/'><Home /></Route>
+          <Route path='/results'><SearchResults items={items}/></Route>
           <Route path='/signin'><SignIn /></Route>
           <Route path='/signup'><SignUp /></Route>
         </Switch>

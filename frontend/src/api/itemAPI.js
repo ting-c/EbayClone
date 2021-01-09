@@ -15,7 +15,7 @@ const itemAPI = {
 		}
 	},
 
-	getByUserId: async function(itemId) {
+	getByItemId: async function(itemId) {
 		try {
 			const response = await axios.get(`${url}/${itemId}`);
 			const item = response.data;

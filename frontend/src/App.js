@@ -7,20 +7,22 @@ import SignUp from './pages/signup/SignUp';
 import NavBar from './layouts/navbar/NavBar';
 import SearchBar from './layouts/searchbar/SearchBar';
 import SearchResults from './pages/searchResults/SearchResults';
+import Item from './pages/item/Item';
 
 function App() {
 
-  const [items, setItems] = useState([]);
+  const [items, setItems] = useState(null);
   const [user, setUser] = useState(null);
 
   return (
     <Router>
-      <NavBar user={user}/>
       <div className="App">
-        <SearchBar  setItems={setItems}/>
+      <NavBar user={user}/>
+      <SearchBar setItems={setItems}/>
         <Switch>
-          <Route exact path='/'><Home /></Route>
+          <Route exact path='/'><Home items={items} setItems={setItems}/></Route>
           <Route path='/results'><SearchResults items={items}/></Route>
+          <Route path='/item/:id'><Item /></Route>
           <Route path='/signin'><SignIn /></Route>
           <Route path='/signup'><SignUp /></Route>
         </Switch>

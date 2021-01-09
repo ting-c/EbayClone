@@ -1,13 +1,20 @@
 .navbar{
+	width: 100vw;
 	color: black;
-	padding: 0 10rem;
-	height: 30px;
+	padding: 0.1rem 5rem;
+	height: 2.6rem;
 	border-bottom: 1px solid rgb(221, 221, 221);
 	font-family: Helvetica Neue ,Helvetica,Arial,Verdana,Sans-serif;
 	vertical-align: middle;
+	background-color: white;
+
+	.navbar-toggler-icon{
+		color: black;
+	}
 
 	.dropdown-menu{
 		padding: 0.4rem 1rem;
+		background-color: white;
 	}
 
 	.signin-signup a{
@@ -17,9 +24,15 @@
 		text-decoration: underline;
 	}
 
-	.navbar-right{
-		float: right;
+	ul{
+		padding: 0.3rem 0.7rem;
+	}
+
+	.show {
 		background-color: white;
+	}
+	.navbar-right{
+		margin-left: auto;
 
 		a{
 			color: rgb(49, 49, 49);

@@ -1,0 +1,12 @@
+.summary-main{
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	padding: 2rem;
+
+	.summary-button-group{
+		margin-left: auto;
+		display: flex;
+		flex-direction: column;
+	}
+}

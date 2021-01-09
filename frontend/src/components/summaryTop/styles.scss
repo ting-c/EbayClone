@@ -1,0 +1,15 @@
+.summary-top {
+	display: grid;
+	margin: 2rem 0;
+	grid-template-columns: 10rem auto;
+	grid-row-gap: 1rem;
+	grid-column-gap: 1.3rem;
+	font-size: 1.25rem;
+
+	.align-right{
+		text-align: right;
+	}
+	.align-left{
+		text-align: left;
+	}
+}

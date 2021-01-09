@@ -157,6 +157,7 @@ namespace Tests.API.Controllers
 		public async Task UpdateItem_ReturnBadRequestResult_WhenSaveItemResourceIsInvalid()
 		{
 			//Arrange
+            var userId = 1;
             var itemId = 1;
 			var saveItemResource = new SaveItemResource()
 			{
@@ -165,7 +166,7 @@ namespace Tests.API.Controllers
 			var controller = new ItemsController(_mockItemService.Object, _mapper);
 
 			// Act
-			var actionResult = await controller.UpdateItem(itemId, saveItemResource);
+			var actionResult = await controller.UpdateItem(userId, itemId, saveItemResource);
 
 			// Assert
 			Assert.IsType<BadRequestObjectResult>(actionResult);
@@ -175,6 +176,7 @@ namespace Tests.API.Controllers
 		public async Task UpdateItem_ReturnNotFoundObject_WhenGetItemByIdReturnsNull()
 		{
 			//Arrange
+            var userId = 1;
             var testItemId = 1;
 			var itemToBeUpdated = GetTestItems().FirstOrDefault(
 				i => i.Id == testItemId);
@@ -193,7 +195,7 @@ namespace Tests.API.Controllers
 			var controller = new ItemsController(_mockItemService.Object, _mapper);
 
 			// Act
-			var result = await controller.UpdateItem(itemToBeUpdated.Id, saveItemResource);
+			var result = await controller.UpdateItem(userId, itemToBeUpdated.Id, saveItemResource);
 
 			// Assert
 			Assert.IsType<NotFoundResult>(result);
@@ -203,6 +205,7 @@ namespace Tests.API.Controllers
 		public async Task UpdateItem_ReturnItemResourceInOkObjectResult_WhenUpdateIsSuccess()
 		{
 			//Arrange
+            var userId = 1;
 			var saveItemResource = new SaveItemResource()
 			{
 				Title = "Updated Item 1",
@@ -231,7 +234,7 @@ namespace Tests.API.Controllers
 			var controller = new ItemsController(_mockItemService.Object, _mapper);
 
 			// Act
-			var result = await controller.UpdateItem(itemToBeUpdated.Id, saveItemResource);
+			var result = await controller.UpdateItem(userId, itemToBeUpdated.Id, saveItemResource);
             var objectResult = result as OkObjectResult;
             var value = objectResult.Value as ItemResource;
 

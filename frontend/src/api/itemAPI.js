@@ -9,7 +9,6 @@ const itemAPI = {
 		try {
 			const response = await axios.get(url);
 			const items = response.data;
-			console.log(items);
 			return items;
 		} catch (error) {
 			errorHandling(error);
@@ -21,6 +20,16 @@ const itemAPI = {
 			const response = await axios.get(`${url}/${itemId}`);
 			const item = response.data;
 			return item;
+		} catch (error) {
+			errorHandling(error);
+		}
+	},
+
+	getByTitle: async function(title) {
+		try {
+			const response = await axios.get(`${url}/search/${title}`);
+			const items = response.data;
+			return items;
 		} catch (error) {
 			errorHandling(error);
 		}

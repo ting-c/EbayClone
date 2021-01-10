@@ -17,11 +17,35 @@
 		background-color: white;
 	}
 
-	.signin-signup a{
-		text-decoration: none;
+	#firstName{
+		font-weight: 700;
+		text-transform: capitalize;
 	}
-	.signin-signup a:hover{
-		text-decoration: underline;
+
+	#signout{
+		:hover{
+			cursor: pointer;
+		}
+	}
+
+	span{
+		margin: 0 0.1rem;	
+	}
+
+	.signin-signup {
+		display: grid;
+		grid-template-rows: auto;
+		grid-template-columns: auto auto auto;
+		white-space: nowrap;
+
+		a {
+			text-decoration: none;
+		}
+
+		a: hover {
+			text-decoration: underline;
+		}
+		
 	}
 
 	ul{

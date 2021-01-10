@@ -1,7 +1,8 @@
 import React, { useState } from "react";
+import { withRouter } from 'react-router-dom'
 import authAPI from "../../api/authAPI"
 
-const SignIn = ({ setJwt, setUser }) => {
+const SignIn = ({ setUserAndJwt, history }) => {
 	
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
@@ -10,10 +11,11 @@ const SignIn = ({ setJwt, setUser }) => {
 		e.preventDefault();
 		const body = { email, password }
 		const data = await authAPI.signin(body);
+		console.log(data);
 		if (data) {
-			const { jwt, user } = data;
-			setJwt(jwt);
-			setUser(user);
+			const {user, jwt} = data;
+			setUserAndJwt(user, jwt);
+			history.push('/');
 		}
 	};
 
@@ -53,4 +55,4 @@ const SignIn = ({ setJwt, setUser }) => {
 	);
 }
 
-export default SignIn
+export default withRouter(SignIn);

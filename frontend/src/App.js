@@ -13,6 +13,7 @@ function App() {
 
   const [items, setItems] = useState(null);
   const [user, setUser] = useState(null);
+  const [jwt, setJwt] = useState(null);
 
   return (
     <Router>
@@ -23,7 +24,7 @@ function App() {
           <Route exact path='/'><Home items={items} setItems={setItems}/></Route>
           <Route path='/results'><SearchResults items={items}/></Route>
           <Route path='/item/:id'><Item /></Route>
-          <Route path='/signin'><SignIn /></Route>
+          <Route path='/signin'><SignIn setUser={setUser} setJwt={setJwt}/></Route>
           <Route path='/signup'><SignUp /></Route>
         </Switch>
       </div>

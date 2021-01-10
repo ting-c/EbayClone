@@ -57,7 +57,14 @@ namespace EbayClone.API.Controllers
 
             var jwtString = _authService.GenerateJwt(user, roles);
 
-            return Ok(jwtString);
+            var userResource = _mapper.Map<User, UserResource>(user);
+
+            var authResource = new AuthResource(){
+                JwtString = jwtString,
+                User = userResource
+            };
+
+            return Ok(authResource);
         }
 
         [HttpPost("roles")]

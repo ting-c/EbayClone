@@ -4,7 +4,7 @@ const SignIn = () => {
 	return (
 		<form>
 			<div className="mb-3">
-				<label for="emailInput" className="form-label">
+				<label htmlFor="emailInput" className="form-label">
 					Email address
 				</label>
 				<input
@@ -15,7 +15,7 @@ const SignIn = () => {
 				/>
 			</div>
 			<div className="mb-3">
-				<label for="passwordInput" className="form-label">
+				<label htmlFor="passwordInput" className="form-label">
 					Password
 				</label>
 				<input

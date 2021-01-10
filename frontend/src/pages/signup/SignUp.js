@@ -1,18 +1,32 @@
 import React, { useState } from 'react'
+import authAPI from '../../api/authAPI'
 
 const SignUp = () => {
-	const [firstName, setFirstName] = useState(null);
-	const [lastName, setLastName] = useState(null);
-	const [email, setEmail] = useState(null);
-	const [address, setAddress] = useState(null);
-	const [username, setUsername] = useState(null);
-	const [password, setPassword] = useState(null);
-	const [confirmPassword, setConfirmPassword] = useState(null);
+	const [firstName, setFirstName] = useState('');
+	const [lastName, setLastName] = useState('');
+	const [email, setEmail] = useState('');
+	const [address, setAddress] = useState('');
+	const [username, setUsername] = useState('');
+	const [password, setPassword] = useState('');
+	const [confirmPassword, setConfirmPassword] = useState('');
+
+	async function handleSubmit(e){
+		e.preventDefault();
+		if (confirmPassword !== password) {
+			alert('Please enter the same passwords');
+			return;
+		}
+		const body = {
+			firstName, lastName, email, address, username, password 
+		}
+		const result = await authAPI.signup(body);
+		console.log(result);
+	}
 
 	return (
-		<form>
-			<div class="mb-3">
-				<label for="firstNameInput" className="form-label">
+		<form onSubmit={handleSubmit}>
+			<div className="mb-3">
+				<label htmlFor="firstNameInput" className="form-label">
 					First Name
 				</label>
 				<input
@@ -21,11 +35,12 @@ const SignUp = () => {
 					id="firstNameInput"
 					aria-describedby="firstNameInput"
 					value={firstName}
+					required
 					onChange={(e) => setFirstName(e.target.value)}
 				/>
 			</div>
-			<div class="mb-3">
-				<label for="lastNameInput" className="form-label">
+			<div className="mb-3">
+				<label htmlFor="lastNameInput" className="form-label">
 					Last Name
 				</label>
 				<input
@@ -34,11 +49,12 @@ const SignUp = () => {
 					id="lastNameInput"
 					aria-describedby="lastNameInput"
 					value={lastName}
+					required
 					onChange={(e) => setLastName(e.target.value)}
 				/>
 			</div>
-			<div class="mb-3">
-				<label for="emailInput" className="form-label">
+			<div className="mb-3">
+				<label htmlFor="emailInput" className="form-label">
 					Email address
 				</label>
 				<input
@@ -50,8 +66,8 @@ const SignUp = () => {
 					onChange={(e) => setEmail(e.target.value)}
 				/>
 			</div>
-			<div class="mb-3">
-				<label for="addressInput" class="form-label">
+			<div className="mb-3">
+				<label htmlFor="addressInput" className="form-label">
 					Address
 				</label>
 				<input
@@ -60,11 +76,12 @@ const SignUp = () => {
 					id="addressInput"
 					aria-describedby="addressInput"
 					value={address}
+					placeholder='optional'
 					onChange={(e) => setAddress(e.target.value)}
 				/>
 			</div>
-			<div class="mb-3">
-				<label for="usernameInput" class="form-label">
+			<div className="mb-3">
+				<label htmlFor="usernameInput" className="form-label">
 					Username
 				</label>
 				<input
@@ -73,11 +90,12 @@ const SignUp = () => {
 					id="usernameInput"
 					aria-describedby="usernameInput"
 					value={username}
+					required
 					onChange={(e) => setUsername(e.target.value)}
 				/>
 			</div>
 			<div className="mb-3">
-				<label for="passwordInput" class="form-label">
+				<label htmlFor="passwordInput" className="form-label">
 					Password
 				</label>
 				<input
@@ -85,11 +103,12 @@ const SignUp = () => {
 					className="form-control"
 					id="passwordInput"
 					value={password}
+					required
 					onChange={(e) => setPassword(e.target.value)}
 				/>
 			</div>
 			<div className="mb-3">
-				<label for="confirmPasswordInput" className="form-label">
+				<label htmlFor="confirmPasswordInput" className="form-label">
 					Confirm Password
 				</label>
 				<input
@@ -97,6 +116,7 @@ const SignUp = () => {
 					className="form-control"
 					id="confirmPasswordInput"
 					value={confirmPassword}
+					required
 					onChange={(e) => setConfirmPassword(e.target.value)}
 				/>
 			</div>

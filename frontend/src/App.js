@@ -15,7 +15,6 @@ function App() {
   const [user, setUser] = useState(null);
   const [jwt, setJwt] = useState(null);
 
-  console.log(user, jwt);
   useEffect(() => {
     handleInitialState();
   });

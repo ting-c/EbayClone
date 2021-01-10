@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
+import { withRouter } from 'react-router-dom'
 import authAPI from '../../api/authAPI'
 
-const SignUp = () => {
+const SignUp = ({ history }) => {
 	const [firstName, setFirstName] = useState('');
 	const [lastName, setLastName] = useState('');
 	const [email, setEmail] = useState('');
@@ -20,7 +21,9 @@ const SignUp = () => {
 			firstName, lastName, email, address, username, password 
 		}
 		const result = await authAPI.signup(body);
-		console.log(result);
+		if (result) {
+			history.push('/signin');
+		}
 	}
 
 	return (
@@ -127,4 +130,4 @@ const SignUp = () => {
 	);
 }
 
-export default SignUp
+export default withRouter(SignUp);

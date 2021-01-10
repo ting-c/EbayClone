@@ -7,7 +7,7 @@ const authAPI = {
 
 	signup: async function (body) {
 		try {
-			const route = 'signup'
+			const route = 'signup';
 			const response = await axios.post(`${url}/${route}`, body);
 			return response.data;
 		} catch (error) {
@@ -17,16 +17,13 @@ const authAPI = {
 
 	signin: async function (body) {
 		try {
-			const route = 'signin'
+			const route = 'signin';
 			const response = await axios.post(`${url}/${route}`, body);
 			return response.data;
 		} catch (error) {
 			errorHandling(error);
 		}
-	},
-
-
-
+	}
 };
 
 export default authAPI;

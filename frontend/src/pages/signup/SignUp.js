@@ -17,10 +17,10 @@ const SignUp = ({ history }) => {
 			alert('Please enter the same passwords');
 			return;
 		}
-		const body = {
+		const data = {
 			firstName, lastName, email, address, username, password 
 		}
-		const result = await authAPI.signup(body);
+		const result = await authAPI.signup(data);
 		if (result) {
 			history.push('/signin');
 		}

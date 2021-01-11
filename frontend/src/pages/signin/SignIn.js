@@ -9,12 +9,12 @@ const SignIn = ({ setUserAndJwt, history }) => {
 
 	async function handleSubmit(e){
 		e.preventDefault();
-		const body = { email, password }
-		const data = await authAPI.signin(body);
-		console.log(data);
-		if (data) {
-			const {user, jwt} = data;
-			setUserAndJwt(user, jwt);
+		const data = { email, password }
+		const responseData = await authAPI.signin(data);
+		console.log(responseData);
+		if (responseData) {
+			const {user, jwtString} = responseData;
+			setUserAndJwt(user, jwtString);
 			history.push('/');
 		}
 	};

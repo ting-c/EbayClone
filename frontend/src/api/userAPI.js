@@ -25,9 +25,9 @@ const userAPI = {
 		}
 	},
 
-	post: async function(body) {
+	post: async function(data) {
 		try {
-			const response = await axios.post(url, body);
+			const response = await axios.post(url, data);
 			const user = response.data;
 			return user;
 		} catch (error) {
@@ -35,9 +35,9 @@ const userAPI = {
 		}
 	},
 
-	put: async function(userId, body) {
+	put: async function(userId, data) {
 		try {
-			const response = await axios.put(userId, body);
+			const response = await axios.put(userId, data);
 			const user = response.data;
 			return user;
 		} catch (error) {

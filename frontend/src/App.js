@@ -8,6 +8,7 @@ import NavBar from './layouts/navbar/NavBar';
 import SearchBar from './layouts/searchbar/SearchBar';
 import SearchResults from './pages/searchResults/SearchResults';
 import Item from './pages/item/Item';
+import UploadImage from './pages/uploadImage/UploadImage';
 
 function App() {
 
@@ -45,6 +46,7 @@ function App() {
           <Route exact path='/'><Home items={items} setItems={setItems}/></Route>
           <Route path='/results'><SearchResults items={items}/></Route>
           <Route path='/item/:id'><Item /></Route>
+          <Route path='/upload/:itemId'><UploadImage jwt={jwt}/></Route>
           <Route path='/signin'><SignIn setUserAndJwt={handleSetUserAndJwt}/></Route>
           <Route path='/signup'><SignUp /></Route>
         </Switch>

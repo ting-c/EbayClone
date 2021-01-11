@@ -1,0 +1,22 @@
+.upload{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+
+	label{
+		margin-bottom: 2rem;
+	}
+
+	.input {
+		padding: 5rem;
+		border: 1px solid grey;
+	}
+
+	.upload-button {
+		text-align: center;
+		margin-top: 2rem;
+		width: 15rem;
+		height: 3rem;
+	}
+
+}

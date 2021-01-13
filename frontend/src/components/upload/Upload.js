@@ -10,7 +10,7 @@ const Upload = ({ itemId, jwt }) => {
 		const data = new FormData();
 		// loop through images and append to form data
 		for (var i = 0; i < selectedImages.length; i++) {
-			data.append("file", selectedImages[i]);
+			data.append("files", selectedImages[i]);
 		};
 		uploadAPI.upload(jwt, parseInt(itemId), data);
 	}

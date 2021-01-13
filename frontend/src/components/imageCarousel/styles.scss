@@ -1,5 +1,10 @@
-.image-carousel{
-	
+#carouselIndicators{
 	margin: 0 1rem;
 	border: 1px solid rgb(201, 201, 201);
+	width: 40rem;
+	height: 35rem;
+
+	img{
+		object-fit: cover;
+	}
 }

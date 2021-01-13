@@ -1,25 +1,29 @@
-import React from 'react'
-import './styles.scss'
+import React, { useState, useEffect } from 'react'
+import './styles.scss';
 
 const ImageCarousel = ({ imageUrls }) => {
 
-	let indicesArray = [];
+	const [indices, setIndices] = useState([]);
 
-	if (imageUrls > 1) {
-		for(let i=1; i<imageUrls.length; i++) {
-			indicesArray.push(i);
+	useEffect(() => {
+		const indices = [];
+		if (imageUrls.length > 1) {
+			for (let i = 1; i < imageUrls.length; i++) {
+				indices.push(i);
+			}
+			setIndices(indices);
 		}
-	};
+	},[indices, imageUrls]);
 
 	return (
 		<React.Fragment> { 
 			imageUrls ? (
-				<div id="carousel" className="image-carousel carousel slide" data-bs-ride="carousel">
-					<ol className="carousel-indicators">
-						<li data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"></li>
-						{ indicesArray.length > 1 ? ( 
-							indicesArray.map(i => 
-							<li data-bs-target="#carouselExampleIndicators" data-bs-slide-to={i}></li>
+				<div id="carouselIndicators" class="carousel slide" data-ride="carousel">
+					<ol class="carousel-indicators">
+						<li data-target="#carouselIndicators" data-slide-to="0" class="active"></li>
+						{ indices.length ? ( 
+							indices.map(i => 
+							<li data-target="#carouselIndicators" data-slide-to={i}></li>
 						)) : null } 
 					</ol>
 					<div className="carousel-inner">
@@ -32,15 +36,15 @@ const ImageCarousel = ({ imageUrls }) => {
 									<img src={url.urlPath} className="d-block w-100" alt=""/>
 								</div>
 						)) : null }
-						<a className="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-bs-slide="prev">
-							<span className="carousel-control-prev-icon" aria-hidden="true"></span>
-							<span className="visually-hidden">Previous</span>
-						</a>
-						<a className="carousel-control-next" href="#carouselExampleIndicators" role="button" data-bs-slide="next">
-							<span className="carousel-control-next-icon" aria-hidden="true"></span>
-							<span className="visually-hidden">Next</span>
-						</a>
 					</div>
+					<a class="carousel-control-prev" href="#carouselIndicators" role="button" data-slide="prev">
+    					<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+						<span class="sr-only">Previous</span>
+					</a>
+					<a class="carousel-control-next" href="#carouselIndicators" role="button" data-slide="next">
+						<span class="carousel-control-next-icon" aria-hidden="true"></span>
+						<span class="sr-only">Next</span>
+					</a>
 				</div>
 			) : null	} 
 		</React.Fragment>

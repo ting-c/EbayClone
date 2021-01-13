@@ -50,35 +50,35 @@ namespace EbayClone.Data.Migrations
 
 			// FilePaths - Adam
 			migrationBuilder
-				.Sql("INSERT INTO FilePaths (UrlPath, ItemId, UserId) Values ('https://res.cloudinary.com/dld00pnbz/image/upload/v1610054712/EbayClone/shoes1_nkfw9g.jpg', (SELECT Id FROM Items WHERE Title = 'New Nike Men Trainers Size 10'), (SELECT Id FROM Users WHERE FirstName = 'Adam'))");
+				.Sql("INSERT INTO FilePaths (UrlPath, ItemId, UserId) Values ('https://i.ibb.co/9Y9LqPn/shoes1.jpg', (SELECT Id FROM Items WHERE Title = 'New Nike Men Trainers Size 10'), (SELECT Id FROM Users WHERE FirstName = 'Adam'))");
 			migrationBuilder
-				.Sql("INSERT INTO FilePaths (UrlPath, ItemId, UserId) Values ('https://res.cloudinary.com/dld00pnbz/image/upload/v1610054720/EbayClone/shoes2_humdvx.jpg', (SELECT Id FROM Items WHERE Title = 'New Nike Ladies Trainers Size 4'), (SELECT Id FROM Users WHERE FirstName = 'Adam'))");
+				.Sql("INSERT INTO FilePaths (UrlPath, ItemId, UserId) Values ('https://i.ibb.co/qBS9pwr/shoes2.jpg', (SELECT Id FROM Items WHERE Title = 'New Nike Ladies Trainers Size 4'), (SELECT Id FROM Users WHERE FirstName = 'Adam'))");
 			migrationBuilder
-				.Sql("INSERT INTO FilePaths (UrlPath, ItemId, UserId) Values ('https://res.cloudinary.com/dld00pnbz/image/upload/v1610054708/EbayClone/shoes3_dzt3r7.jpg', (SELECT Id FROM Items WHERE Title = 'New Fila Men''s Camalfi Trainers Size 8'), (SELECT Id FROM Users WHERE FirstName = 'Adam'))");
+				.Sql("INSERT INTO FilePaths (UrlPath, ItemId, UserId) Values ('https://i.ibb.co/gW1DkBG/shoes3.jpg', (SELECT Id FROM Items WHERE Title = 'New Fila Men''s Camalfi Trainers Size 8'), (SELECT Id FROM Users WHERE FirstName = 'Adam'))");
 
 			// Filepaths - Brad
 			migrationBuilder
-				.Sql("INSERT INTO FilePaths (UrlPath, ItemId, UserId) Values ('https://res.cloudinary.com/dld00pnbz/image/upload/v1610054711/EbayClone/pills1_e9u8pc.jpg', (SELECT Id FROM Items WHERE Title = 'Lindens Pro Billion X20 Capsules 20bn CFU(60 pack)'), (SELECT Id FROM Users WHERE FirstName = 'Brad'))");
+				.Sql("INSERT INTO FilePaths (UrlPath, ItemId, UserId) Values ('https://i.ibb.co/jvb8cqt/pills1.jpg', (SELECT Id FROM Items WHERE Title = 'Lindens Pro Billion X20 Capsules 20bn CFU(60 pack)'), (SELECT Id FROM Users WHERE FirstName = 'Brad'))");
 			migrationBuilder
-				.Sql("INSERT INTO FilePaths (UrlPath, ItemId, UserId) Values ('https://res.cloudinary.com/dld00pnbz/image/upload/v1610054713/EbayClone/pills2_rbkd5k.jpg', (SELECT Id FROM Items WHERE Title = 'Zinc 30 Lozenges Aniseed With Acerola Vitamin C Immunity Support Lindens'), (SELECT Id FROM Users WHERE FirstName = 'Brad'))");
+				.Sql("INSERT INTO FilePaths (UrlPath, ItemId, UserId) Values ('https://i.ibb.co/5F8HjkC/pills2.jpg', (SELECT Id FROM Items WHERE Title = 'Zinc 30 Lozenges Aniseed With Acerola Vitamin C Immunity Support Lindens'), (SELECT Id FROM Users WHERE FirstName = 'Brad'))");
 			migrationBuilder
-				.Sql("INSERT INTO FilePaths (UrlPath, ItemId, UserId) Values ('https://res.cloudinary.com/dld00pnbz/image/upload/v1610054710/EbayClone/pills3_oxcjvm.jpg', (SELECT Id FROM Items WHERE Title = 'Green Tea Extract 1000mg -slimming pills diet, weight loss (100 tablets)'), (SELECT Id FROM Users WHERE FirstName = 'Brad'))");
+				.Sql("INSERT INTO FilePaths (UrlPath, ItemId, UserId) Values ('https://i.ibb.co/d0wVt34/pills3.jpg', (SELECT Id FROM Items WHERE Title = 'Green Tea Extract 1000mg -slimming pills diet, weight loss (100 tablets)'), (SELECT Id FROM Users WHERE FirstName = 'Brad'))");
 
 			// Filepaths - Charles
 			migrationBuilder
-				.Sql("INSERT INTO FilePaths (UrlPath, ItemId, UserId) Values ('https://res.cloudinary.com/dld00pnbz/image/upload/v1610054704/EbayClone/blackops_sf7sld.jpg', (SELECT Id FROM Items WHERE Title = 'Call of Duty: Black Ops Cold War (PS4)'), (SELECT Id FROM Users WHERE FirstName = 'Charles'))");
+				.Sql("INSERT INTO FilePaths (UrlPath, ItemId, UserId) Values ('https://i.ibb.co/KxBDDxB/blackops.jpg', (SELECT Id FROM Items WHERE Title = 'Call of Duty: Black Ops Cold War (PS4)'), (SELECT Id FROM Users WHERE FirstName = 'Charles'))");
 			migrationBuilder
-				.Sql("INSERT INTO FilePaths (UrlPath, ItemId, UserId) Values ('https://res.cloudinary.com/dld00pnbz/image/upload/v1610054704/EbayClone/assassinscreed_e6mljv.jpg', (SELECT Id FROM Items WHERE Title = 'Assassins Creed Valhalla (PS4)'), (SELECT Id FROM Users WHERE FirstName = 'Charles'))");
+				.Sql("INSERT INTO FilePaths (UrlPath, ItemId, UserId) Values ('https://i.ibb.co/YZhCwSr/assassinscreed.jpg', (SELECT Id FROM Items WHERE Title = 'Assassins Creed Valhalla (PS4)'), (SELECT Id FROM Users WHERE FirstName = 'Charles'))");
 			migrationBuilder
-				.Sql("INSERT INTO FilePaths (UrlPath, ItemId, UserId) Values ('https://res.cloudinary.com/dld00pnbz/image/upload/v1610054704/EbayClone/spiderman_jasfq6.jpg', (SELECT Id FROM Items WHERE Title = 'Marvel''s Spider-Man: Miles Morales (PS5) Brand New & Sealed'), (SELECT Id FROM Users WHERE FirstName = 'Charles'))");
+				.Sql("INSERT INTO FilePaths (UrlPath, ItemId, UserId) Values ('https://i.ibb.co/JF73JZz/spiderman.jpg', (SELECT Id FROM Items WHERE Title = 'Marvel''s Spider-Man: Miles Morales (PS5) Brand New & Sealed'), (SELECT Id FROM Users WHERE FirstName = 'Charles'))");
 
 			// Filepaths - Darren
 			migrationBuilder
-				.Sql("INSERT INTO FilePaths (UrlPath, ItemId, UserId) Values ('https://res.cloudinary.com/dld00pnbz/image/upload/v1610056310/EbayClone/pillow1_dleott.jpg', (SELECT Id FROM Items WHERE Title = 'Duck Feather Pillows 100% Cotton Cover Filled Luxury Hotel Quality Pillow - 4 Pack'), (SELECT Id FROM Users WHERE FirstName = 'Darren'))");
+				.Sql("INSERT INTO FilePaths (UrlPath, ItemId, UserId) Values ('https://i.ibb.co/M1ZwsRY/pillow1.jpg', (SELECT Id FROM Items WHERE Title = 'Duck Feather Pillows 100% Cotton Cover Filled Luxury Hotel Quality Pillow - 4 Pack'), (SELECT Id FROM Users WHERE FirstName = 'Darren'))");
 			migrationBuilder
-				.Sql("INSERT INTO FilePaths (UrlPath, ItemId, UserId) Values ('https://res.cloudinary.com/dld00pnbz/image/upload/v1610056362/EbayClone/pillow2_eudp2y.jpg', (SELECT Id FROM Items WHERE Title = 'Hotel Quality Egyptian Stripe Pillows Luxury Soft Hollowfibre Filled - 4 Pack'), (SELECT Id FROM Users WHERE FirstName = 'Darren'))");
+				.Sql("INSERT INTO FilePaths (UrlPath, ItemId, UserId) Values ('https://i.ibb.co/SKfTwsX/pillow2.jpg', (SELECT Id FROM Items WHERE Title = 'Hotel Quality Egyptian Stripe Pillows Luxury Soft Hollowfibre Filled - 4 Pack'), (SELECT Id FROM Users WHERE FirstName = 'Darren'))");
 			migrationBuilder
-				.Sql("INSERT INTO FilePaths (UrlPath, ItemId, UserId) Values ('https://res.cloudinary.com/dld00pnbz/image/upload/v1610056394/EbayClone/pillow3_rfskyj.jpg', (SELECT Id FROM Items WHERE Title = 'Pillows Quilted Luxury Ultra Loft Jumbo Super Bounce Back Pillows - 4 Pack'), (SELECT Id FROM Users WHERE FirstName = 'Darren'))");
+				.Sql("INSERT INTO FilePaths (UrlPath, ItemId, UserId) Values ('https://i.ibb.co/dLkjTdb/pillow3.jpg', (SELECT Id FROM Items WHERE Title = 'Pillows Quilted Luxury Ultra Loft Jumbo Super Bounce Back Pillows - 4 Pack'), (SELECT Id FROM Users WHERE FirstName = 'Darren'))");
 		}
 
 		protected override void Down(MigrationBuilder migrationBuilder)

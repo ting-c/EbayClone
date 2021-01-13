@@ -17,6 +17,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using CloudinaryDotNet;
+using System;
 
 namespace EbayClone.API
 {
@@ -42,6 +43,13 @@ namespace EbayClone.API
                             .AllowAnyHeader()
                             .AllowAnyMethod();
                     });
+            });
+
+			// httpClient for making http requests
+			services.AddHttpClient("imgbb", c =>
+			{   
+                // imgbb url with api key parameter
+				c.BaseAddress = new Uri($"https://api.imgbb.com/1/upload?key={Configuration["imgbbApiKey"]}");
             });
 
 			// add secret for jwt from user secret
@@ -86,15 +94,6 @@ namespace EbayClone.API
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IAuthService, AuthService>();
             services.AddTransient<IFilePathService, FilePathService>();
-            
-            // Cloudinary config
-            var cloudName = Configuration["CloudinaryCloudName"];
-            var key = Configuration["CloudinaryKey"];
-            var secret = Configuration["CloudinarySecret"];
-            var account = new Account(cloudName, key, secret);
-            var cloudinary = new Cloudinary(account);
-            // inject cloudinary
-            services.AddSingleton(cloudinary);
 
             services.AddSwaggerGen(options => 
             {

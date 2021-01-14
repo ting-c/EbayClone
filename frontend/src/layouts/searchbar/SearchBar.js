@@ -1,9 +1,11 @@
 import React , { useState } from 'react'
+import './styles.scss'
 import { useHistory } from 'react-router-dom'
 import itemAPI from '../../api/itemAPI'
-import './styles.scss'
+import { updateDisplayItems } from '../../redux/displayItems/displayItemsAction'
+import { connect } from 'react-redux'
 
-const SearchBar = ({ setItems }) => {
+const SearchBar = ({ updateDisplayItems }) => {
 
 	const [searchTerm, setSearchTerm] = useState("");
 
@@ -15,7 +17,7 @@ const SearchBar = ({ setItems }) => {
 			await itemAPI.getByTitle(searchTerm) : 
 			// get all items if searchTerm is null
 			await itemAPI.get();
-		setItems(items);
+		updateDisplayItems(items);
 		history.push("/results");
 	}
 
@@ -36,4 +38,10 @@ const SearchBar = ({ setItems }) => {
 	);
 }
 
-export default SearchBar
+const mapDispatchToProps = (dispatch) => {
+	return {
+		updateDisplayItems: (items) => dispatch(updateDisplayItems(items))
+	}
+}
+
+export default connect(null, mapDispatchToProps)(SearchBar);

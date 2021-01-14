@@ -1,11 +1,14 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
 import './styles.scss'
+import { Link } from 'react-router-dom'
+import { connect } from 'react-redux'
+import { removeUser } from '../../redux/auth/userAction'
+import { removeJwt } from '../../redux/auth/jwtAction'
 
-const NavBar = ({ user, setUserAndJwt }) => {
+const NavBar = ({ user, removeUser }) => {
 
 	function signout(){
-		setUserAndJwt(null, null);
+		removeUser();
 	};
 	
 	return (
@@ -84,4 +87,16 @@ const NavBar = ({ user, setUserAndJwt }) => {
 	);
 }
 
-export default NavBar
+const mapStateToProps = (state) => {
+	const { user } = state;
+	return user;
+}
+
+const mapDispatchToProps = (dispatch) => {
+	return { 
+		removeUser: (user) => dispatch(removeUser(user)),
+		removeJwt: (jwt) => dispatch(removeJwt(jwt))
+	};
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(NavBar);

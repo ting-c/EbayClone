@@ -5,9 +5,9 @@ import { withRouter } from 'react-router-dom'
 import ImagePanel from '../../layouts/imagePanel/ImagePanel'
 import SummaryPanel from '../../layouts/summaryPanel/SummaryPanel'
 
-const Item = (props) => {
+const Item = ({ match }) => {
 	
-	const id = props.match.params.id;
+	const id = match.params.id;
 	
 	const [item, setItem] = useState(null);
 

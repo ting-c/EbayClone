@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import './App.css';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Home from './pages/home/Home';
@@ -12,42 +12,17 @@ import UploadImage from './pages/uploadImage/UploadImage';
 
 function App() {
 
-  const [items, setItems] = useState(null);
-  const [user, setUser] = useState(null);
-  const [jwt, setJwt] = useState(null);
-
-  useEffect(() => {
-    handleInitialState();
-  });
-
-  function handleSetUserAndJwt(user, jwt){
-    setUser(user);
-    setJwt(jwt);
-    localStorage.setItem("user", JSON.stringify(user));
-    localStorage.setItem("jwt", jwt);
-  }
-
-  function handleInitialState(){
-    if (user == null && jwt == null){
-      const storedUser = JSON.parse(localStorage.getItem("user"));
-      const storedJwt = localStorage.getItem("jwt");
-      if (storedUser && storedJwt) 
-        setUser(storedUser);
-        setJwt(storedJwt);
-    }
-  }
-
   return (
     <Router>
       <div className="App">
-      <NavBar user={user} setUserAndJwt={handleSetUserAndJwt}/>
-      <SearchBar setItems={setItems}/>
+      <NavBar />
+      <SearchBar />
         <Switch>
-          <Route exact path='/'><Home items={items} setItems={setItems}/></Route>
-          <Route path='/results'><SearchResults items={items}/></Route>
+          <Route exact path='/'><Home /></Route>
+          <Route path='/results'><SearchResults /></Route>
           <Route path='/item/:id'><Item /></Route>
-          <Route path='/upload/:itemId'><UploadImage jwt={jwt}/></Route>
-          <Route path='/signin'><SignIn setUserAndJwt={handleSetUserAndJwt}/></Route>
+          <Route path='/upload/:itemId'><UploadImage /></Route>
+          <Route path='/signin'><SignIn /></Route>
           <Route path='/signup'><SignUp /></Route>
         </Switch>
       </div>

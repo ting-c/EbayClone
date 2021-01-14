@@ -1,5 +1,6 @@
 import React from 'react'
 import ItemContainer from '../../components/itemContainer/ItemContainer'
+import { connect } from 'react-redux'
 
 const SearchResults = ({ items }) => {
 
@@ -11,4 +12,9 @@ const SearchResults = ({ items }) => {
 	);
 };
 
-export default SearchResults
+const mapStateToProps = (state) => {
+	const { items } = state;
+	return items;
+};
+
+export default connect(mapStateToProps)(SearchResults);

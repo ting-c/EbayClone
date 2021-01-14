@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import { withRouter } from 'react-router-dom'
 import authAPI from "../../api/authAPI"
+import { connect } from 'react-redux'
+import { addUser } from "../../redux/auth/userAction";
+import { addJwt } from "../../redux/auth/jwtAction";
 
-const SignIn = ({ setUserAndJwt, history }) => {
+const SignIn = ({ addUser, addJwt, history }) => {
 	
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
@@ -14,7 +17,8 @@ const SignIn = ({ setUserAndJwt, history }) => {
 		console.log(responseData);
 		if (responseData) {
 			const {user, jwtString} = responseData;
-			setUserAndJwt(user, jwtString);
+			addUser(user);
+			addJwt(jwtString);
 			history.push('/');
 		}
 	};
@@ -55,4 +59,11 @@ const SignIn = ({ setUserAndJwt, history }) => {
 	);
 }
 
-export default withRouter(SignIn);
+const mapDispatchToProps = (dispatch) => {
+	return {
+		addUser : (user) => dispatch(addUser(user)),
+		addJwt : (jwt) => dispatch(addJwt(jwt)),
+	}
+}
+
+export default withRouter(connect(null, mapDispatchToProps)(SignIn));

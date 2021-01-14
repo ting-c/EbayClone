@@ -2,13 +2,13 @@ import React from 'react'
 import { withRouter } from 'react-router-dom';
 import Upload from '../../components/upload/Upload'
 
-const UploadImage = ({ match, jwt }) => {
+const UploadImage = ({ match }) => {
 
 	const itemId = match.params.itemId;
 
 	return (
 		<div className="upload-image">
-			<Upload itemId={itemId} jwt={jwt}/>
+			<Upload itemId={itemId} />
 		</div>
 	)
 }

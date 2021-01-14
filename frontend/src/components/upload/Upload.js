@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import uploadAPI from '../../api/uploadAPI';
+import { connect } from 'react-redux'
 import './styles.scss'
 
 const Upload = ({ itemId, jwt }) => {
@@ -39,4 +40,9 @@ const Upload = ({ itemId, jwt }) => {
 	);
 };
 
-export default Upload
+const mapStateToProps = (state) => {
+	const { jwt } = state;
+	return jwt;
+};
+
+export default connect(mapStateToProps)(Upload)

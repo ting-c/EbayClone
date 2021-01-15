@@ -1,4 +1,4 @@
-import { createStore } from 'react-redux';
+import { createStore } from 'redux';
 import rootReducer from './rootReducer';
 
 // convert object to string and store in localStorage
@@ -16,7 +16,7 @@ function loadFromLocalStorage() {
   try {
     const jsonState = localStorage.getItem("appState");
 	 if (jsonState === null) 
-	 	return undefined;
+	 	return null;
     return JSON.parse(jsonState);
   } catch (e) {
     console.warn(e);
@@ -25,13 +25,15 @@ function loadFromLocalStorage() {
 };
 
 const initialState = {
-	user: loadFromLocalStorage().user || null,
-	jwt: loadFromLocalStorage().jwt || null,
-	basket: loadFromLocalStorage().basket || null,
-	displayItems: loadFromLocalStorage().basket || null
-};
+  user: null,
+  jwt: null,
+  basket: null,
+  displayItems: null
+}
 
-const store = createStore(rootReducer, initialState);
+const preloadedState = loadFromLocalStorage() || initialState;
+
+const store = createStore(rootReducer, preloadedState);
 
 // listen for store changes and use saveToLocalStorage to
 // save them to localStorage

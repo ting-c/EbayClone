@@ -4,11 +4,10 @@ import itemAPI from '../../api/itemAPI'
 import { connect } from 'react-redux'
 import { updateDisplayItems } from '../../redux/displayItems/displayItemsAction'
 
-const Home = ({ items, updateDisplayItems }) => {
+const Home = ({ displayItems, updateDisplayItems }) => {
 
 	useEffect(() => {
-		if (!items)
-			fetchItems();
+		fetchItems();
 	});
 
 	async function fetchItems() {
@@ -18,14 +17,14 @@ const Home = ({ items, updateDisplayItems }) => {
 
 	return (
 		<div>
-			<ItemContainer items={items}/>
+			<ItemContainer items={displayItems}/>
 		</div>
 	)
 }
 
 const mapStateToProps = (state) => {
-	const { items } = state;
-	return items;
+	const { displayItems } = state;
+	return displayItems;
 };
 
 const mapDispatchToProps = (dispatch) => {

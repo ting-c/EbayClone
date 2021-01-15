@@ -2,19 +2,19 @@ import React from 'react'
 import ItemContainer from '../../components/itemContainer/ItemContainer'
 import { connect } from 'react-redux'
 
-const SearchResults = ({ items }) => {
+const SearchResults = ({ displayItems }) => {
 
 	return (
 		<div>
 			<h5>Search Results</h5>
-			<ItemContainer items={items} />
+			<ItemContainer items={displayItems} />
 		</div>
 	);
 };
 
 const mapStateToProps = (state) => {
-	const { items } = state;
-	return items;
+	const { displayItems } = state;
+	return displayItems;
 };
 
 export default connect(mapStateToProps)(SearchResults);

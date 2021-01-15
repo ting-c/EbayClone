@@ -12,9 +12,7 @@ const Item = ({ match }) => {
 	const [item, setItem] = useState(null);
 
 	useEffect(() => {
-		if (!item) {
-			fetchItems();
-		}
+		fetchItems();
 	});
 
 	async function fetchItems(){

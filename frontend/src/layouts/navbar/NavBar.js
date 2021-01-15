@@ -58,7 +58,7 @@ const NavBar = ({ user, removeUser }) => {
 					className="collapse navbar-collapse"
 					id="navbarSupportedContent"
 				>
-					<ul className="navbar-right navbar-nav mr-auto mb-2 mb-lg-0">
+					<ul className="navbar-right navbar-nav mb-2 mb-lg-0">
 						<li className="nav-item nav-link">
 							<Link to={user ? "/selling" : "/signin"}>Sell</Link>
 						</li>

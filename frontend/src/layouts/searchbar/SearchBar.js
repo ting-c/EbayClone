@@ -17,6 +17,7 @@ const SearchBar = ({ updateDisplayItems }) => {
 			await itemAPI.getByTitle(searchTerm) : 
 			// get all items if searchTerm is null
 			await itemAPI.get();
+		console.log(items)
 		updateDisplayItems(items);
 		history.push("/results");
 	}

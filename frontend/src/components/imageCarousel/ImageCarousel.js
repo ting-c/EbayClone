@@ -13,17 +13,17 @@ const ImageCarousel = ({ imageUrls }) => {
 			}
 			setIndices(indices);
 		}
-	},[indices, imageUrls]);
+	},[imageUrls]);
 
 	return (
 		<React.Fragment> { 
 			imageUrls ? (
-				<div id="carouselIndicators" class="carousel slide" data-ride="carousel">
-					<ol class="carousel-indicators">
-						<li data-target="#carouselIndicators" data-slide-to="0" class="active"></li>
+				<div id="carouselIndicators" className="carousel slide" data-ride="carousel">
+					<ol className="carousel-indicators">
+						<li data-target="#carouselIndicators" data-slide-to="0" className="active"></li>
 						{ indices.length ? ( 
-							indices.map(i => 
-							<li data-target="#carouselIndicators" data-slide-to={i}></li>
+							indices.map((i,idx) => 
+							<li data-target="#carouselIndicators" data-slide-to={i}key={idx}></li>
 						)) : null } 
 					</ol>
 					<div className="carousel-inner">
@@ -31,19 +31,19 @@ const ImageCarousel = ({ imageUrls }) => {
 							<img src={imageUrls[0].urlPath} className="d-block w-100" alt=""/>
 						</div>
 						{ imageUrls.length > 1 ? (
-							imageUrls.slice(1).map( url => 
-								<div className="carousel-item">
+							imageUrls.slice(1).map((url, idx) => 
+								<div className="carousel-item" key={idx}>
 									<img src={url.urlPath} className="d-block w-100" alt=""/>
 								</div>
 						)) : null }
 					</div>
-					<a class="carousel-control-prev" href="#carouselIndicators" role="button" data-slide="prev">
-    					<span class="carousel-control-prev-icon" aria-hidden="true"></span>
-						<span class="sr-only">Previous</span>
+					<a className="carousel-control-prev" href="#carouselIndicators" role="button" data-slide="prev">
+    					<span className="carousel-control-prev-icon" aria-hidden="true"></span>
+						<span className="sr-only">Previous</span>
 					</a>
-					<a class="carousel-control-next" href="#carouselIndicators" role="button" data-slide="next">
-						<span class="carousel-control-next-icon" aria-hidden="true"></span>
-						<span class="sr-only">Next</span>
+					<a className="carousel-control-next" href="#carouselIndicators" role="button" data-slide="next">
+						<span className="carousel-control-next-icon" aria-hidden="true"></span>
+						<span className="sr-only">Next</span>
 					</a>
 				</div>
 			) : null	} 

@@ -5,10 +5,10 @@ const addJwt = (payload) => {
 	};
 };
 
-const removeUser = () => {
+const removeJwt = () => {
 	return {
 		type: "JWT/REMOVE_JWT",
 	};
 };
 
-export { addJwt, removeUser };
+export { addJwt, removeJwt};

@@ -166,6 +166,7 @@ namespace EbayClone.Data.Migrations
                     Title = table.Column<string>(maxLength: 100, nullable: false),
                     Description = table.Column<string>(maxLength: 800, nullable: true),
                     Price = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
+                    Quantity = table.Column<int>(nullable: false),
                     Condition = table.Column<string>(maxLength: 50, nullable: false),
                     IsAuction = table.Column<bool>(nullable: false),
                     SellerId = table.Column<int>(nullable: false)
@@ -179,6 +180,32 @@ namespace EbayClone.Data.Migrations
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "BasketItem",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ItemId = table.Column<int>(nullable: false),
+                    UserId = table.Column<int>(nullable: false),
+                    Quantity = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BasketItem", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_BasketItem_Items_ItemId",
+                        column: x => x.ItemId,
+                        principalTable: "Items",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_BasketItem_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -233,6 +260,16 @@ namespace EbayClone.Data.Migrations
                 name: "IX_AspNetUserRoles_RoleId",
                 table: "AspNetUserRoles",
                 column: "RoleId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BasketItem_ItemId",
+                table: "BasketItem",
+                column: "ItemId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BasketItem_UserId",
+                table: "BasketItem",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_FilePaths_ItemId",
@@ -290,6 +327,9 @@ namespace EbayClone.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
+                name: "BasketItem");
 
             migrationBuilder.DropTable(
                 name: "FilePaths");

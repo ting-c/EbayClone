@@ -18,35 +18,35 @@ namespace EbayClone.Data.Migrations
 
 			// Items - Adam
 			migrationBuilder
-				.Sql("INSERT INTO Items (Title, Price, Condition, IsAuction,SellerId) Values ('New Nike Men Trainers Size 10', 30.00, 'New', 'FALSE', (SELECT Id FROM Users WHERE FirstName = 'Adam'))");
+				.Sql("INSERT INTO Items (Title, Price, Quantity, Condition, IsAuction,SellerId) Values ('New Nike Men Trainers Size 10', 30.00, 10, 'New', 'FALSE', (SELECT Id FROM Users WHERE FirstName = 'Adam'))");
 			migrationBuilder
-				.Sql("INSERT INTO Items (Title, Price, Condition, IsAuction,SellerId) Values ('New Nike Ladies Trainers Size 4', 35.00, 'New', 'FALSE', (SELECT Id FROM Users WHERE FirstName = 'Adam'))");
+				.Sql("INSERT INTO Items (Title, Price, Quantity, Condition, IsAuction,SellerId) Values ('New Nike Ladies Trainers Size 4', 35.00, 20, 'New', 'FALSE', (SELECT Id FROM Users WHERE FirstName = 'Adam'))");
 			migrationBuilder
-				.Sql("INSERT INTO Items (Title, Price, Condition, IsAuction,SellerId) Values ('New Fila Men''s Camalfi Trainers Size 8', 40.00, 'New', 'FALSE', (SELECT Id FROM Users WHERE FirstName = 'Adam'))");
+				.Sql("INSERT INTO Items (Title, Price, Quantity, Condition, IsAuction,SellerId) Values ('New Fila Men''s Camalfi Trainers Size 8', 40.00, 5, 'New', 'FALSE', (SELECT Id FROM Users WHERE FirstName = 'Adam'))");
 
 			// Items - Brad
 			migrationBuilder
-				.Sql("INSERT INTO Items (Title, Price, Condition, IsAuction,SellerId) Values ('Lindens Pro Billion X20 Capsules 20bn CFU(60 pack)', 20.00, 'New', 'FALSE', (SELECT Id FROM Users WHERE FirstName = 'Brad'))");
+				.Sql("INSERT INTO Items (Title, Price, Quantity, Condition, IsAuction,SellerId) Values ('Lindens Pro Billion X20 Capsules 20bn CFU(60 pack)', 20.00, 10, 'New', 'FALSE', (SELECT Id FROM Users WHERE FirstName = 'Brad'))");
 			migrationBuilder
-				.Sql("INSERT INTO Items (Title, Price, Condition, IsAuction,SellerId) Values ('Zinc 30 Lozenges Aniseed With Acerola Vitamin C Immunity Support Lindens', 25.00, 'New', 'FALSE', (SELECT Id FROM Users WHERE FirstName = 'Brad'))");
+				.Sql("INSERT INTO Items (Title, Price, Quantity, Condition, IsAuction,SellerId) Values ('Zinc 30 Lozenges Aniseed With Acerola Vitamin C Immunity Support Lindens', 25.00, 20, 'New', 'FALSE', (SELECT Id FROM Users WHERE FirstName = 'Brad'))");
 			migrationBuilder
-				.Sql("INSERT INTO Items (Title, Price, Condition, IsAuction,SellerId) Values ('Green Tea Extract 1000mg -slimming pills diet, weight loss (100 tablets)', 35.00, 'New', 'FALSE', (SELECT Id FROM Users WHERE FirstName = 'Brad'))");
+				.Sql("INSERT INTO Items (Title, Price, Quantity, Condition, IsAuction,SellerId) Values ('Green Tea Extract 1000mg -slimming pills diet, weight loss (100 tablets)', 35.00, 30, 'New', 'FALSE', (SELECT Id FROM Users WHERE FirstName = 'Brad'))");
 
 			// Items - Charles
 			migrationBuilder
-				.Sql("INSERT INTO Items (Title, Price, Condition, IsAuction,SellerId) Values ('Call of Duty: Black Ops Cold War (PS4)', 45.00, 'New', 'FALSE', (SELECT Id FROM Users WHERE FirstName = 'Charles'))");
+				.Sql("INSERT INTO Items (Title, Price, Quantity, Condition, IsAuction,SellerId) Values ('Call of Duty: Black Ops Cold War (PS4)', 45.00, 10, 'New', 'FALSE', (SELECT Id FROM Users WHERE FirstName = 'Charles'))");
 			migrationBuilder
-				.Sql("INSERT INTO Items (Title, Price, Condition, IsAuction,SellerId) Values ('Assassins Creed Valhalla (PS4)', 40.00, 'New', 'FALSE', (SELECT Id FROM Users WHERE FirstName = 'Charles'))");
+				.Sql("INSERT INTO Items (Title, Price, Quantity, Condition, IsAuction,SellerId) Values ('Assassins Creed Valhalla (PS4)', 40.00, 20, 'New', 'FALSE', (SELECT Id FROM Users WHERE FirstName = 'Charles'))");
 			migrationBuilder
-				.Sql("INSERT INTO Items (Title, Price, Condition, IsAuction,SellerId) Values ('Marvel''s Spider-Man: Miles Morales (PS5) Brand New & Sealed', 60.00, 'New', 'FALSE', (SELECT Id FROM Users WHERE FirstName = 'Charles'))");
+				.Sql("INSERT INTO Items (Title, Price, Quantity, Condition, IsAuction,SellerId) Values ('Marvel''s Spider-Man: Miles Morales (PS5) Brand New & Sealed', 60.00, 30, 'New', 'FALSE', (SELECT Id FROM Users WHERE FirstName = 'Charles'))");
 
 			// Items - Darren
 			migrationBuilder
-				.Sql("INSERT INTO Items (Title, Price, Condition, IsAuction,SellerId) Values ('Duck Feather Pillows 100% Cotton Cover Filled Luxury Hotel Quality Pillow - 4 Pack', 30.00, 'New', 'FALSE', (SELECT Id FROM Users WHERE FirstName = 'Darren'))");
+				.Sql("INSERT INTO Items (Title, Price, Quantity, Condition, IsAuction,SellerId) Values ('Duck Feather Pillows 100% Cotton Cover Filled Luxury Hotel Quality Pillow - 4 Pack', 30.00, 15, 'New', 'FALSE', (SELECT Id FROM Users WHERE FirstName = 'Darren'))");
 			migrationBuilder
-				.Sql("INSERT INTO Items (Title, Price, Condition, IsAuction,SellerId) Values ('Hotel Quality Egyptian Stripe Pillows Luxury Soft Hollowfibre Filled - 4 Pack', 30.00, 'New', 'FALSE', (SELECT Id FROM Users WHERE FirstName = 'Darren'))");
+				.Sql("INSERT INTO Items (Title, Price, Quantity, Condition, IsAuction,SellerId) Values ('Hotel Quality Egyptian Stripe Pillows Luxury Soft Hollowfibre Filled - 4 Pack', 30.00, 25, 'New', 'FALSE', (SELECT Id FROM Users WHERE FirstName = 'Darren'))");
 			migrationBuilder
-				.Sql("INSERT INTO Items (Title, Price, Condition, IsAuction,SellerId) Values ('Pillows Quilted Luxury Ultra Loft Jumbo Super Bounce Back Pillows - 4 Pack', 30.00, 'New', 'FALSE', (SELECT Id FROM Users WHERE FirstName = 'Darren'))");
+				.Sql("INSERT INTO Items (Title, Price, Quantity, Condition, IsAuction,SellerId) Values ('Pillows Quilted Luxury Ultra Loft Jumbo Super Bounce Back Pillows - 4 Pack', 30.00, 35, 'New', 'FALSE', (SELECT Id FROM Users WHERE FirstName = 'Darren'))");
 
 			// FilePaths - Adam
 			migrationBuilder

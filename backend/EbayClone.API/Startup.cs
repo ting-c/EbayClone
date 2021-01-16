@@ -16,7 +16,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using CloudinaryDotNet;
 using System;
 
 namespace EbayClone.API
@@ -94,6 +93,7 @@ namespace EbayClone.API
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IAuthService, AuthService>();
             services.AddTransient<IFilePathService, FilePathService>();
+            services.AddTransient<IBasketItemService, BasketItemService>();
 
             services.AddSwaggerGen(options => 
             {

@@ -10,5 +10,6 @@ namespace EbayClone.Core.Repositories
          Task<IEnumerable<Item>> GetItemsByTitleAsync(string title);
          Task<Item> GetWithUserByIdAsync(int itemId);
          Task<IEnumerable<Item>> GetAllWithUserbyUserIdAsync(int userId);
+        Task UpdateQuantityAsync(int itemId, int quantity);
     }
 }

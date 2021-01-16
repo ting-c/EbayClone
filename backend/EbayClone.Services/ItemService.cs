@@ -57,5 +57,12 @@ namespace EbayClone.Services
 
          await _unitOfWork.CommitAsync();
 		}
+
+		public async Task UpdateQuantity(int itemId, int quantity)
+		{
+			await _unitOfWork.Items.UpdateQuantityAsync(itemId, quantity);
+
+			await _unitOfWork.CommitAsync();
+		}
 	}
 }

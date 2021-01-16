@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EbayClone.Core.Models
@@ -16,6 +17,9 @@ namespace EbayClone.Core.Models
 
 		[Column(TypeName = "decimal(10,2)")]
         public decimal Price {get; set; }
+
+        [Range(1, 999)]
+        public int Quantity {get; set;}
         public string Condition {get; set; }
         public bool IsAuction {get; set; }
         public int SellerId {get; set; }

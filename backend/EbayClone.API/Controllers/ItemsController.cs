@@ -9,8 +9,6 @@ using EbayClone.Core.Services;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.NewtonsoftJson;
-using Newtonsoft.Json;
 
 namespace EbayClone.API.Controllers
 {
@@ -134,6 +132,23 @@ namespace EbayClone.API.Controllers
 
             return NoContent();
         }
+
+        [HttpPut("quantity/{itemId}/{quantity}")]
+		public async Task<IActionResult> UpdateQuantity(int itemId, int quantity)
+		{
+			var item = await _itemService.GetItemById(itemId);
+			if (item == null)
+				return NotFound();
+
+            try {
+			    await _itemService.UpdateQuantity(itemId, quantity);
+            } 
+            catch {
+                return Problem("Failed to update quantity");
+            }
+
+			return Ok();
+		}
 
         private async Task<bool> CheckIfUserIsItemSeller(int userId, int itemId)
         {

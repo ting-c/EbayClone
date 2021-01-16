@@ -26,13 +26,15 @@ namespace EbayClone.Data.Configurations
                 .Property(i => i.Price)
                 .IsRequired();
             builder
+                .Property(i => i.Quantity)
+                .IsRequired();
+            builder
                 .Property(i => i.Condition)
                 .IsRequired()
                 .HasMaxLength(50);
             builder
                 .Property(i => i.IsAuction)
                 .IsRequired();
-
             builder
                 .Property(i => i.SellerId)
                 .IsRequired();

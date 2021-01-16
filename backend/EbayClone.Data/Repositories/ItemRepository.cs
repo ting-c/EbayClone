@@ -45,6 +45,19 @@ namespace EbayClone.Data.Repositories
                 .ToListAsync();
 		}
 
+		public async Task UpdateQuantityAsync(int itemId, int quantity)
+		{
+			Item item = EbayCloneDbContext.Items.Find(itemId);
+
+			item.Quantity = quantity;
+
+			EbayCloneDbContext.Items.Attach(item);
+
+			EbayCloneDbContext.Entry(item).Property(x => x.Quantity).IsModified = true;
+
+			await EbayCloneDbContext.SaveChangesAsync();
+		}
+
         private EbayCloneDbContext EbayCloneDbContext
         {
             get { return Context as EbayCloneDbContext; }

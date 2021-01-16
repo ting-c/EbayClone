@@ -13,5 +13,6 @@ namespace EbayClone.Core.Services
         Task<Item> CreateItem(Item newItem);
         Task UpdateItem(Item itemToBeUpdated, Item item);
         Task DeleteItem(Item item);
+        Task UpdateQuantity(int itemId, int quantity);
     }
 }

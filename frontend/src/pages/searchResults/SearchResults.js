@@ -13,8 +13,7 @@ const SearchResults = ({ displayItems }) => {
 };
 
 const mapStateToProps = (state) => {
-	const { displayItems } = state;
-	return displayItems;
+	return { displayItems: state.displayItems };
 };
 
 export default connect(mapStateToProps)(SearchResults);

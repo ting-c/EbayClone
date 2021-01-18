@@ -1,24 +1,18 @@
 import React , { useState } from 'react'
 import './styles.scss'
 import { useHistory } from 'react-router-dom'
-import itemAPI from '../../api/itemAPI'
-import { updateDisplayItems } from '../../redux/displayItems/displayItemsAction'
+import { fetchItemsAsync } from '../../redux/displayItems/displayItemsAction'
 import { connect } from 'react-redux'
 
-const SearchBar = ({ updateDisplayItems }) => {
+const SearchBar = ({ fetchItemsAsync }) => {
 
 	const [searchTerm, setSearchTerm] = useState("");
 
 	let history = useHistory();
 	
-	const handleSubmit = async (e) => {
+	const handleSubmit = (e) => {
 		e.preventDefault(); 
-		const items = searchTerm ? 
-			await itemAPI.getByTitle(searchTerm) : 
-			// get all items if searchTerm is null
-			await itemAPI.get();
-		console.log(items)
-		updateDisplayItems(items);
+		fetchItemsAsync(searchTerm)
 		history.push("/results");
 	}
 
@@ -39,10 +33,6 @@ const SearchBar = ({ updateDisplayItems }) => {
 	);
 }
 
-const mapDispatchToProps = (dispatch) => {
-	return {
-		updateDisplayItems: (items) => dispatch(updateDisplayItems(items))
-	}
-}
+const mapDispatchToProps = { fetchItemsAsync };
 
 export default connect(null, mapDispatchToProps)(SearchBar);

@@ -15,6 +15,7 @@ function errorHandling(error) {
 		console.log("Error", error.message);
 		alert(error.message);
 	}
+	return null;
 }
 
 export default errorHandling;

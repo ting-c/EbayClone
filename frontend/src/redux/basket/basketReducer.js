@@ -4,29 +4,31 @@ export default function basketReducer(state = initialState, action) {
 
 	switch (action.type) {
 		case "BASKET/ADD_ITEM": {
-			return [
-				...state,
-				// payload = new item with quantity of 1
-				action.payload,
-			];
+			return [...state, action.item];
 		}
+
 		case "BASKET/REMOVE_ITEM": {
-			const copiedState = [...state];
-			const itemRemovedState = copiedState.filter(item => item.id !== action.id)
-			return itemRemovedState;
+			// copy current basket to new array
+			const currentBasket = [...state.basket];
+			// filter out item
+			const newBasket = currentBasket.filter(
+				(item) => item.id !== action.id
+			);
+			return newBasket;
 		}
-		case "BASKET/INCREASE_QUANTITY": {
-			const copiedState = [...state];
-			const itemToUpdate = copiedState.find(item => item.id === action.id);
-			itemToUpdate.quantity += 1;
-			return copiedState;
-		} 
-		case "BASKET/DECREASE_QUANTITY": {
-			const copiedState = [...state];
-			const itemToUpdate = copiedState.find(item => item.id === action.id);
-			itemToUpdate.quantity -= 1;
-			return copiedState;
-		} 
+
+		case "BASKET/UPDATE_QUANTITY": {
+			// copy current basket to new array
+			const currentBasket = [...state.basket];
+			const item = currentBasket.find((item) => item.id === action.id);
+			item.quantity = action.quantity;
+			return currentBasket;
+		}
+
+		case "BASKET/UPDATE_ITEMS": {
+			return action.basketItems;
+		}
+
 		default:
 			// Action type not recognise, return unchanged state
 			return state;

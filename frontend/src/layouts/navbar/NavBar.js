@@ -2,14 +2,10 @@ import React from 'react'
 import './styles.scss'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { removeUser } from '../../redux/auth/userAction'
-import { removeJwt } from '../../redux/auth/jwtAction'
+import CartIcon from '../../components/cartIcon/CartIcon'
+import { signOut } from '../../redux/auth/authAction'
 
-const NavBar = ({ user, removeUser }) => {
-
-	function signout(){
-		removeUser();
-	};
+const NavBar = ({ user, signOut }) => {
 	
 	return (
 		<nav className="navbar navbar-expand-lg navbar-light">
@@ -29,14 +25,15 @@ const NavBar = ({ user, removeUser }) => {
 						<button
 							className="dropdown-toggle"
 							id="dropdownMenuButton"
-							data-bs-toggle="dropdown"
+							data-toggle="dropdown"
+							aria-haspopup="true" 
 							aria-expanded="false"
 						></button>
 						<ul
 							className="dropdown-menu"
 							aria-labelledby="dropdownMenuButton"
 						>
-							<li id="signout" onClick={signout}>
+							<li className="dropdown-item" id="signout" onClick={()=> signOut}>
 								<span>Sign out</span>
 							</li>
 						</ul>
@@ -72,6 +69,7 @@ const NavBar = ({ user, removeUser }) => {
 								>
 									My eBay
 								</button>
+								<CartIcon />
 								<ul
 									className="dropdown-menu"
 									aria-labelledby="dropdownMenuButton"
@@ -88,15 +86,9 @@ const NavBar = ({ user, removeUser }) => {
 }
 
 const mapStateToProps = (state) => {
-	const { user } = state;
-	return user;
+	return { user: state.user };
 }
 
-const mapDispatchToProps = (dispatch) => {
-	return { 
-		removeUser: (user) => dispatch(removeUser(user)),
-		removeJwt: (jwt) => dispatch(removeJwt(jwt))
-	};
-}
+const mapDispatchToProps = { signOut };
 
 export default connect(mapStateToProps, mapDispatchToProps)(NavBar);

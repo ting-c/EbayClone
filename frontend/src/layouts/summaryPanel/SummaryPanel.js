@@ -11,7 +11,7 @@ const SummaryPanel = ({ item }) => {
 			<hr />
 			<SummaryTop item={item} />
 			<hr />
-			<SummaryMain price={item.price} />
+			<SummaryMain item={item} />
 			<hr />
 			
 		</div>

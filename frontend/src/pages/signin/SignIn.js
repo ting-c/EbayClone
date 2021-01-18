@@ -1,26 +1,17 @@
 import React, { useState } from "react";
 import { withRouter } from 'react-router-dom'
-import authAPI from "../../api/authAPI"
 import { connect } from 'react-redux'
-import { addUser } from "../../redux/auth/userAction";
-import { addJwt } from "../../redux/auth/jwtAction";
+import { signInAsync } from "../../redux/auth/authAction";
 
-const SignIn = ({ addUser, addJwt, history }) => {
+const SignIn = ({ signInAsync }) => {
 	
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 
 	async function handleSubmit(e){
 		e.preventDefault();
-		const data = { email, password }
-		const responseData = await authAPI.signin(data);
-		console.log(responseData);
-		if (responseData) {
-			const {user, jwtString} = responseData;
-			addUser(user);
-			addJwt(jwtString);
-			history.push('/');
-		}
+		const data = { email, password };
+		signInAsync(data);
 	};
 
 	return (
@@ -59,11 +50,6 @@ const SignIn = ({ addUser, addJwt, history }) => {
 	);
 }
 
-const mapDispatchToProps = (dispatch) => {
-	return {
-		addUser : (user) => dispatch(addUser(user)),
-		addJwt : (jwt) => dispatch(addJwt(jwt)),
-	}
-}
+const mapDispatchToProps = { signInAsync };
 
 export default withRouter(connect(null, mapDispatchToProps)(SignIn));

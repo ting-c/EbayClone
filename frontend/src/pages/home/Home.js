@@ -1,19 +1,13 @@
 import React, { useEffect } from 'react'
 import ItemContainer from '../../components/itemContainer/ItemContainer'
-import itemAPI from '../../api/itemAPI'
 import { connect } from 'react-redux'
-import { updateDisplayItems } from '../../redux/displayItems/displayItemsAction'
+import { fetchItemsAsync } from '../../redux/displayItems/displayItemsAction'
 
-const Home = ({ displayItems, updateDisplayItems }) => {
+const Home = ({ displayItems, fetchItemsAsync }) => {
 
 	useEffect(() => {
-		fetchItems();
-	});
-
-	async function fetchItems() {
-		const items = await itemAPI.get();
-		updateDisplayItems(items);
-	}
+		fetchItemsAsync();
+	},[]);
 
 	return (
 		<div>
@@ -23,14 +17,9 @@ const Home = ({ displayItems, updateDisplayItems }) => {
 }
 
 const mapStateToProps = (state) => {
-	const { displayItems } = state;
-	return displayItems;
+	return { displayItems: state.displayItems }
 };
 
-const mapDispatchToProps = (dispatch) => {
-	return {
-		updateDisplayItems: (items) => dispatch(updateDisplayItems(items))
-	};
-};
+const mapDispatchToProps = { fetchItemsAsync };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

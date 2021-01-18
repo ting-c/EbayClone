@@ -41,8 +41,7 @@ const Upload = ({ itemId, jwt }) => {
 };
 
 const mapStateToProps = (state) => {
-	const { jwt } = state;
-	return jwt;
+	return { jwt: state.jwt }
 };
 
 export default connect(mapStateToProps)(Upload)

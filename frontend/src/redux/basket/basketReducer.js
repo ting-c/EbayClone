@@ -4,23 +4,23 @@ export default function basketReducer(state = initialState, action) {
 
 	switch (action.type) {
 		case "BASKET/ADD_ITEM": {
-			return [...state, action.item];
+			return [...state, action.basketItem];
 		}
 
 		case "BASKET/REMOVE_ITEM": {
 			// copy current basket to new array
-			const currentBasket = [...state.basket];
+			const currentBasket = [...state];
 			// filter out item
 			const newBasket = currentBasket.filter(
-				(item) => item.id !== action.id
+				(basketItem) => basketItem.itemId !== action.basketItem.itemId
 			);
 			return newBasket;
 		}
 
 		case "BASKET/UPDATE_QUANTITY": {
 			// copy current basket to new array
-			const currentBasket = [...state.basket];
-			const item = currentBasket.find((item) => item.id === action.id);
+			const currentBasket = [...state];
+			const item = currentBasket.find((basketItem) => basketItem.itemId === action.basketItem.itemId);
 			item.quantity = action.quantity;
 			return currentBasket;
 		}

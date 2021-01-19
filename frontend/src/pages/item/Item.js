@@ -18,7 +18,7 @@ const Item = ({ match }) => {
 	async function fetchItems(){
 		const item = await itemAPI.getByItemId(id);
 		setItem(item);
-	}  
+	}
 
 	return (
 		<div className='item-page container-fluid'>

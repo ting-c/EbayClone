@@ -9,6 +9,7 @@ import SearchBar from './layouts/searchbar/SearchBar';
 import SearchResults from './pages/searchResults/SearchResults';
 import Item from './pages/item/Item';
 import UploadImage from './pages/uploadImage/UploadImage';
+import Basket from './pages/basket/Basket';
 
 function App() {
 
@@ -24,6 +25,7 @@ function App() {
           <Route path='/upload/:itemId'><UploadImage /></Route>
           <Route path='/signin'><SignIn /></Route>
           <Route path='/signup'><SignUp /></Route>
+          <Route path='/basket'><Basket /></Route>
         </Switch>
       </div>
     </Router>   

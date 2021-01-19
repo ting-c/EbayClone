@@ -64,19 +64,21 @@ const NavBar = ({ user, signOut }) => {
 								<button
 									className="dropdown-toggle"
 									id="dropdownMenuButton"
-									data-bs-toggle="dropdown"
+									data-toggle="dropdown"
 									aria-expanded="false"
 								>
 									My eBay
 								</button>
-								<CartIcon />
 								<ul
 									className="dropdown-menu"
 									aria-labelledby="dropdownMenuButton"
 								>
-									<li></li>
+									<li>Selling</li>
 								</ul>
 							</div>
+						</li>
+						<li>
+							<CartIcon />
 						</li>
 					</ul>
 				</div>

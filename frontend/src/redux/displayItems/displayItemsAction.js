@@ -15,8 +15,12 @@ const fetchItemsAsync = (searchTerm) => {
 			await itemAPI.getByTitle(searchTerm) :
 			// get all items if searchTerm == null
 			await itemAPI.get();
-
-		dispatch(updateDisplayItems(displayItems));
+		if (displayItems) {
+			dispatch(updateDisplayItems(displayItems));
+		} else {
+			// To prevent undefined error if connection to backend fails
+			dispatch(updateDisplayItems([]));
+		}
 	};
 }
 

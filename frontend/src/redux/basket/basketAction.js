@@ -1,24 +1,24 @@
-import basketAPI from "../../api/basketAPI";
+import basketAPI from "../../api/basketAPI"
 
 // Actions for dispatch
-const addItem = (item) => {
+const addBasketItem = (basketItem) => {
 	return {
 		type : "BASKET/ADD_ITEM",
-		item
-	}
-}
-
-const removeItem = (itemId) => {
-	return {
-		type: "BASKET/REMOVE_ITEM",
-		itemId,
+		basketItem
 	};
 }
 
-const updateQuantity = (itemId, quantity) => {
+const removeBasketItem = (basketItem) => {
+	return {
+		type: "BASKET/REMOVE_ITEM",
+		basketItem,
+	};
+}
+
+const updateQuantity = (basketItem, quantity) => {
 	return {
 		type: "BASKET/UPDATE_QUANTITY",
-		itemId,
+		basketItem,
 		quantity,
 	};
 }
@@ -29,6 +29,15 @@ const updateBasket = (basketItems) => {
 		type: "BASKET/UPDATE_ITEMS",
 		basketItems
 	};
+}
+
+// create basket item with similar properties as BasketItem model
+const BasketItem = (item, quantity) => {
+	return {
+		item,
+		itemId: item.id,
+		quantity
+	}
 }
 
 
@@ -43,7 +52,8 @@ const addBasketItemAsync = (jwt, item, quantity) => {
 			// update basket with updated basket items
 			dispatch(updateBasket(basketItems));
 		} else {
-			dispatch(addItem(item));
+			const basketItem = BasketItem(item, quantity);
+			dispatch(addBasketItem(basketItem));
 		}
 	}
 }
@@ -58,7 +68,7 @@ const removeBasketItemAsync = (jwt, basketItem) => {
 			// update basket with updated basket items
 			dispatch(updateBasket(basketItems));
 		} else {
-			dispatch(removeItem(basketItem.id));
+			dispatch(removeBasketItem(basketItem));
 		}
 	};
 }
@@ -73,7 +83,7 @@ const updateQuantityAsync = (jwt, basketItem, quantity) => {
 			// update basket with updated basket items
 			dispatch(updateBasket(basketItems));
 		} else {
-			dispatch(updateQuantity(basketItem.id, quantity));
+			dispatch(updateQuantity(basketItem, quantity));
 		}
 	};
 }

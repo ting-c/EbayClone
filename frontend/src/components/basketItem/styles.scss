@@ -1,0 +1,21 @@
+.basket-item {
+
+
+	.summary {
+		display: grid;
+		grid-template-columns: 1fr 3fr 1fr 1fr;
+  		grid-template-rows: 15rem;
+	}
+
+	#image{
+		object-fit: cover;
+		width: 10rem;
+		height: 10rem;
+	}
+
+	#remove{
+		float: right;
+		border: 0;
+		padding: 0.5rem;
+	}
+}

@@ -1,19 +1,15 @@
 import React from 'react'
-import { connect } from 'react-redux'
+import './styles.scss'
 import BasketCheckoutPanel from '../../layouts/basketCheckoutPanel/BasketCheckoutPanel';
 import BasketItemPanel from '../../layouts/basketItemPanel/BasketItemPanel';
 
-const Basket = ({ basket }) => {
+const Basket = () => {
 	return (
 		<div className="basket-page">
-			<BasketItemPanel basket={basket}/>
+			<BasketItemPanel />
 			<BasketCheckoutPanel />
 		</div>
 	);
 }
 
-const mapStateToProps = (state) => {	
-	return { basket: state.basket }
-}
-
-export default connect(mapStateToProps)(Basket)
+export default Basket

@@ -1,6 +1,7 @@
 import React from 'react'
 import BasketItem from '../../components/basketItem/BasketItem';
 import './styles.scss'
+import { connect } from 'react-redux'
 
 const BasketItemPanel = ({ basket }) => {
 	return (
@@ -14,4 +15,8 @@ const BasketItemPanel = ({ basket }) => {
 	);
 }
 
-export default BasketItemPanel
+const mapStateToProps = (state) => {
+	return { basket: state.basket }
+}
+
+export default connect(mapStateToProps)(BasketItemPanel)

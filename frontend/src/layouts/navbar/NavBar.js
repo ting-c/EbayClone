@@ -43,8 +43,8 @@ const NavBar = ({ user, signOut }) => {
 				<button
 					className="navbar-toggler"
 					type="button"
-					data-bs-toggle="collapse"
-					data-bs-target="#navbarSupportedContent"
+					data-toggle="collapse"
+					data-target="#navbarSupportedContent"
 					aria-controls="navbarSupportedContent"
 					aria-expanded="false"
 					aria-label="Toggle navigation"

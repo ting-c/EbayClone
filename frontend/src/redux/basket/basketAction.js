@@ -1,38 +1,46 @@
 import basketAPI from "../../api/basketAPI"
 
+// Action types 
+export const basketActionTypes = {
+	ADD_ITEM : 'BASKET/ADD_ITEM',
+	REMOVE_ITEM : 'BASKET/REMOVE_ITEM',
+	UPDATE_QUANTITY : 'BASKET/UPDATE_QUANTITY',
+	UPDATE_BASKET : 'BASKET/UPDATE_ITEMS',
+}
+
+
 // Actions for dispatch
-const addBasketItem = (basketItem) => {
+export const addBasketItem = (basketItem) => {
 	return {
-		type : "BASKET/ADD_ITEM",
+		type : basketActionTypes.ADD_ITEM,
 		basketItem
 	};
 }
 
-const removeBasketItem = (basketItem) => {
+export const removeBasketItem = (basketItem) => {
 	return {
-		type: "BASKET/REMOVE_ITEM",
+		type: basketActionTypes.REMOVE_ITEM,
 		basketItem,
 	};
 }
 
-const updateQuantity = (basketItem, quantity) => {
+export const updateQuantity = (basketItem, quantity) => {
 	return {
-		type: "BASKET/UPDATE_QUANTITY",
+		type: basketActionTypes.UPDATE_QUANTITY,
 		basketItem,
 		quantity,
 	};
 }
 
-// update basket with 
-const updateBasket = (basketItems) => {
+export const updateBasket = (basketItems) => {
 	return {
-		type: "BASKET/UPDATE_ITEMS",
+		type: basketActionTypes.UPDATE_BASKET,
 		basketItems
 	};
 }
 
 // create basket item with similar properties as BasketItem model
-const BasketItem = (item, quantity) => {
+export const BasketItem = (item, quantity) => {
 	return {
 		item,
 		itemId: item.id,
@@ -42,7 +50,7 @@ const BasketItem = (item, quantity) => {
 
 
 // Actions with a thunk function before dispatch
-const addBasketItemAsync = (jwt, item, quantity) => {
+export const addBasketItemAsync = (jwt, item, quantity) => {
 	return async function (dispatch, getState) {
 		if (jwt) {
 			// User is signed in - add item to db
@@ -52,13 +60,14 @@ const addBasketItemAsync = (jwt, item, quantity) => {
 			// update basket with updated basket items
 			dispatch(updateBasket(basketItems));
 		} else {
+			// create basket item 
 			const basketItem = BasketItem(item, quantity);
 			dispatch(addBasketItem(basketItem));
 		}
 	}
 }
 
-const removeBasketItemAsync = (jwt, basketItem) => {
+export const removeBasketItemAsync = (jwt, basketItem) => {
 	return async function (dispatch, getState) {
 		if (jwt) {
 			// User is signed in - remove item from db
@@ -73,7 +82,7 @@ const removeBasketItemAsync = (jwt, basketItem) => {
 	};
 }
 
-const updateQuantityAsync = (jwt, basketItem, quantity) => {
+export const updateQuantityAsync = (jwt, basketItem, quantity) => {
 	return async function (dispatch, getState) {
 		if (jwt) {
 			// User is signed in - update basketItem quantity in db
@@ -86,11 +95,5 @@ const updateQuantityAsync = (jwt, basketItem, quantity) => {
 			dispatch(updateQuantity(basketItem, quantity));
 		}
 	};
-}
-
-export {
-	addBasketItemAsync,
-	removeBasketItemAsync,
-	updateQuantityAsync
 }
 

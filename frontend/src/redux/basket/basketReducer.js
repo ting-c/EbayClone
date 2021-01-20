@@ -1,13 +1,15 @@
-const initialState = [];
+import { basketActionTypes } from './basketAction'
+
+export const initialState = [];
 
 export default function basketReducer(state = initialState, action) {
 
 	switch (action.type) {
-		case "BASKET/ADD_ITEM": {
+		case basketActionTypes.ADD_ITEM: {
 			return [...state, action.basketItem];
 		}
 
-		case "BASKET/REMOVE_ITEM": {
+		case basketActionTypes.REMOVE_ITEM: {
 			// copy current basket to new array
 			const currentBasket = [...state];
 			// filter out item
@@ -17,15 +19,22 @@ export default function basketReducer(state = initialState, action) {
 			return newBasket;
 		}
 
-		case "BASKET/UPDATE_QUANTITY": {
+		case basketActionTypes.UPDATE_QUANTITY: {
 			// copy current basket to new array
 			const currentBasket = [...state];
-			const item = currentBasket.find((basketItem) => basketItem.itemId === action.basketItem.itemId);
-			item.quantity = action.quantity;
-			return currentBasket;
+			const basketItem = currentBasket.find(
+				(basketItem) => basketItem.itemId === action.basketItem.itemId
+			);
+			// filter out the basket item to be updated
+			const updatedBasket = currentBasket.filter(
+				(basketItem) => basketItem.itemId !== action.basketItem.itemId
+			);
+			// update quantity 
+			const updatedBasketItem = {...basketItem, quantity: action.quantity};
+			return [...updatedBasket, updatedBasketItem];
 		}
 
-		case "BASKET/UPDATE_ITEMS": {
+		case basketActionTypes.UPDATE_BASKET: {
 			return action.basketItems;
 		}
 

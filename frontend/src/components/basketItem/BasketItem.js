@@ -24,13 +24,13 @@ const BasketItem = ({ jwt, basketItem, removeBasketItemAsync }) => {
 				<p id="quantity">Qty: {quantity}</p>
 				<p id="sub-total">Sub-total: {subTotal}</p>
 			</div>
-			
+			<div className="footer">
 				<button 
 					id="remove" 
 					onClick={() => removeBasketItemAsync(jwt, basketItem)}>
 					Remove
 				</button>
-			
+			</div>
 		</li>
 	);
 }

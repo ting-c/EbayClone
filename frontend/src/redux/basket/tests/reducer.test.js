@@ -1,11 +1,11 @@
 // import actions
-import { addBasketItem, removeBasketItem, updateQuantity, updateBasket } from './basketAction';
+import { addBasketItem, removeBasketItem, updateQuantity, updateBasket } from '../basketAction';
 
 // import factory function
-import { BasketItem } from './basketAction';
+import { BasketItem } from '../basketAction';
 
 // import reducer
-import basketReducer from './basketReducer';
+import basketReducer from '../basketReducer';
 
 // Testing basketReducer
 describe('When dispatching addBasketItem action', () => {
@@ -67,4 +67,3 @@ describe('When dispatching updateBasket action', () => {
 		expect(state).toEqual(expectedState);
 	});
 })
-

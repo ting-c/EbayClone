@@ -29,7 +29,8 @@ const initialState = {
   user: null,
   jwt: null,
   basket: [],
-  displayItems: []
+  displayItems: [],
+  error: null
 }
 
 const preloadedState = loadFromLocalStorage() || initialState;
@@ -40,6 +41,6 @@ const store = createStore(rootReducer, preloadedState, applyMiddleware(thunk));
 // save them to localStorage
 store.subscribe(() => saveToLocalStorage(store.getState()));
 
-export default store;
-
 export { initialState }
+
+export default store;

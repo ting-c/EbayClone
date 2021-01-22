@@ -1,4 +1,5 @@
 import { basketActionTypes } from "../basket/basketAction";
+import { authActionTypes } from "../auth/authAction";
 
 export const initialState = null;
 
@@ -14,6 +15,12 @@ export default function errorReducer(state = initialState, action) {
 			return action.errorMessage;
 		}
 		case basketActionTypes.UPDATE_BASKET_ERROR: {
+			return action.errorMessage;
+		}
+		case authActionTypes.SIGNIN_ERROR: {
+			return action.errorMessage;
+		}
+		case authActionTypes.SIGNUP_ERROR: {
 			return action.errorMessage;
 		}
 		

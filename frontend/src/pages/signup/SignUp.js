@@ -1,8 +1,9 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { withRouter } from 'react-router-dom'
-import authAPI from '../../api/authAPI'
+import { connect } from 'react-redux'
+import { signUpAsync } from '../../redux/auth/authAction'
 
-const SignUp = ({ history }) => {
+const SignUp = ({ signUpAsync }) => {
 	const [firstName, setFirstName] = useState('');
 	const [lastName, setLastName] = useState('');
 	const [email, setEmail] = useState('');
@@ -20,10 +21,7 @@ const SignUp = ({ history }) => {
 		const data = {
 			firstName, lastName, email, address, username, password 
 		}
-		const result = await authAPI.signup(data);
-		if (result) {
-			history.push('/signin');
-		}
+		await signUpAsync(data);
 	}
 
 	return (
@@ -130,4 +128,10 @@ const SignUp = ({ history }) => {
 	);
 }
 
-export default withRouter(SignUp);
+const mapStateToProps = (state) => {
+	return { jwt: state.jwt }
+};
+
+const mapDispatchToProps = { signUpAsync }
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(SignUp));

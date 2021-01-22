@@ -1,12 +1,14 @@
+import { authActionTypes } from './authAction'; 
+
 const initialState = null;
 
 export default function jwtReducer(state = initialState, action) {
 	// The reducer normally looks at the action type field to decide what happens
 	switch (action.type) {
-		case "JWT/ADD_JWT": {
+		case authActionTypes.ADD_JWT: {
 			return action.token;
 		}
-		case "JWT/REMOVE_JWT": {
+		case authActionTypes.REMOVE_JWT: {
 			return null;
 		}
 		default:

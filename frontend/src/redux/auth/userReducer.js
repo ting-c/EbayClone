@@ -1,14 +1,15 @@
+import { authActionTypes } from './authAction';
+
 const initialState = null;
 
 export default function userReducer(state = initialState, action) {
 	// The reducer normally looks at the action type field to decide what happens
 	switch (action.type) {
-		
-		case "USER/ADD_USER": {
-			return action.payload;
+		case authActionTypes.ADD_USER: {
+			return action.user;
 		}
 
-		case "USER/REMOVE_USER": {
+		case authActionTypes.REMOVE_USER: {
 			return null;
 		}
 

@@ -1,34 +1,41 @@
 import authAPI from '../../api/authAPI'
 
+export const authActionTypes = {
+	ADD_JWT: "JWT/ADD_JWT",
+	REMOVE_JWT: "JWT/REMOVE_JWT",
+	ADD_USER: "USER/ADD_USER",
+	REMOVE_USER: "USER/REMOVE_USER"
+};
+
 // Actions for user and jwt 
-const addJwt = (token) => {
+export const addJwt = (token) => {
 	return {
-		type: "JWT/ADD_JWT",
+		type: authActionTypes.ADD_JWT,
 		token,
 	};
 };
 
-const removeJwt = () => {
+export const removeJwt = () => {
 	return {
-		type: "JWT/REMOVE_JWT",
+		type: authActionTypes.REMOVE_JWT,
 	};
 };
 
-const addUser = (payload) => {
+export const addUser = (user) => {
 	return {
-		type: "USER/ADD_USER",
-		payload,
+		type:authActionTypes.ADD_USER,
+		user,
 	};
 };
 
-const removeUser = () => {
+export const removeUser = () => {
 	return {
-		type: "USER/REMOVE_USER",
+		type: authActionTypes.REMOVE_USER,
 	};
 };
 
-// Actions with a thunk function before dispatch
-const signInAsync = (data) => {
+// Actions creators
+export const signInAsync = (data) => {
 	return async function (dispatch, getState) {
 		// data = { email, password }
 		const response = await authAPI.signin(data);
@@ -37,14 +44,13 @@ const signInAsync = (data) => {
 			dispatch(addUser(user));
 			dispatch(addJwt(jwtString));
 		}
-	}
-}
+	};
+};
 
-const signOut = () => {
+export const signOut = () => {
 	return function (dispatch, getState) {
 		dispatch(removeUser());
 		dispatch(removeJwt());
-	}
+	};
 };
 
-export { signInAsync, signOut };

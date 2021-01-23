@@ -20,7 +20,6 @@ describe("Testing signInAsync action", () => {
 		moxios.uninstall();
 	});
 	
-	const store = mockStore();
 	it("dispatch addUser and addJwt actions when user sign in successfully", (done) => {
 		const data = { firstName: 'FirstName', password: 'password'};
 		const jwt = "mockJwt123";
@@ -29,6 +28,7 @@ describe("Testing signInAsync action", () => {
 			name: 'Mock User',
 			sellingItems: { item: { id: 1, title: 'Item 1'} }
 		};
+		const store = mockStore();
 
 		moxios.wait(() => {
 			moxios.stubRequest("https://localhost:5001/api/auth/signin", {
@@ -52,6 +52,28 @@ describe("Testing signInAsync action", () => {
 			})
 		});	
 	})
+
+	it("dispatch signin error actions when sign in failed", (done) => {
+		const data = { firstName: 'FirstName', password: 'password'};
+		const store = mockStore();
+		moxios.wait(() => {
+			moxios.stubRequest("https://localhost:5001/api/auth/signin", {
+				status: 400,
+				response: 'Invalid data'
+			});
+			const expectedActions = [
+				{
+					type: authActionTypes.SIGNIN_ERROR,
+					errorMessage: 'Invalid data'
+				}
+			];
+
+			store.dispatch(signInAsync(data)).then(() => {
+				expect(store.getActions()).toEqual(expectedActions);
+				done()
+			})
+		});	
+	})
 })
 
 // signUpAsync
@@ -63,8 +85,8 @@ describe("Testing signUpAsync action", () => {
 		moxios.uninstall();
 	});
 	
-	const store = mockStore();
 	it("dispatch addUser and addJwt actions when user sign up successfully", (done) => {
+		const store = mockStore();
 		const data = { 
 			firstName: 'First', 
 			lastName: 'Last',
@@ -106,6 +128,34 @@ describe("Testing signUpAsync action", () => {
 				})
 			});	
 		})
+	})
+
+	it("dispatch signup error action when sign up failed", (done) => {
+		const store = mockStore();
+		const data = { 
+			firstName: 'First', 
+			lastName: 'Last',
+			email: 'mock123@gmail.com',
+			password: 'Password'
+		};
+
+		moxios.wait(() => {
+			moxios.stubRequest("https://localhost:5001/api/auth/signup", {
+				status: 400,
+				response: 'Invalid data',
+			});
+			const expectedActions = [
+				{
+					type: authActionTypes.SIGNUP_ERROR,
+					errorMessage: 'Invalid data'
+				}
+			];
+
+			store.dispatch(signUpAsync(data)).then(() => {
+				expect(store.getActions()).toEqual(expectedActions);
+				done()
+			})
+		});	
 	})
 })
 

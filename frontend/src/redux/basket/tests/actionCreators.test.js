@@ -26,15 +26,13 @@ describe("Testing addBasketItemAsync action", () => {
 		moxios.uninstall();
 	});
 
-	it("dispatch addBasketItem action when user is NOT signed in", async () => {
+	it("dispatch addBasketItem action when user is NOT signed in", (done) => {
 		// no token when user is not signed in
+		const store = mockStore();
 		const jwt = null;
 		const item = { id: 1, title: "mockItem1" };
 		const quantity = 1;
 		const basketItem = BasketItem(item, quantity);
-
-		const initialState = [];
-		const store = mockStore({ basket: initialState });
 		const expectedActions = [
 			{
 				type: basketActionTypes.ADD_ITEM,
@@ -42,70 +40,77 @@ describe("Testing addBasketItemAsync action", () => {
 			}
 		];
 
-		await store.dispatch(addBasketItemAsync(jwt, item, quantity))	
-		expect(store.getActions()).toEqual(expectedActions);
+		store.dispatch(addBasketItemAsync(jwt, item, quantity)).then(() => {
+			expect(store.getActions()).toEqual(expectedActions);
+			done();
+		})	
 	});
 
-	it("dispatch updateBasket action when user IS signed in", async () => {
+	it("dispatch updateBasket action when user IS signed in", (done) => {
 		const basketItem1 = BasketItem({ id: 1, title: "mockItem1" }, 1);
 		const basketItem2 = BasketItem({ id: 2, title: "mockItem2" }, 5);
 		const itemToAdd = { id: 3, title: "mockItem3" };
 		const quantity = 10;
 		const basketItemToAdd = BasketItem(itemToAdd, quantity);
 		const expectedBasketItems = [basketItem1, basketItem2, basketItemToAdd];
+		const store = mockStore();
+		const jwt = "mockJwt";
 		
 		moxios.wait(() => {
-			const postRequest = moxios.requests.mostRecent();
-			postRequest.respondWith({
-				status: 200
-			});
+			moxios.stubRequest(
+				`https://localhost:5001/api/basket/${itemToAdd.id}/${quantity}`,
+				{
+					status: 200,
+				}
+			);
 
 			moxios.wait(async () => {
-				const getRequest = moxios.requests.mostRecent();
-				getRequest.respondWith({
-					status: 200,
-					response: expectedBasketItems,
-				});
+				moxios.stubRequest(
+					`https://localhost:5001/api/basket`,
+					{
+						status: 200,
+						response: expectedBasketItems,
+					}
+				);
 
-				const initialState = [basketItem1, basketItem2];
-				const jwt = "mockJwt";
-				const store = mockStore({ basket: initialState });
 				const expectedActions = [
 					{
 						type: basketActionTypes.UPDATE_BASKET,
 						basketItems: expectedBasketItems
 					},
 				];
-				await store.dispatch(addBasketItemAsync(jwt, itemToAdd, quantity));
-				expect(store.getActions()).toEqual(expectedActions);
+				store.dispatch(addBasketItemAsync(jwt, itemToAdd, quantity)).then(() => {
+					expect(store.getActions()).toEqual(expectedActions);
+					done();
+				})
 			});
 		});
 	});
 
-	it("dispatch updateBasket action when API requests failed", async () => {
-		const basketItem1 = BasketItem({ id: 1, title: "mockItem1" }, 1);
-		const basketItem2 = BasketItem({ id: 2, title: "mockItem2" }, 5);
+	it("dispatch updateBasket action when API requests failed", (done) => {
+		const store = mockStore();
+		const jwt = "mockJwt";
 		const itemToAdd = { id: 3, title: "mockItem3" };
 		const quantity = 10;
 		
-		moxios.wait(async () => {
-			const postRequest = moxios.requests.mostRecent();
-			postRequest.reject({
-				status: 400,
-				response: { data: "Invalid data" },
-			});
-
-			const initialState = [basketItem1, basketItem2];
-			const jwt = "mockJwt";
-			const store = mockStore({ basket: initialState });
+		moxios.wait(() => {
+			moxios.stubRequest(
+				`https://localhost:5001/api/basket/${itemToAdd.id}/${quantity}`,
+				{
+					status: 400,
+					response: "Invalid data"
+				}
+			);
 			const expectedActions = [
 				{
 					type: basketActionTypes.ADD_ITEM_ERROR,
 					errorMessage: "Invalid data"
 				}
 			];
-			await store.dispatch(addBasketItemAsync(jwt, itemToAdd, quantity));
-			expect(store.getActions()).toEqual(expectedActions);
+			store.dispatch(addBasketItemAsync(jwt, itemToAdd, quantity)).then(() => {
+				expect(store.getActions()).toEqual(expectedActions);
+				done();
+			})
 		});
 
 	});
@@ -120,15 +125,13 @@ describe("Testing removeBasketItemAsync action", () => {
 		moxios.uninstall();
 	});
 
-	it("dispatch addBasketItem action when user is NOT signed in", async () => {
+	it("dispatch addBasketItem action when user is NOT signed in", (done) => {
 		// no token when user is not signed in
 		const jwt = null;
+		const store = mockStore();
 		const item = { id: 1, title: "mockItem1" };
 		const quantity = 1;
 		const basketItem = BasketItem(item, quantity);
-
-		const initialState = [basketItem];
-		const store = mockStore({ basket: initialState });
 		const expectedActions = [
 			{
 				type: basketActionTypes.REMOVE_ITEM,
@@ -136,73 +139,83 @@ describe("Testing removeBasketItemAsync action", () => {
 			}
 		];
 
-		await store.dispatch(removeBasketItemAsync(jwt, basketItem))	
-		expect(store.getActions()).toEqual(expectedActions);
+		store.dispatch(removeBasketItemAsync(jwt, basketItem)).then(() => {
+			expect(store.getActions()).toEqual(expectedActions);
+			done();
+		})
 	});
 
-	it("dispatch updateBasket action when user IS signed in", async () => {
+	it("dispatch updateBasket action when user IS signed in", (done) => {
+		const jwt = "mockJwt";
+		const store = mockStore();
 		const basketItem1 = BasketItem({ id: 1, title: "mockItem1" }, 1);
 		const basketItem2 = BasketItem({ id: 2, title: "mockItem2" }, 5);
-		const basketItemToRemove = BasketItem({ id: 3, title: "mockItem2" }, 10);
+		const basketItemToRemove = { id: 3 }; 
 		const expectedBasketItems = [basketItem1, basketItem2];
 		
 		moxios.wait(() => {
-			const postRequest = moxios.requests.mostRecent();
-			postRequest.respondWith({
-				status: 200
-			});
+			moxios.stubRequest(
+				`https://localhost:5001/api/basket/${basketItemToRemove.id}`,
+				{
+					status: 200
+				}
+			);
 
-			moxios.wait(async () => {
-				const getRequest = moxios.requests.mostRecent();
-				getRequest.respondWith({
-					status: 200,
-					response: expectedBasketItems,
-				});
-
-				const initialState = [basketItem1, basketItem2];
-				const jwt = "mockJwt";
-				const store = mockStore({ basket: initialState });
+			moxios.wait(() => {
+				moxios.stubRequest(
+					`https://localhost:5001/api/basket`,
+					{
+						status: 200,
+						response: expectedBasketItems
+					}
+				);
 				const expectedActions = [
 					{
 						type: basketActionTypes.UPDATE_BASKET,
 						basketItems: expectedBasketItems
 					},
 				];
-				await store.dispatch(removeBasketItemAsync(jwt, basketItemToRemove));
-				expect(store.getActions()).toEqual(expectedActions);
+
+				store.dispatch(removeBasketItemAsync(jwt, basketItemToRemove)).then(() => {
+					expect(store.getActions()).toEqual(expectedActions);
+					done();
+				})
 			});
 		});
 	});
 
-	it("dispatch removeItemError action when API requests failed", async () => {
-		const basketItem1 = BasketItem({ id: 1, title: "mockItem1" }, 1);
-		const basketItem2 = BasketItem({ id: 2, title: "mockItem2" }, 5);
-		const basketItemToRemove = BasketItem({ id: 3, title: "mockItem2" }, 10);
+	it("dispatch removeItemError action when API requests failed", (done) => {
+		const store = mockStore();
+		const jwt = "mockJwt";
+		const basketItemToRemove = { id: 3 }; 
 
 		moxios.wait(() => {
-			const postRequest = moxios.requests.mostRecent();
-			postRequest.reject({
-				status: 400,
-				response: { data: "Invalid data" },
-			});
+			moxios.stubRequest(
+				`https://localhost:5001/api/basket/${basketItemToRemove.id}`,
+				{
+					status: 400,
+					response: 'Invalid data'
+				}
+			);
 
-			moxios.wait(async () => {
-				const getRequest = moxios.requests.mostRecent();
-				getRequest.respondWith({
-					status: 200
-				});
+			moxios.wait(() => {
+				moxios.stubRequest(
+					`https://localhost:5001/api/basket`,
+					{
+						status: 200
+					}
+				);
 
-				const initialState = [basketItem1, basketItem2];
-				const jwt = "mockJwt";
-				const store = mockStore({ basket: initialState });
 				const expectedActions = [
 					{
 						type: basketActionTypes.REMOVE_ITEM_ERROR,
 						errorMessage: "Invalid data"
 					}
 				];
-				await store.dispatch(removeBasketItemAsync(jwt, basketItemToRemove));
-				expect(store.getActions()).toEqual(expectedActions);
+				store.dispatch(removeBasketItemAsync(jwt, basketItemToRemove)).then(() => {
+					expect(store.getActions()).toEqual(expectedActions);
+					done();
+				})
 			});
 		});	
 	});
@@ -217,16 +230,13 @@ describe("Testing updateQuantitysync action", () => {
 		moxios.uninstall();
 	});
 
-	it("dispatch updateQuantity action when user is NOT signed in", async () => {
+	it("dispatch updateQuantity action when user is NOT signed in", (done) => {
 		// no token when user is not signed in
 		const jwt = null;
 		const quantity = 1;
 		const basketItem1 = BasketItem({ id: 1, title: "mockItem1" }, quantity);
-		const basketItem2 = BasketItem({ id: 2, title: "mockItem2" }, quantity);
-
-		const initialState = [basketItem1, basketItem2];
 		const newQuantity = 10;
-		const store = mockStore({ basket: initialState });
+		const store = mockStore();
 		const expectedActions = [
 			{
 				type: basketActionTypes.UPDATE_QUANTITY,
@@ -235,53 +245,61 @@ describe("Testing updateQuantitysync action", () => {
 			}
 		];
 
-		await store.dispatch(updateQuantityAsync(jwt, basketItem1, newQuantity))
-		expect(store.getActions()).toEqual(expectedActions);
+		store.dispatch(updateQuantityAsync(jwt, basketItem1, newQuantity)).then(() => {
+			expect(store.getActions()).toEqual(expectedActions);
+			done();
+		})
 	});
 
-	it("dispatch updateBasket action when user IS signed in", async () => {
+	it("dispatch updateBasket action when user IS signed in", (done) => {
+		const jwt = "mockJwt";
+		const store = mockStore();
 		const basketItem1 = BasketItem({ id: 1, title: "mockItem1" }, 1);
 		const basketItem2 = BasketItem({ id: 2, title: "mockItem2" }, 1);
-
+		const id = 2;
+		basketItem2.id = 2; // add Id property 
 		const newQuantity = 10;
 		const updatedBasketItem2 = BasketItem({ id: 2, title: "mockItem2" }, newQuantity);
 		
-		const initialState = [basketItem1, basketItem2];
 		const expectedBasketItems = [basketItem1, updatedBasketItem2];
 
 		moxios.wait(() => {
-			const putRequest = moxios.requests.mostRecent();
-			putRequest.respondWith({
-				status: 200
-			});
+			moxios.stubRequest(
+				`https://localhost:5001/api/basket/${id}/${newQuantity}`,
+				{
+					status: 200
+				}
+			);
 
-			moxios.wait(async () => {
-				const getRequest = moxios.requests.mostRecent();
-				getRequest.respondWith({
-					status: 200,
-					response: expectedBasketItems,
-				});
+			moxios.wait(() => {
+				moxios.stubRequest(
+					`https://localhost:5001/api/basket`,
+					{
+						status: 200,
+						response: expectedBasketItems
+					}
+				);
 
-				const jwt = "mockJwt";
-				const store = mockStore({ basket: initialState });
 				const expectedActions = [
 					{
 						type: basketActionTypes.UPDATE_BASKET,
 						basketItems: expectedBasketItems
 					},
 				];
-				await store.dispatch(updateQuantityAsync(jwt, basketItem2, newQuantity));
-		
-				expect(store.getActions()).toEqual(expectedActions);
+				store.dispatch(updateQuantityAsync(jwt, basketItem2, newQuantity)).then(() => {
+					expect(store.getActions()).toEqual(expectedActions)
+					done()
+				})
 			});
 			
 		});
 	});
 
-	it("dispatch updateQuantityError action when API requests failed", async () => {
+	it("dispatch updateQuantityError action when API requests failed", (done) => {
 		const basketItem1 = BasketItem({ id: 1, title: "mockItem1" }, 1);
 		const basketItem2 = BasketItem({ id: 2, title: "mockItem2" }, 1);
-
+		const id = 2;
+		basketItem2.id = 2; // add Id property 
 		const newQuantity = 10;
 		const updatedBasketItem2 = BasketItem({ id: 2, title: "mockItem2" }, newQuantity);
 		
@@ -289,18 +307,22 @@ describe("Testing updateQuantitysync action", () => {
 		const expectedBasketItems = [basketItem1, updatedBasketItem2];
 
 		moxios.wait(() => {
-			const putRequest = moxios.requests.mostRecent();
-			putRequest.reject({
-				status: 400,
-				response: { data: "Invalid request" }
-			});
+			moxios.stubRequest(
+				`https://localhost:5001/api/basket/${id}/${newQuantity}`,
+					{
+						status: 400,
+						response: "Invalid request"
+					}
+			);
 
-			moxios.wait(async () => {
-				const getRequest = moxios.requests.mostRecent();
-				getRequest.respondWith({
-					status: 200,
-					response: expectedBasketItems,
-				});
+			moxios.wait(() => {
+				moxios.stubRequest(
+				`https://localhost:5001/api/basket`,
+					{
+						status: 200,
+						response: expectedBasketItems
+					}
+				);
 
 				const jwt = "mockJwt";
 				const store = mockStore({ basket: initialState });
@@ -310,9 +332,10 @@ describe("Testing updateQuantitysync action", () => {
 						errorMessage: "Invalid request"
 					}
 				];
-				await store.dispatch(updateQuantityAsync(jwt, basketItem2, newQuantity));
-		
-				expect(store.getActions()).toEqual(expectedActions);
+				store.dispatch(updateQuantityAsync(jwt, basketItem2, newQuantity)).then(() => {
+					expect(store.getActions()).toEqual(expectedActions);
+					done();
+				})
 			});
 		});
 	});

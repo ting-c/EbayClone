@@ -1,5 +1,6 @@
 import axios from 'axios';
 import errorActionCreator from '../error/errorAction';
+import getErrorMessage from '../error/errorMessage';
 
 export const authActionTypes = {
 	ADD_JWT: "JWT/ADD_JWT",
@@ -54,17 +55,7 @@ export const signInAsync = (data) => {
 				dispatch(addJwt(jwtString));
 			}
 		} catch (error) {
-			let errorMessage;
-			if (error.response) {
-				// Request made and server responded
-				errorMessage = error.response.data;
-			} else if (error.request) {
-				// The request was made but no response was received
-				errorMessage = error.request;
-			} else {
-				// Something happened in setting up the request that triggered an Error
-				errorMessage = error.message;
-			}
+			const errorMessage = getErrorMessage(error);
 			dispatch(errorActionCreator(authActionTypes.SIGNIN_ERROR, errorMessage));
 		}
 	};
@@ -81,17 +72,7 @@ export const signUpAsync = (data) => {
 				return dispatch(signInAsync(signInData));
 			}
 		} catch (error) {
-			let errorMessage;
-			if (error.response) {
-				// Request made and server responded
-				errorMessage = error.response.data;
-			} else if (error.request) {
-				// The request was made but no response was received
-				errorMessage = error.request;
-			} else {
-				// Something happened in setting up the request that triggered an Error
-				errorMessage = error.message;
-			}
+			const errorMessage = getErrorMessage(error);
 			dispatch(
 				errorActionCreator(authActionTypes.SIGNUP_ERROR, errorMessage)
 			);

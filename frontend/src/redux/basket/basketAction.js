@@ -1,5 +1,6 @@
 import axios from 'axios'
 import errorActionCreator from '../error/errorAction'
+import getErrorMessage from '../error/errorMessage';
 
 // Action types 
 export const basketActionTypes = {
@@ -77,20 +78,9 @@ export const addBasketItemAsync = (jwt, item, quantity) => {
 				// update basket with updated basket items
 				dispatch(updateBasket(basketItems));
 			} catch (error) {
-				let errorMessage;
-				if (error.response) {
-					// Request made and server responded
-					errorMessage = error.response.data;
-				} else if (error.request) {
-					// The request was made but no response was received
-					errorMessage = error.request;
-				} else {
-					// Something happened in setting up the request that triggered an Error
-					errorMessage = error.message;
-				}
+				const errorMessage = getErrorMessage(error);
 				dispatch(errorActionCreator(basketActionTypes.ADD_ITEM_ERROR, errorMessage));
 			}
-
 		} else {
 			// User is not signed in - create a basket item and add to basket
 			const basketItem = BasketItem(item, quantity);
@@ -112,20 +102,9 @@ export const removeBasketItemAsync = (jwt, basketItem) => {
 				// update basket with updated basket items
 				dispatch(updateBasket(basketItems));
 			} catch (error) {
-				let errorMessage;
-				if (error.response) {
-					// Request made and server responded
-					errorMessage = error.response.data;
-				} else if (error.request) {
-					// The request was made but no response was received
-					errorMessage = error.request;
-				} else {
-					// Something happened in setting up the request that triggered an Error
-					errorMessage = error.message;
-				}
+				const errorMessage = getErrorMessage(error);
 				dispatch(errorActionCreator(basketActionTypes.REMOVE_ITEM_ERROR, errorMessage));
 			}
-
 		} else {
 			// User is not signed in - remove the basket item from basket
 			dispatch(removeBasketItem(basketItem));
@@ -146,20 +125,9 @@ export const updateQuantityAsync = (jwt, basketItem, quantity) => {
 				// update basket with updated basket items
 				dispatch(updateBasket(basketItems));
 			} catch (error) {
-				let errorMessage;
-				if (error.response) {
-					// Request made and server responded
-					errorMessage = error.response.data;
-				} else if (error.request) {
-					// The request was made but no response was received
-					errorMessage = error.request;
-				} else {
-					// Something happened in setting up the request that triggered an Error
-					errorMessage = error.message;
-				}
+				const errorMessage = getErrorMessage(error);
 				dispatch(errorActionCreator(basketActionTypes.UPDATE_QUANTITY_ERROR, errorMessage))
 			}
-			
 		} else {
 			// User is not signed in - update quantity of the basket item
 			dispatch(updateQuantity(basketItem, quantity));

@@ -1,27 +1,39 @@
-import itemAPI from "../../api/itemAPI";
+import axios from "axios";
+import errorActionCreator from "../error/errorAction";
+import getErrorMessage from "../error/errorMessage";
 
-const updateDisplayItems = (displayItems) => {
+export const displayItemsActionTypes = {
+	UPDATE: "DISPLAY_ITEMS/UPDATE",
+	UPDATE_ERROR: "DISPLAY_ITEMS/UPDATE_ERROR"
+};
+
+export const updateDisplayItems = (displayItems) => {
 	return {
-		type: "DISPLAY_ITEMS/UPDATE",
+		type: displayItemsActionTypes.UPDATE,
 		displayItems,
 	};
 };
 
+export const BASE_URL = "https://localhost:5001/api/items";
 
 // Action that returns thunk functions
-const fetchItemsAsync = (searchTerm) => {
+export const fetchItemsAsync = (searchTerm=null) => {
 	return async function (dispatch, getState) {
-		const displayItems = searchTerm ? 
-			await itemAPI.getByTitle(searchTerm) :
-			// get all items if searchTerm == null
-			await itemAPI.get();
-		if (displayItems) {
+		try {
+			let response;
+			if (searchTerm) {
+				const url = `${BASE_URL}/search/${searchTerm}`;
+				response = await axios.get(url)
+			} else {
+				// get all items if searchTerm == null
+				response = await axios.get(BASE_URL)
+			}
+			const displayItems = response.data;
+			if (!displayItems) throw new Error("Failed to fetch data");
 			dispatch(updateDisplayItems(displayItems));
-		} else {
-			// To prevent undefined error if connection to backend fails
-			dispatch(updateDisplayItems([]));
+		} catch (error) {	
+			const errorMessage = getErrorMessage(error);
+			dispatch(errorActionCreator(displayItemsActionTypes.UPDATE_ERROR, errorMessage))
 		}
 	};
 }
-
-export { fetchItemsAsync };

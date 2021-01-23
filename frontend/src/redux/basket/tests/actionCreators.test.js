@@ -87,7 +87,7 @@ describe("Testing addBasketItemAsync action", () => {
 		});
 	});
 
-	it("dispatch updateBasket action when API requests failed", (done) => {
+	it("dispatch addItemError action when API requests failed", (done) => {
 		const store = mockStore();
 		const jwt = "mockJwt";
 		const itemToAdd = { id: 3, title: "mockItem3" };

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { signUpAsync } from '../../redux/auth/authAction'
@@ -128,10 +128,6 @@ const SignUp = ({ signUpAsync }) => {
 	);
 }
 
-const mapStateToProps = (state) => {
-	return { jwt: state.jwt }
-};
-
 const mapDispatchToProps = { signUpAsync }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(SignUp));
+export default withRouter(connect(null, mapDispatchToProps)(SignUp));

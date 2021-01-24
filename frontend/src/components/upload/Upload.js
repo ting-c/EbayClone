@@ -1,19 +1,24 @@
 import React, { useState } from 'react'
-import uploadAPI from '../../api/uploadAPI';
 import { connect } from 'react-redux'
 import './styles.scss'
+import axios from 'axios';
 
 const Upload = ({ itemId, jwt }) => {
 
 	const [selectedImages, setSelectedImages] = useState(null)
 
-	function handleUpload(){
+	async function handleUpload(){
 		const data = new FormData();
 		// loop through images and append to form data
 		for (var i = 0; i < selectedImages.length; i++) {
 			data.append("files", selectedImages[i]);
 		};
-		uploadAPI.upload(jwt, parseInt(itemId), data);
+		const url = `https://localhost:5001/api/upload/${itemId}`;
+		const config = {
+			headers: { 'Authorization': `Bearer ${jwt}` },
+		};
+
+		await axios.post(url, data, config);	
 	}
 
 	function onChangeHandler(event) {

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
 using EbayClone.API.Resources;
@@ -65,6 +66,7 @@ namespace EbayClone.API.Controllers
         [HttpPost("")]
         public async Task<IActionResult> CreateItem([FromBody] SaveItemResource saveItemResource)
         {
+
             var validator = new SaveItemResourceValidator();
             ValidationResult results = validator.Validate(saveItemResource);
 
@@ -88,9 +90,9 @@ namespace EbayClone.API.Controllers
 
 		[Authorize]
         [HttpPut("{id}")]
-		public async Task<IActionResult> UpdateItem(int userId, int itemId, [FromBody] SaveItemResource saveItemResource)
+		public async Task<IActionResult> UpdateItem(int itemId, [FromBody] SaveItemResource saveItemResource)
         {
-			bool IsValid = await CheckIfUserIsItemSeller(userId, itemId);
+			bool IsValid = await CheckIfUserIsItemSeller(itemId);
 			if (!IsValid)
 				return Unauthorized();
 
@@ -118,9 +120,9 @@ namespace EbayClone.API.Controllers
 
 		[Authorize]
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteItem(int userId, int itemId)
+        public async Task<IActionResult> DeleteItem(int itemId)
         {
-            bool IsValid = await CheckIfUserIsItemSeller(userId, itemId);
+            bool IsValid = await CheckIfUserIsItemSeller(itemId);
             if (!IsValid)
                 return Unauthorized();
 
@@ -149,9 +151,16 @@ namespace EbayClone.API.Controllers
 
 			return Ok();
 		}
-
-        private async Task<bool> CheckIfUserIsItemSeller(int userId, int itemId)
+        private int getUserId()
         {
+			// Get userId 
+			int userId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value);
+            return userId;
+        }
+
+        private async Task<bool> CheckIfUserIsItemSeller(int itemId)
+        {
+            var userId = getUserId();
             var item = await _itemService.GetItemById(itemId);
             if (item.SellerId == userId)
                 return true;

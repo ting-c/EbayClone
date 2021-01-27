@@ -10,6 +10,7 @@ import SearchResults from './pages/searchResults/SearchResults';
 import Item from './pages/item/Item';
 import UploadImage from './pages/uploadImage/UploadImage';
 import Basket from './pages/basket/Basket';
+import Sell from './pages/sell/Sell';
 
 function App() {
 
@@ -22,6 +23,7 @@ function App() {
           <Route exact path='/'><Home /></Route>
           <Route path='/results'><SearchResults /></Route>
           <Route path='/item/:id'><Item /></Route>
+          <Route path='/sell'><Sell /></Route>
           <Route path='/upload/:itemId'><UploadImage /></Route>
           <Route path='/signin'><SignIn /></Route>
           <Route path='/signup'><SignUp /></Route>

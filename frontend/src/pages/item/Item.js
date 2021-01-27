@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import './styles.scss'
-import itemAPI from '../../api/itemAPI'
 import { withRouter } from 'react-router-dom'
 import ImagePanel from '../../layouts/imagePanel/ImagePanel'
 import SummaryPanel from '../../layouts/summaryPanel/SummaryPanel'
+import axios from 'axios'
 
 const Item = ({ match }) => {
 	
@@ -14,9 +14,13 @@ const Item = ({ match }) => {
 	useEffect(() => {
 		fetchItems();
 	});
+	console.log(id)
 
 	async function fetchItems(){
-		const item = await itemAPI.getByItemId(id);
+		const BASE_URL = "https://localhost:5001/api/items";
+		const url = `${BASE_URL}/${id}`;
+		const response = await axios.get(url);
+		const item = response.data;
 		setItem(item);
 	}
 

@@ -33,7 +33,7 @@ const NavBar = ({ user, signOut }) => {
 							className="dropdown-menu"
 							aria-labelledby="dropdownMenuButton"
 						>
-							<li className="dropdown-item" id="signout" onClick={()=> signOut}>
+							<li className="dropdown-item" id="signout" onClick={signOut}>
 								<span>Sign out</span>
 							</li>
 						</ul>

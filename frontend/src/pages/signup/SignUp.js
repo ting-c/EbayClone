@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
-import { withRouter } from 'react-router-dom'
+import { Redirect, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { signUpAsync } from '../../redux/auth/authAction'
 
-const SignUp = ({ signUpAsync }) => {
+const SignUp = ({ signUpAsync, user }) => {
 	const [firstName, setFirstName] = useState('');
 	const [lastName, setLastName] = useState('');
 	const [email, setEmail] = useState('');
@@ -22,6 +22,11 @@ const SignUp = ({ signUpAsync }) => {
 			firstName, lastName, email, address, username, password 
 		}
 		await signUpAsync(data);
+	}
+
+	if (user) {
+		// Redirect to main page if authenticated
+		return (<Redirect to='/' />)
 	}
 
 	return (
@@ -128,6 +133,10 @@ const SignUp = ({ signUpAsync }) => {
 	);
 }
 
-const mapDispatchToProps = { signUpAsync }
+const mapStateToProps = (state) => {
+	return { user: state.user }
+};
 
-export default withRouter(connect(null, mapDispatchToProps)(SignUp));
+const mapDispatchToProps = { signUpAsync };
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(SignUp));

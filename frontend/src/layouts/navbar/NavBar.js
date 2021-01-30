@@ -57,7 +57,7 @@ const NavBar = ({ user, signOut }) => {
 				>
 					<ul className="navbar-right navbar-nav mb-2 mb-lg-0">
 						<li className="nav-item nav-link">
-							<Link to={user ? "/selling" : "/signin"}>Sell</Link>
+							<Link to="/sell">Sell</Link>
 						</li>
 						<li className="nav-item nav-link">
 							<div className="dropdown">

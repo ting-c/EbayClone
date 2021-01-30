@@ -1,18 +1,23 @@
 import React, { useState } from "react";
-import { withRouter } from 'react-router-dom'
+import { Redirect, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { signInAsync } from "../../redux/auth/authAction";
 
-const SignIn = ({ signInAsync }) => {
+const SignIn = ({ signInAsync, user }) => {
 	
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
-
+	
 	async function handleSubmit(e){
 		e.preventDefault();
 		const data = { email, password };
 		signInAsync(data);
 	};
+	
+	if (user) {
+		// Redirect to main page if authenticated
+		return (<Redirect to='/' />)
+	}
 
 	return (
 		<form onSubmit={handleSubmit}>
@@ -50,6 +55,10 @@ const SignIn = ({ signInAsync }) => {
 	);
 }
 
+const mapStateToProps = (state) => {
+	return { user: state.user }
+};
+
 const mapDispatchToProps = { signInAsync };
 
-export default withRouter(connect(null, mapDispatchToProps)(SignIn));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(SignIn));

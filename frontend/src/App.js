@@ -11,6 +11,7 @@ import Item from './pages/item/Item';
 import UploadImage from './pages/uploadImage/UploadImage';
 import Basket from './pages/basket/Basket';
 import Sell from './pages/sell/Sell';
+import ProtectedRoute from './ProtectedRoute';
 
 function App() {
 
@@ -23,11 +24,11 @@ function App() {
           <Route exact path='/'><Home /></Route>
           <Route path='/results'><SearchResults /></Route>
           <Route path='/item/:id'><Item /></Route>
-          <Route path='/sell'><Sell /></Route>
-          <Route path='/upload/:itemId'><UploadImage /></Route>
           <Route path='/signin'><SignIn /></Route>
           <Route path='/signup'><SignUp /></Route>
           <Route path='/basket'><Basket /></Route>
+          <ProtectedRoute path='/sell' component={Sell} />
+          <ProtectedRoute path='/upload/:itemId' component={UploadImage} />
         </Switch>
       </div>
     </Router>   

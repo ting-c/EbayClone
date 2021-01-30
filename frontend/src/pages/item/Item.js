@@ -14,7 +14,6 @@ const Item = ({ match }) => {
 	useEffect(() => {
 		fetchItems();
 	});
-	console.log(id)
 
 	async function fetchItems(){
 		const BASE_URL = "https://localhost:5001/api/items";

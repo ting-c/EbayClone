@@ -1,5 +1,6 @@
 import axios from 'axios';
 import React, { useState } from 'react'
+import { useHistory } from 'react-router-dom'
 import { connect } from 'react-redux';
 import getErrorMessage from '../../redux/error/errorMessage';
 import './styles.scss'
@@ -13,6 +14,8 @@ const Sell = ({ jwt }) => {
 
 	const [errorMessage, setErrorMessage] = useState(null);
 
+	const history = useHistory();
+
 	async function handleSubmit() {
 		const data = {
 			title, description, price, condition, isAuction: false
@@ -22,7 +25,9 @@ const Sell = ({ jwt }) => {
 		};
 		const BASE_URL = "https://localhost:5001/api/items";
 		try {
-			await axios.post(BASE_URL, data, config);
+			const response = await axios.post(BASE_URL, data, config);
+			const { id } = response.data;
+			history.push(`/upload/${id}`)
 		} catch (error) {
 			const errorMessage = getErrorMessage(error);
 			setErrorMessage(errorMessage);

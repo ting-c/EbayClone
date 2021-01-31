@@ -17,6 +17,8 @@ namespace EbayClone.Data.Repositories
 			return await EbayCloneDbContext.BasketItems
 				.Where(b => b.UserId == userId)
 				.Include(b => b.Item)
+				.ThenInclude(i => i.Seller)
+				.ThenInclude(i => i.ImageUrl)
 				.ToListAsync();
 		}
 

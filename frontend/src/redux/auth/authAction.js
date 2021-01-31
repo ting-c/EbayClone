@@ -53,6 +53,7 @@ export const signInAsync = (data) => {
 				const { user, jwtString } = userObject;
 				dispatch(addUser(user));
 				dispatch(addJwt(jwtString));
+				return userObject;
 			}
 		} catch (error) {
 			const errorMessage = getErrorMessage(error);

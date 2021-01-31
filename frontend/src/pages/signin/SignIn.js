@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import { Redirect, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { signInAsync } from "../../redux/auth/authAction";
+import { addExistingBasketItemsToDbAsync } from "../../redux/basket/basketAction";
 
-const SignIn = ({ signInAsync, user }) => {
+const SignIn = ({ signInAsync, jwt, basket, addExistingBasketItemsToDbAsync }) => {
 	
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
@@ -11,10 +12,13 @@ const SignIn = ({ signInAsync, user }) => {
 	async function handleSubmit(e){
 		e.preventDefault();
 		const data = { email, password };
-		signInAsync(data);
+		let { jwtString: jwt } = await signInAsync(data);
+		if (jwt) {
+			await addExistingBasketItemsToDbAsync(jwt, basket);
+		}
 	};
 	
-	if (user) {
+	if (jwt) {
 		// Redirect to main page if authenticated
 		return (<Redirect to='/' />)
 	}
@@ -56,9 +60,12 @@ const SignIn = ({ signInAsync, user }) => {
 }
 
 const mapStateToProps = (state) => {
-	return { user: state.user }
+	return { 
+		jwt: state.jwt,
+		basket: state.basket 
+	}
 };
 
-const mapDispatchToProps = { signInAsync };
+const mapDispatchToProps = { signInAsync, addExistingBasketItemsToDbAsync };
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(SignIn));

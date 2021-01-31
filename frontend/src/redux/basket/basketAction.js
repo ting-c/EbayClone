@@ -55,12 +55,12 @@ export const BasketItem = (item, quantity) => {
 }
 
 // Axios config
-const BASE_URL = "https://localhost:5001/api/basket";
+export const BASE_URL = "https://localhost:5001/api/basketitem";
 
 // For authorized requests
 const getConfig = (jwt) => {
 	return {
-		headers: { Authorization: `Bearer ${jwt}` },
+		headers: { 'Authorization': `Bearer ${jwt}` },
 	};
 };
 
@@ -131,6 +131,42 @@ export const updateQuantityAsync = (jwt, basketItem, quantity) => {
 		} else {
 			// User is not signed in - update quantity of the basket item
 			dispatch(updateQuantity(basketItem, quantity));
+		}
+	};
+}
+
+export const addExistingBasketItemsToDbAsync = (jwt, basket) => {
+	return async function (dispatch, getState) {
+		try {
+			await Promise.all( 
+			// loop through basket and add basket items
+				basket.map( async (basketItem) => {
+				const { itemId, quantity } = basketItem;
+				// User is signed in - add item to db
+				const url = `${BASE_URL}/${itemId}/${quantity}`;
+				await axios.post(url, null, getConfig(jwt));
+			}));
+		} catch (error) { 
+			const errorMessage = getErrorMessage(error);
+			dispatch(errorActionCreator(
+				basketActionTypes.ADD_ITEM_ERROR,
+				errorMessage
+			));
+			return
+		}
+	
+		// Once done adding basket items, get updated basket items from db
+		try {
+			const response = await axios.get(BASE_URL, getConfig(jwt));
+			const basketItems = response.data;
+			// update basket with updated basket items
+			dispatch(updateBasket(basketItems));
+		} catch (error) {
+			const errorMessage = getErrorMessage(error);
+			dispatch(errorActionCreator(
+				basketActionTypes.UPDATE_BASKET_ERROR,
+				errorMessage
+			));
 		}
 	};
 }

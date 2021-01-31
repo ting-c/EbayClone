@@ -8,10 +8,13 @@ import {
 	addBasketItemAsync,
 	removeBasketItemAsync,
 	updateQuantityAsync,
+	addExistingBasketItemsToDbAsync
 } from "../basketAction";
 
 // import factory function
 import { BasketItem } from '../basketAction';
+
+import { BASE_URL } from '../basketAction';
 
 // Testing action creators
 const middlewares = [thunk];
@@ -58,7 +61,7 @@ describe("Testing addBasketItemAsync action", () => {
 		
 		moxios.wait(() => {
 			moxios.stubRequest(
-				`https://localhost:5001/api/basket/${itemToAdd.id}/${quantity}`,
+				`${BASE_URL}/${itemToAdd.id}/${quantity}`,
 				{
 					status: 200,
 				}
@@ -66,7 +69,7 @@ describe("Testing addBasketItemAsync action", () => {
 
 			moxios.wait(async () => {
 				moxios.stubRequest(
-					`https://localhost:5001/api/basket`,
+					BASE_URL,
 					{
 						status: 200,
 						response: expectedBasketItems,
@@ -95,7 +98,7 @@ describe("Testing addBasketItemAsync action", () => {
 		
 		moxios.wait(() => {
 			moxios.stubRequest(
-				`https://localhost:5001/api/basket/${itemToAdd.id}/${quantity}`,
+				`${BASE_URL}/${itemToAdd.id}/${quantity}`,
 				{
 					status: 400,
 					response: "Invalid data"
@@ -155,7 +158,7 @@ describe("Testing removeBasketItemAsync action", () => {
 		
 		moxios.wait(() => {
 			moxios.stubRequest(
-				`https://localhost:5001/api/basket/${basketItemToRemove.id}`,
+				`${BASE_URL}/${basketItemToRemove.id}`,
 				{
 					status: 200
 				}
@@ -163,7 +166,7 @@ describe("Testing removeBasketItemAsync action", () => {
 
 			moxios.wait(() => {
 				moxios.stubRequest(
-					`https://localhost:5001/api/basket`,
+					BASE_URL,
 					{
 						status: 200,
 						response: expectedBasketItems
@@ -191,7 +194,7 @@ describe("Testing removeBasketItemAsync action", () => {
 
 		moxios.wait(() => {
 			moxios.stubRequest(
-				`https://localhost:5001/api/basket/${basketItemToRemove.id}`,
+				`${BASE_URL}/${basketItemToRemove.id}`,
 				{
 					status: 400,
 					response: 'Invalid data'
@@ -200,7 +203,7 @@ describe("Testing removeBasketItemAsync action", () => {
 
 			moxios.wait(() => {
 				moxios.stubRequest(
-					`https://localhost:5001/api/basket`,
+					BASE_URL,
 					{
 						status: 200
 					}
@@ -265,7 +268,7 @@ describe("Testing updateQuantitysync action", () => {
 
 		moxios.wait(() => {
 			moxios.stubRequest(
-				`https://localhost:5001/api/basket/${id}/${newQuantity}`,
+				`${BASE_URL}/${id}/${newQuantity}`,
 				{
 					status: 200
 				}
@@ -273,7 +276,7 @@ describe("Testing updateQuantitysync action", () => {
 
 			moxios.wait(() => {
 				moxios.stubRequest(
-					`https://localhost:5001/api/basket`,
+					BASE_URL,
 					{
 						status: 200,
 						response: expectedBasketItems
@@ -308,7 +311,7 @@ describe("Testing updateQuantitysync action", () => {
 
 		moxios.wait(() => {
 			moxios.stubRequest(
-				`https://localhost:5001/api/basket/${id}/${newQuantity}`,
+				`${BASE_URL}/${id}/${newQuantity}`,
 					{
 						status: 400,
 						response: "Invalid request"
@@ -317,7 +320,7 @@ describe("Testing updateQuantitysync action", () => {
 
 			moxios.wait(() => {
 				moxios.stubRequest(
-				`https://localhost:5001/api/basket`,
+					BASE_URL,
 					{
 						status: 200,
 						response: expectedBasketItems
@@ -339,5 +342,193 @@ describe("Testing updateQuantitysync action", () => {
 			});
 		});
 	});
+});
+
+
+// addExistingBasketItemsToDbAsync
+describe("Testing addExistingBasketItemsToDoAsync action", () => {
+	beforeEach(function () {
+		moxios.install();
+	});
+	afterEach(function () {
+		moxios.uninstall();
+	});
+	const jwt = "mockJwt";
+	const basketItem1 = BasketItem({ id: 1, title: "mockItem1" }, 1);
+	const basketItem2 = BasketItem({ id: 2, title: "mockItem2" }, 1);
+	const basket = [basketItem1, basketItem2];
+	const expectedBasketItems = [basketItem1, basketItem2];
+	
+	it("dispatch updateBasket action when POST requests are successful", (done) => {
+		const store = mockStore();
+
+		moxios.wait(() => {
+			moxios.stubRequest(
+				`${BASE_URL}/${basketItem1.itemId}/${basketItem1.quantity}`,
+				{
+					status: 200
+				}
+				);
+
+				moxios.wait(() => {
+					moxios.stubRequest(
+						`${BASE_URL}/${basketItem2.itemId}/${basketItem2.quantity}`,
+						{
+							status: 200
+						}
+						);
+						
+						moxios.wait(() => {
+							moxios.stubRequest(
+								BASE_URL,
+								{
+									status: 200,
+									response: expectedBasketItems
+								}
+								);
+								
+								const expectedActions = [
+									{
+										type: basketActionTypes.UPDATE_BASKET,
+										basketItems: expectedBasketItems
+									},
+								];
+								store.dispatch(addExistingBasketItemsToDbAsync(jwt, basket)).then(() => {
+									expect(store.getActions()).toEqual(expectedActions)
+									done()
+								})
+							});
+			});
+		});
+	});
+
+	it("dispatch addItemError action when the first POST request is unsuccessful", (done) => {
+		const store = mockStore();
+		moxios.wait(() => {
+			moxios.stubRequest(
+				`${BASE_URL}/${basketItem1.itemId}/${basketItem1.quantity}`,
+				{
+					status: 400,
+					response: 'Invalid request'
+				}
+			);
+
+			moxios.wait(() => {
+				moxios.stubRequest(
+					`${BASE_URL}/${basketItem2.itemId}/${basketItem2.quantity}`,
+					{
+						status: 200,
+					}
+				);
+
+				moxios.wait(() => {
+					moxios.stubRequest(
+						BASE_URL,
+						{
+							status: 200,
+							response: expectedBasketItems
+						}
+					);
+
+					const expectedActions = [
+						{
+							type: basketActionTypes.ADD_ITEM_ERROR,
+							errorMessage: 'Invalid request'
+						},
+					];
+					store.dispatch(addExistingBasketItemsToDbAsync(jwt, basket)).then(() => {
+						expect(store.getActions()).toEqual(expectedActions)
+						done()
+					})
+				});
+			});
+		});
+	});
+
+	it("dispatch addItemError action when the first POST request is successful but the subsequent POST request is unsuccessful", (done) => {
+		const store = mockStore();
+		moxios.wait(() => {
+			moxios.stubRequest(
+				`${BASE_URL}/${basketItem1.itemId}/${basketItem1.quantity}`,
+				{
+					status: 200,
+				}
+			);
+
+			moxios.wait(() => {
+				moxios.stubRequest(
+					`${BASE_URL}/${basketItem2.itemId}/${basketItem2.quantity}`,
+					{
+						status: 400,
+						response: 'Invalid request'
+					}
+				);
+
+				moxios.wait(() => {
+					moxios.stubRequest(
+						BASE_URL,
+						{
+							status: 200,
+							response: expectedBasketItems
+						}
+					);
+
+					const expectedActions = [
+						{
+							type: basketActionTypes.ADD_ITEM_ERROR,
+							errorMessage: 'Invalid request'
+						},
+					];
+					store.dispatch(addExistingBasketItemsToDbAsync(jwt, basket)).then(() => {
+						expect(store.getActions()).toEqual(expectedActions)
+						done()
+					})
+				});
+			});
+		});
+	});
+
+	it("dispatch updateBasketError action when the GET request is unsuccessful", (done) => {
+		const store = mockStore();
+		moxios.wait(() => {
+			moxios.stubRequest(
+				`${BASE_URL}/${basketItem1.itemId}/${basketItem1.quantity}`,
+				{
+					status: 200,
+				}
+			);
+
+			moxios.wait(() => {
+				moxios.stubRequest(
+					`${BASE_URL}/${basketItem2.itemId}/${basketItem2.quantity}`,
+					{
+						status: 200
+					}
+				);
+
+				moxios.wait(() => {
+					moxios.stubRequest(
+						BASE_URL,
+						{
+							status: 400,
+							response: 'Invalid request'
+						}
+					);
+
+					const expectedActions = [
+						{
+							type: basketActionTypes.UPDATE_BASKET_ERROR,
+							errorMessage: 'Invalid request'
+						},
+					];
+					store.dispatch(addExistingBasketItemsToDbAsync(jwt, basket)).then(() => {
+						expect(store.getActions()).toEqual(expectedActions)
+						done()
+					})
+				});
+			});
+		});
+	});
+
 });
 

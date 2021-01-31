@@ -7,9 +7,10 @@ const BasketItemPanel = ({ basket }) => {
 	return (
 		<div className="basket-item-panel">
 			<ul className="list-group">
-				{basket.map((basketItem, idx) => (
+				{ basket.length !== 0 ? basket.map((basketItem, idx) => (
 					<BasketItem basketItem={basketItem} key={idx} /> 
-				))}
+				)) : null
+				}
 			</ul>
 		</div>
 	);

@@ -49,7 +49,7 @@ namespace EbayClone.API.Controllers
 			int userId = GetUserId();
 			bool isAuthorized = await IsAuthorized(userId, basketItemId);
 
-			if (isAuthorized)
+			if (!isAuthorized)
 				return Unauthorized();
 
 			var basketItem = await _basketItemService.GetBasketItemById(basketItemId);

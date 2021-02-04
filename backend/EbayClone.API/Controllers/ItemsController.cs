@@ -19,6 +19,7 @@ namespace EbayClone.API.Controllers
     {
         private readonly IItemService _itemService;
         private readonly IMapper _mapper;
+        private readonly ClaimsPrincipal _user;
 
         public ItemsController(IItemService itemService, IMapper mapper)
         {
@@ -90,28 +91,26 @@ namespace EbayClone.API.Controllers
 
 		[Authorize]
         [HttpPut("{id}")]
-		public async Task<IActionResult> UpdateItem(int itemId, [FromBody] SaveItemResource saveItemResource)
+		public async Task<IActionResult> UpdateItem(int id, [FromBody] SaveItemResource saveItemResource)
         {
-			bool IsValid = await CheckIfUserIsItemSeller(itemId);
+            var currentItem = await _itemService.GetItemById(id);
+            if (currentItem == null)
+                return NotFound();
+
+			bool IsValid = await CheckIfUserIsItemSeller(id);
 			if (!IsValid)
 				return Unauthorized();
 
             var validator = new SaveItemResourceValidator();
             ValidationResult results = await validator.ValidateAsync(saveItemResource);
-
             if (!results.IsValid)
                 return BadRequest(results.Errors);
-
-            var currentItem = await _itemService.GetItemById(itemId);
-
-            if (currentItem == null)
-                return NotFound();
 
             Item modifiedItem = _mapper.Map<SaveItemResource, Item>(saveItemResource);
 
             await _itemService.UpdateItem(currentItem, modifiedItem);
 
-            Item updatedItem = await _itemService.GetItemById(itemId);
+            Item updatedItem = await _itemService.GetItemById(id);
 
             ItemResource updatedItemResource = _mapper.Map<Item, ItemResource>(updatedItem);
 

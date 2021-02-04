@@ -19,6 +19,8 @@ namespace EbayClone.API.Validators
                 .MaximumLength(50);
             RuleFor(i => i.IsAuction)
                 .NotNull();
+            RuleFor(i => i.Quantity)
+                .NotNull();
             RuleFor(i => i.SellerId)
                 .NotNull()
                 .WithMessage("'Seller Id' cannot be 0.");

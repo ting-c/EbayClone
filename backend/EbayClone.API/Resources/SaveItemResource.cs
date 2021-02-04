@@ -7,6 +7,7 @@ namespace EbayClone.API.Resources
 		public decimal Price { get; set; }
 		public string Condition { get; set; }
 		public bool IsAuction { get; set; }
-        public int SellerId { get; set; }
+		public int Quantity { get; set; }
+      public int SellerId { get; set; }
     }
 }

@@ -126,6 +126,7 @@ namespace Tests.API.Controllers
                 Title = null
             };
 			var controller = new ItemsController(_mockItemService.Object, _mapper);
+            SetupHttpContextUser(controller, _user);
             
 			// Act
 			var actionResult = await controller.CreateItem(saveItemResource);
@@ -138,8 +139,6 @@ namespace Tests.API.Controllers
 		public async Task CreateItem_ReturnNotFoundObject_WhenCreateItemMethodReturnsNull()
 		{
 			//Arrange
-			// var itemToCreate = GetTestItems().FirstOrDefault(
-			// 	i => i.Id == 1);
 			var saveItemResource = new SaveItemResource()
 			{
 				Title = "Item 1",
@@ -155,12 +154,41 @@ namespace Tests.API.Controllers
 				.ReturnsAsync((Item)null);
 
 			var controller = new ItemsController(_mockItemService.Object, _mapper);
+			SetupHttpContextUser(controller, _user);
 
 			// Act
 			var actionResult = await controller.CreateItem(saveItemResource);
 
 			// Assert
 			Assert.IsType<NotFoundResult>(actionResult);
+		}
+
+		[Fact]
+		public async Task CreateItem_ReturnOkObjectResult_WhenCreateItemIsSuccess()
+		{
+			//Arrange
+			var saveItemResource = new SaveItemResource()
+			{
+				Title = "Item 1",
+                Description = "Description",
+				Price = 30.00M,
+				Condition = "New",
+                Quantity = 1,
+				IsAuction = false
+			};
+            var newItem = _mapper.Map<SaveItemResource, Item>(saveItemResource);
+
+			_mockItemService.Setup(service => service.CreateItem(It.IsAny<Item>()))
+				.ReturnsAsync(newItem);
+
+			var controller = new ItemsController(_mockItemService.Object, _mapper);
+			SetupHttpContextUser(controller, _user);
+
+			// Act
+			var actionResult = await controller.CreateItem(saveItemResource);
+
+			// Assert
+			Assert.IsType<OkObjectResult>(actionResult);
 		}
 
 		[Fact]

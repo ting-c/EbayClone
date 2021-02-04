@@ -19,7 +19,6 @@ namespace EbayClone.API.Controllers
     {
         private readonly IItemService _itemService;
         private readonly IMapper _mapper;
-        private readonly ClaimsPrincipal _user;
 
         public ItemsController(IItemService itemService, IMapper mapper)
         {
@@ -67,6 +66,7 @@ namespace EbayClone.API.Controllers
         [HttpPost("")]
         public async Task<IActionResult> CreateItem([FromBody] SaveItemResource saveItemResource)
         {
+            saveItemResource.SellerId = getUserId();
 
             var validator = new SaveItemResourceValidator();
             ValidationResult results = validator.Validate(saveItemResource);

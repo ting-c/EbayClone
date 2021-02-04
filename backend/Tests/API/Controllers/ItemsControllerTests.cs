@@ -164,6 +164,35 @@ namespace Tests.API.Controllers
 		}
 
 		[Fact]
+		public async Task UpdateItem_ReturnUnauthorizedResult_WhenUserIsNotTheItemSeller()
+		{
+			//Arrange
+            var itemId = 1;
+			var saveItemResource = new SaveItemResource()
+			{
+				Title = null,
+                SellerId = 1
+			};
+            var item = new Item() { SellerId = 1 };
+			_mockItemService.Setup(service => service.GetItemById(itemId))
+			.ReturnsAsync(item);
+			var controller = new ItemsController(_mockItemService.Object, _mapper);
+            var unauthorizedUser = new ClaimsPrincipal(new ClaimsIdentity(
+				 new Claim[]
+				 {
+					 new Claim(ClaimTypes.NameIdentifier, "2")
+				 }
+				 , "TestAuthentication"));
+			SetupHttpContextUser(controller, unauthorizedUser);
+
+			// Act
+			var actionResult = await controller.UpdateItem(itemId, saveItemResource);
+
+			// Assert
+			Assert.IsType<UnauthorizedResult>(actionResult);
+		}
+
+		[Fact]
 		public async Task UpdateItem_ReturnBadRequestResult_WhenSaveItemResourceIsInvalid()
 		{
 			//Arrange
@@ -178,7 +207,7 @@ namespace Tests.API.Controllers
 			_mockItemService.Setup(service => service.GetItemById(itemId))
 			.ReturnsAsync(item);
 			var controller = new ItemsController(_mockItemService.Object, _mapper);
-			SetupHttpContextUser(controller);
+			SetupHttpContextUser(controller, _user);
 
 			// Act
 			var actionResult = await controller.UpdateItem(itemId, saveItemResource);
@@ -207,7 +236,7 @@ namespace Tests.API.Controllers
 				.ReturnsAsync((Item)null);
 
 			var controller = new ItemsController(_mockItemService.Object, _mapper);
-			SetupHttpContextUser(controller);
+			SetupHttpContextUser(controller, _user);
 
 			// Act
 			var result = await controller.UpdateItem(itemToBeUpdated.Id, saveItemResource);
@@ -258,7 +287,7 @@ namespace Tests.API.Controllers
                 });
 
 			var controller = new ItemsController(_mockItemService.Object, _mapper);
-			SetupHttpContextUser(controller);
+			SetupHttpContextUser(controller, _user);
 
 			// Act
 			var result = await controller.UpdateItem(itemId, saveItemResource);
@@ -334,10 +363,10 @@ namespace Tests.API.Controllers
             return (T) ((ObjectResult) result.Result).Value;
         }
 
-        private void SetupHttpContextUser(ItemsController controller)
+        private void SetupHttpContextUser(ItemsController controller, ClaimsPrincipal user)
         {
 			controller.ControllerContext = new ControllerContext();
-			controller.ControllerContext.HttpContext = new DefaultHttpContext { User = _user };
+			controller.ControllerContext.HttpContext = new DefaultHttpContext { User = user };
         }
     }
 }

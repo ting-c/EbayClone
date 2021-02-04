@@ -121,13 +121,14 @@ namespace EbayClone.API.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteItem(int itemId)
         {
+            var item = await _itemService.GetItemById(itemId);
+            if (item == null)
+                return NotFound();
+                
             bool IsValid = await CheckIfUserIsItemSeller(itemId);
             if (!IsValid)
                 return Unauthorized();
 
-            var item = await _itemService.GetItemById(itemId);
-            if (item == null)
-                return NotFound();
 
             await _itemService.DeleteItem(item);
 

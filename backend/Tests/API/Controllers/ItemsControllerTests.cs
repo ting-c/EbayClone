@@ -205,12 +205,12 @@ namespace Tests.API.Controllers
 			_mockItemService.Setup(service => service.GetItemById(itemId))
 			.ReturnsAsync(item);
 			var controller = new ItemsController(_mockItemService.Object, _mapper);
-            var unauthorizedUser = new ClaimsPrincipal(new ClaimsIdentity(
-				 new Claim[]
-				 {
-					 new Claim(ClaimTypes.NameIdentifier, "2")
-				 }
-				 , "TestAuthentication"));
+			var unauthorizedUser = new ClaimsPrincipal(new ClaimsIdentity(
+				new Claim[]
+				{
+					new Claim(ClaimTypes.NameIdentifier, "2")
+				}
+				, "TestAuthentication"));
 			SetupHttpContextUser(controller, unauthorizedUser);
 
 			// Act
@@ -229,9 +229,9 @@ namespace Tests.API.Controllers
 			var saveItemResource = new SaveItemResource()
 			{
 				Title = null,
-                SellerId = userId
+            SellerId = userId
 			};
-            var item = new Item() { SellerId = userId };
+         var item = new Item() { SellerId = userId };
 			_mockItemService.Setup(service => service.GetItemById(itemId))
 			.ReturnsAsync(item);
 			var controller = new ItemsController(_mockItemService.Object, _mapper);
@@ -248,16 +248,15 @@ namespace Tests.API.Controllers
 		public async Task UpdateItem_ReturnNotFoundObject_WhenGetItemByIdReturnsNull()
 		{
 			//Arrange
-            var testItemId = 1;
-			var itemToBeUpdated = GetTestItems().FirstOrDefault(
-				i => i.Id == testItemId);
+         var testItemId = 1;
+			var itemToBeUpdated = GetTestItems().FirstOrDefault(i => i.Id == testItemId);
 			var saveItemResource = new SaveItemResource()
-            {
-                Title = "Item 1",
-                Price = 30.00m,
-                Condition = "New",
-                IsAuction = false,
-                SellerId = 1
+			{
+					Title = "Item 1",
+					Price = 30.00m,
+					Condition = "New",
+					IsAuction = false,
+               SellerId = 1
 			};
 
 			_mockItemService.Setup(service => service.GetItemById(testItemId))
@@ -277,7 +276,7 @@ namespace Tests.API.Controllers
 		public async Task UpdateItem_ReturnItemResourceInOkObjectResult_WhenUpdateIsSuccess()
 		{
 			//Arrange
-            var itemId = 1;
+         var itemId = 1;
 			var saveItemResource = new SaveItemResource()
 			{
 				Title = "Updated Item 1",
@@ -289,112 +288,175 @@ namespace Tests.API.Controllers
 			};
 			var currentItem = GetTestItems().FirstOrDefault(
 				i => i.Id == itemId);
-            var expectedItemResource = new ItemResource()
-            {
-                Id = itemId,
+			var expectedItemResource = new ItemResource()
+			{
+				Id = itemId,
 				Title = "Updated Item 1",
 				Price = 30.00M,
 				Condition = "New",
 				IsAuction = false,
-                Quantity = 1,
+				Quantity = 1,
 				SellerId = 1,
-                ImageUrl = new List<FilePath>()
-            };
-            var updatedItem = _mapper.Map<ItemResource, Item>(expectedItemResource);
+				ImageUrl = new List<FilePath>()
+			};
+			var updatedItem = _mapper.Map<ItemResource, Item>(expectedItemResource);
 
-            // subsequent call to GetItemById method to return updatedItem
-            bool firstCall = true;
-            _mockItemService.Setup(service => service.GetItemById(itemId))
-                .ReturnsAsync(() => {
-                    if (firstCall)
-                    {
-                        firstCall = false;
-                        return currentItem;
-                    }
-                    return updatedItem;
-                });
+			// subsequent call to GetItemById method to return updatedItem
+			bool firstCall = true;
+			_mockItemService.Setup(service => service.GetItemById(itemId))
+				.ReturnsAsync(() => {
+					if (firstCall)
+					{
+						firstCall = false;
+						return currentItem;
+					}
+					return updatedItem;
+				});
 
 			var controller = new ItemsController(_mockItemService.Object, _mapper);
 			SetupHttpContextUser(controller, _user);
 
 			// Act
 			var result = await controller.UpdateItem(itemId, saveItemResource);
-            var objectResult = result as OkObjectResult;
-            var value = objectResult.Value as ItemResource;
+			var objectResult = result as OkObjectResult;
+			var value = objectResult.Value as ItemResource;
 
 			// Assert
 			Assert.IsType<OkObjectResult>(result);
 			Assert.Equal(serializeObject(expectedItemResource), serializeObject(value));
 		}
 
-		private string serializeObject<T>(T obj)
-        {
-            return JsonConvert.SerializeObject(obj);
-        }
+		[Fact]
+		public async Task DeleteItem_ReturnUnauthorizedResult_WhenUserIsNotTheItemSeller()
+		{
+			// Arrange
+			var sellerId = 1;
+			var item = GetTestItems().FirstOrDefault(i => i.SellerId == sellerId);
+			// setup GetItemById to return null
+			_mockItemService.Setup(service => service.GetItemById(It.IsAny<int>()))
+				.ReturnsAsync(item);
+			var controller = new ItemsController(_mockItemService.Object, _mapper);
+			var unauthorizedUser = new ClaimsPrincipal(new ClaimsIdentity(
+				new Claim[]
+				{
+					new Claim(ClaimTypes.NameIdentifier, "2")
+				}
+				, "TestAuthentication"));
+			SetupHttpContextUser(controller, unauthorizedUser);
 
-        private IEnumerable<ItemResource> GetTestItemResources()
-        {
-            var itemResources = new List<ItemResource>();
+			// Act
+			var actionResult = await controller.DeleteItem(item.Id);
+
+			// Assert
+			Assert.IsType<UnauthorizedResult>(actionResult);
+		}
+
+		[Fact]
+		public async Task DeleteItem_ReturnNotFoundResult_WhenItemIsNotFound()
+		{
+			// Arrange
+			var itemId = 1;
+			var item = GetTestItems().FirstOrDefault(i => i.Id == itemId);
+			// setup GetItemById to return null
+			_mockItemService.Setup(service => service.GetItemById(It.IsAny<int>()))
+				.ReturnsAsync((Item)null);
+			var controller = new ItemsController(_mockItemService.Object, _mapper);
+			SetupHttpContextUser(controller, _user);
+
+			// Act
+			var actionResult = await controller.DeleteItem(itemId);
+
+			// Assert
+			Assert.IsType<NotFoundResult>(actionResult);
+		}
+
+		[Fact]
+		public async Task DeleteItem_ReturnNoContentResult_WhenDeleteItemIsSuccess()
+		{
+			// Arrange
+			var itemId = 1;
+			var item = GetTestItems().FirstOrDefault(i => i.Id == itemId);
+			// setup GetItemById to return null
+			_mockItemService.Setup(service => service.GetItemById(It.IsAny<int>()))
+				.ReturnsAsync(item);
+			var controller = new ItemsController(_mockItemService.Object, _mapper);
+			SetupHttpContextUser(controller, _user);
+
+			// Act
+			var actionResult = await controller.DeleteItem(itemId);
+
+			// Assert
+			Assert.IsType<NoContentResult>(actionResult);
+		}
+
+		private string serializeObject<T>(T obj)
+      {
+         return JsonConvert.SerializeObject(obj);
+		}
+
+		private IEnumerable<ItemResource> GetTestItemResources()
+		{
+			var itemResources = new List<ItemResource>();
 			itemResources.Add(new ItemResource()
-            {
-                Id = 1,
-                Title = "Item 1",
-                Price = 30.00M,
-                Condition = "New",
-                IsAuction = false,
-                Quantity = 1,
-                SellerId = 1
-            });
+			{
+				Id = 1,
+				Title = "Item 1",
+				Price = 30.00M,
+				Condition = "New",
+				IsAuction = false,
+				Quantity = 1,
+				SellerId = 1
+			});
 			itemResources.Add(new ItemResource()
-            {
+			{
 				Id = 2,
 				Title = "Item 2",
 				Price = 40.00M,
 				Condition = "New",
 				IsAuction = false,
-                Quantity = 1,
+				Quantity = 1,
 				SellerId = 1
-            });
+			});
 
-            return itemResources;
-        }
+			return itemResources;
+		}
 
-        private IEnumerable<Item> GetTestItems()
-        {
-            var items = new List<Item>();
+      private IEnumerable<Item> GetTestItems()
+      {
+         var items = new List<Item>();
 			items.Add(new Item()
-            {
-                Id = 1,
+			{
+				Id = 1,
 				Title = "Item 1",
 				Price = 30.00M,
 				Condition = "New",
 				IsAuction = false,
-                Quantity = 1,
+				Quantity = 1,
 				SellerId = 1
-            });
+			});
 			items.Add(new Item()
-            {
-                Id = 2,
+         {
+            Id = 2,
 				Title = "Item 2",
 				Price = 40.00M,
 				Condition = "New",
 				IsAuction = false,
-                Quantity = 1,
+            Quantity = 1,
 				SellerId = 1
-            });
+         });
 
-            return items;
-        }
+         return items;
+      }
 
-        private static T GetObjectResultContent<T>(ActionResult<T> result)
-        {
-            return (T) ((ObjectResult) result.Result).Value;
-        }
+		private static T GetObjectResultContent<T>(ActionResult<T> result)
+		{
+			return (T) ((ObjectResult) result.Result).Value;
+		}
 
-        private void SetupHttpContextUser(ItemsController controller, ClaimsPrincipal user)
-        {
+		private void SetupHttpContextUser(ItemsController controller, ClaimsPrincipal user)
+		{
 			controller.ControllerContext = new ControllerContext();
 			controller.ControllerContext.HttpContext = new DefaultHttpContext { User = user };
-        }
+		}
     }
 }

@@ -35,7 +35,7 @@ namespace EbayClone.API.Controllers
             bool IsSuccess = await _authService.CreateNewUser(user, userSignUpResource.Password, roleName);
             
             if (!IsSuccess)
-                return Problem("Sign up error", null, 500);
+                return StatusCode(500, "Sign up error");
 
             return Created(string.Empty, "Sign up success");
         }

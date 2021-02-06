@@ -26,33 +26,39 @@ namespace EbayClone.API.Controllers
 			int userId = GetUserId();
 
 			var basketItems = await _basketItemService.GetAllBasketItems(userId);
+			if (basketItems == null)
+				return NotFound(); 
+
 			return Ok(basketItems);
 		}
 
 		[HttpPost("{itemId}/{quantity}")]
 		public async Task<IActionResult> AddBasketItem(int itemId, int quantity=1)
 		{
-			int userId = GetUserId();
-
 			if (quantity < 1 || quantity > 50)
-				return Problem("Invalid quantity");
+				return BadRequest("Invalid quantity");
 
+			int userId = GetUserId();
 			var newBasketItem = new BasketItem(itemId, userId, quantity);
 
 			var basketItem = await _basketItemService.AddBasketItem(newBasketItem);
+			if (basketItem == null)
+				return NotFound();
+
 			return Ok(basketItem);
 		}
 
 		[HttpDelete("{basketItemId}")]
 		public async Task<IActionResult> RemoveBasketItem(int basketItemId)
 		{
+			var basketItem = await _basketItemService.GetBasketItemById(basketItemId);
+			if (basketItem == null)
+				return NotFound();
+
 			int userId = GetUserId();
 			bool isAuthorized = await IsAuthorized(userId, basketItemId);
-
 			if (!isAuthorized)
 				return Unauthorized();
-
-			var basketItem = await _basketItemService.GetBasketItemById(basketItemId);
 
 			await _basketItemService.RemoveBasketItem(basketItem);
 			return Ok();
@@ -61,10 +67,13 @@ namespace EbayClone.API.Controllers
 		[HttpPut("{basketItemId}/{quantity}")]
 		public async Task<IActionResult> UpdateQuantity(int basketItemId, int quantity)
 		{
+			var basketItem = await _basketItemService.GetBasketItemById(basketItemId);
+			if (basketItem == null)
+				return NotFound();
+
 			int userId = GetUserId();
 			bool isAuthorized = await IsAuthorized(userId, basketItemId);
-			
-			if (isAuthorized)
+			if (!isAuthorized)
 				return Unauthorized();
 
 			await _basketItemService.UpdateQuantity(basketItemId, quantity);

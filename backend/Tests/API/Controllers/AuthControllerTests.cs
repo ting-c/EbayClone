@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using EbayClone.API.Controllers;
@@ -7,6 +8,7 @@ using EbayClone.Core.Models;
 using EbayClone.Core.Services;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using Newtonsoft.Json;
 using Xunit;
 
 namespace Tests.API.Controllers
@@ -116,9 +118,93 @@ namespace Tests.API.Controllers
             Assert.Equal(expectedValue, value);
 		}
 
+		[Fact]
+		public async Task SignIn_ReturnNotFoundResult_WhenUserIsNotFound()
+		{
+			//Arrange
+            var userSignInResource = new UserSignInResource();
+            var expectedValue = "User not found";
+			_mockService.Setup(service => service.FindUserByEmail(It.IsAny<string>()))
+				.ReturnsAsync((User)null);
+			var controller = new AuthController(_mapper, _mockService.Object);
+
+			//Act
+			var actionResult = await controller.SignIn(userSignInResource);
+            var objectResult = actionResult as NotFoundObjectResult;
+            var value = objectResult.Value;
+
+			//Assert
+			Assert.IsType<NotFoundObjectResult>(actionResult);
+            Assert.Equal(expectedValue, value);
+		}
+
+		[Fact]
+		public async Task SignIn_ReturnBadRequestObjectResult_WhenPasswordIsIncorrect()
+		{
+			//Arrange
+            var userSignInResource = new UserSignInResource();
+            var expectedValue = "Email or password is incorrect";
+			_mockService.Setup(service => service.FindUserByEmail(It.IsAny<string>()))
+				.ReturnsAsync(new User());
+			_mockService.Setup(service => service.IsUserPasswordCorrect(It.IsAny<User>(), It.IsAny<string>()))
+				.ReturnsAsync(false);
+			var controller = new AuthController(_mapper, _mockService.Object);
+
+			//Act
+			var actionResult = await controller.SignIn(userSignInResource);
+            var objectResult = actionResult as BadRequestObjectResult;
+            var value = objectResult.Value;
+
+			//Assert
+			Assert.IsType<BadRequestObjectResult>(actionResult);
+            Assert.Equal(expectedValue, value);
+		}
+
+		[Fact]
+		public async Task SignIn_ReturnOkObjectResult_WhenSignInIsSuccess()
+		{
+			//Arrange
+            var userSignInResource = new UserSignInResource();
+            var jwtString = "MockJwt";
+            var user = new User()
+            {
+                Id = 1,
+                FirstName = "User1"
+            };
+            var userResource = _mapper.Map<User, UserResource>(user);
+            var authResource = new AuthResource()
+            {
+                JwtString = jwtString,
+                User = userResource
+            };
+			_mockService.Setup(service => service.FindUserByEmail(It.IsAny<string>()))
+				.ReturnsAsync(user);
+			_mockService.Setup(service => service.IsUserPasswordCorrect(It.IsAny<User>(), It.IsAny<string>()))
+				.ReturnsAsync(true);
+			_mockService.Setup(service => service.GetUserRoles(It.IsAny<User>()))
+				.ReturnsAsync(new List<string>());
+			_mockService.Setup(service => service.GenerateJwt(It.IsAny<User>(), It.IsAny<List<string>>()))
+				.Returns(jwtString);
+			var controller = new AuthController(_mapper, _mockService.Object);
+
+			//Act
+			var actionResult = await controller.SignIn(userSignInResource);
+            var objectResult = actionResult as OkObjectResult;
+            var value = objectResult.Value;
+
+			//Assert
+			Assert.IsType<OkObjectResult>(actionResult);
+			Assert.Equal(serializeObject(authResource), serializeObject(value));
+		}
+
 		private static T GetObjectResultContent<T>(ActionResult<T> result)
 		{
 			return (T)((ObjectResult)result.Result).Value;
+		}
+
+		private string serializeObject<T>(T obj)
+		{
+			return JsonConvert.SerializeObject(obj);
 		}
 		
 	}

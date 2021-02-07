@@ -6,6 +6,7 @@ using EbayClone.API.Mapping;
 using EbayClone.API.Resources;
 using EbayClone.Core.Models;
 using EbayClone.Core.Services;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using Newtonsoft.Json;
@@ -91,6 +92,7 @@ namespace Tests.API.Controllers
 
 			//Assert
 			Assert.IsType<ObjectResult>(actionResult);
+            Assert.Equal(500, objectResult.StatusCode);
             Assert.Equal(expectedErrorMessage, errorMessage);
 		}
 
@@ -195,6 +197,65 @@ namespace Tests.API.Controllers
 			//Assert
 			Assert.IsType<OkObjectResult>(actionResult);
 			Assert.Equal(serializeObject(authResource), serializeObject(value));
+		}
+
+		[Fact]
+		public async Task CreateNewRole_ReturnBadRequestResult_WhenStringIsNullOrEmpty()
+		{
+			//Arrange
+            var roleName = "";
+			var controller = new AuthController(_mapper, _mockService.Object);
+            var expectedValue = "Role name must be provided";
+
+			//Act
+			var actionResult = await controller.CreateNewRole(roleName);
+            var objectResult = actionResult as BadRequestObjectResult;
+            var value = objectResult.Value;
+
+			//Assert
+			Assert.IsType<BadRequestObjectResult>(actionResult);
+			Assert.Equal(serializeObject(expectedValue), serializeObject(value));
+		}
+
+		[Fact]
+		public async Task CreateNewRole_ReturnObjectResult_WhenCreateNewRoleFailed()
+		{
+			//Arrange
+            var roleName = "client";
+            var errorDescription = "Failed to create new role";
+            var error = new IdentityError()
+            {
+                Description = errorDescription
+            };
+			_mockService.Setup(service => service.CreateNewRole(It.IsAny<string>()))
+			.ReturnsAsync(IdentityResult.Failed(error));
+			var controller = new AuthController(_mapper, _mockService.Object);
+
+			//Act
+			var actionResult = await controller.CreateNewRole(roleName);
+            var objectResult = actionResult as ObjectResult;
+            var value = objectResult.Value;
+
+			//Assert
+			Assert.IsType<ObjectResult>(actionResult);
+            Assert.Equal(500, objectResult.StatusCode);
+            Assert.Equal(errorDescription, value);
+		}
+
+		[Fact]
+		public async Task CreateNewRole_ReturnOkResult_WhenCreateNewRoleIsSuccess()
+		{
+			//Arrange
+            var roleName = "client";
+			_mockService.Setup(service => service.CreateNewRole(It.IsAny<string>()))
+			.ReturnsAsync(IdentityResult.Success);
+			var controller = new AuthController(_mapper, _mockService.Object);
+
+			//Act
+			var actionResult = await controller.CreateNewRole(roleName);
+
+			//Assert
+			Assert.IsType<OkResult>(actionResult);
 		}
 
 		private static T GetObjectResultContent<T>(ActionResult<T> result)

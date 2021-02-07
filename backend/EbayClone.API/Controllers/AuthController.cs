@@ -73,10 +73,10 @@ namespace EbayClone.API.Controllers
             if (string.IsNullOrWhiteSpace(roleName))
                 return BadRequest("Role name must be provided");
             
-;           var result = await _authService.CreateNewRole(roleName);
+            var result = await _authService.CreateNewRole(roleName);
 
             if (!result.Succeeded)
-                return Problem(result.Errors.First().Description, null, 500);
+				return StatusCode(500, result.Errors.First().Description);
 
             return Ok();
         }

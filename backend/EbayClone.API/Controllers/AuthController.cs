@@ -92,8 +92,8 @@ namespace EbayClone.API.Controllers
             var result = await _authService.AddUserToRole(user, roleName);
 
             if (!result.Succeeded)
-                return Problem(result.Errors.First().Description, null, 500);
-
+				return StatusCode(500, result.Errors.First().Description);
+                
             return Ok();
         }
     }

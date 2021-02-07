@@ -258,6 +258,73 @@ namespace Tests.API.Controllers
 			Assert.IsType<OkResult>(actionResult);
 		}
 
+		[Fact]
+		public async Task AddUserToRole_ReturnNotFoundResult_WhenUserIsNull()
+		{
+			//Arrange
+            var userEmail = "email";
+            var roleName = "role";
+            var expectedValue = "User not found";
+			_mockService.Setup(service => service.FindUserByEmail(It.IsAny<string>())).ReturnsAsync((User)null);
+			var controller = new AuthController(_mapper, _mockService.Object);
+
+			//Act
+			var actionResult = await controller.AddUserToRole(userEmail, roleName);
+            var objectResult = actionResult as NotFoundObjectResult;
+            var value = objectResult.Value;
+
+			//Assert
+			Assert.IsType<NotFoundObjectResult>(actionResult);
+			Assert.Equal(expectedValue, value);
+		}
+
+		[Fact]
+		public async Task AddUserToRole_ReturnObjectResult_WhenAddUserToRoleFailed()
+		{
+			//Arrange
+            var userEmail = "email";
+            var roleName = "role";
+			var errorDescription = "Failed to create new role";
+			var error = new IdentityError()
+			{
+				Description = errorDescription
+			};
+			_mockService.Setup(service => service.FindUserByEmail(It.IsAny<string>())).ReturnsAsync(new User());
+			_mockService.Setup(service => service.AddUserToRole(It.IsAny<User>(), It.IsAny<string>())).ReturnsAsync(IdentityResult.Failed(error));
+			var controller = new AuthController(_mapper, _mockService.Object);
+
+			//Act
+			var actionResult = await controller.AddUserToRole(userEmail, roleName);
+            var objectResult = actionResult as ObjectResult;
+            var value = objectResult.Value;
+
+			//Assert
+			Assert.IsType<ObjectResult>(actionResult);
+			Assert.Equal(errorDescription, value);
+		}
+
+		[Fact]
+		public async Task AddUserToRole_ReturnOkResult_WhenAddUserToRoleIsSuccess()
+		{
+			//Arrange
+            var userEmail = "email";
+            var roleName = "role";
+			var errorDescription = "Failed to create new role";
+			var error = new IdentityError()
+			{
+				Description = errorDescription
+			};
+			_mockService.Setup(service => service.FindUserByEmail(It.IsAny<string>())).ReturnsAsync(new User());
+			_mockService.Setup(service => service.AddUserToRole(It.IsAny<User>(), It.IsAny<string>())).ReturnsAsync(IdentityResult.Success);
+			var controller = new AuthController(_mapper, _mockService.Object);
+
+			//Act
+			var actionResult = await controller.AddUserToRole(userEmail, roleName);
+
+			//Assert
+			Assert.IsType<OkResult>(actionResult);
+		}
+
 		private static T GetObjectResultContent<T>(ActionResult<T> result)
 		{
 			return (T)((ObjectResult)result.Result).Value;

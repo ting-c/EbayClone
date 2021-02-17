@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EbayClone.Data.Migrations
 {
     [DbContext(typeof(EbayCloneDbContext))]
-    [Migration("20210116123559_InitialModels")]
+    [Migration("20210217001425_InitialModels")]
     partial class InitialModels
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -97,6 +97,9 @@ namespace EbayClone.Data.Migrations
                     b.Property<bool>("IsAuction")
                         .HasColumnType("bit");
 
+                    b.Property<int?>("OrderId")
+                        .HasColumnType("int");
+
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(10,2)");
 
@@ -113,9 +116,31 @@ namespace EbayClone.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("OrderId");
+
                     b.HasIndex("SellerId");
 
                     b.ToTable("Items");
+                });
+
+            modelBuilder.Entity("EbayClone.Core.Models.Order", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:IdentityIncrement", 1)
+                        .HasAnnotation("SqlServer:IdentitySeed", 1)
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("userId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("EbayClone.Core.Models.Role", b =>
@@ -372,6 +397,10 @@ namespace EbayClone.Data.Migrations
 
             modelBuilder.Entity("EbayClone.Core.Models.Item", b =>
                 {
+                    b.HasOne("EbayClone.Core.Models.Order", null)
+                        .WithMany("Items")
+                        .HasForeignKey("OrderId");
+
                     b.HasOne("EbayClone.Core.Models.User", "Seller")
                         .WithMany("SellingItems")
                         .HasForeignKey("SellerId")

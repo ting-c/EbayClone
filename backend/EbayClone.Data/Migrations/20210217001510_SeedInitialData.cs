@@ -2,10 +2,10 @@
 
 namespace EbayClone.Data.Migrations
 {
-    public partial class SeedData : Migration
+    public partial class SeedInitialData : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
-		{
+        {
 			// Users
 			migrationBuilder
 				.Sql("INSERT INTO Users (FirstName, LastName, UserName, Email, EmailConfirmed, PhoneNumber, PhoneNumberConfirmed, TwoFactorEnabled, LockoutEnabled, AccessFailedCount, Address) Values ('Adam', 'Smith', 'adamsmith123', 'adamsmith@gmail.com', 'TRUE', '01233111111', 'TRUE', 'FALSE', 'FALSE', 0, '1 London Road, Greater London, UK')");
@@ -79,16 +79,16 @@ namespace EbayClone.Data.Migrations
 				.Sql("INSERT INTO FilePaths (UrlPath, ItemId, UserId) Values ('https://i.ibb.co/SKfTwsX/pillow2.jpg', (SELECT Id FROM Items WHERE Title = 'Hotel Quality Egyptian Stripe Pillows Luxury Soft Hollowfibre Filled - 4 Pack'), (SELECT Id FROM Users WHERE FirstName = 'Darren'))");
 			migrationBuilder
 				.Sql("INSERT INTO FilePaths (UrlPath, ItemId, UserId) Values ('https://i.ibb.co/dLkjTdb/pillow3.jpg', (SELECT Id FROM Items WHERE Title = 'Pillows Quilted Luxury Ultra Loft Jumbo Super Bounce Back Pillows - 4 Pack'), (SELECT Id FROM Users WHERE FirstName = 'Darren'))");
-		}
+        }
 
-		protected override void Down(MigrationBuilder migrationBuilder)
-		{
+        protected override void Down(MigrationBuilder migrationBuilder)
+        {
 			migrationBuilder
-				.Sql("DELETE FROM Items");
+			    .Sql("DELETE FROM Items");
 			migrationBuilder
 				.Sql("DELETE FROM Users");
 			migrationBuilder
 				.Sql("DELETE FROM FilePaths");
-		}
+        }
     }
 }

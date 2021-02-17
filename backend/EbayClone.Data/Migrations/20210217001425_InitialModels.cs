@@ -23,6 +23,20 @@ namespace EbayClone.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Orders",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Date = table.Column<DateTime>(nullable: false),
+                    userId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Orders", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
@@ -169,11 +183,18 @@ namespace EbayClone.Data.Migrations
                     Quantity = table.Column<int>(nullable: false),
                     Condition = table.Column<string>(maxLength: 50, nullable: false),
                     IsAuction = table.Column<bool>(nullable: false),
-                    SellerId = table.Column<int>(nullable: false)
+                    SellerId = table.Column<int>(nullable: false),
+                    OrderId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Items", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Items_Orders_OrderId",
+                        column: x => x.OrderId,
+                        principalTable: "Orders",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Items_Users_SellerId",
                         column: x => x.SellerId,
@@ -282,6 +303,11 @@ namespace EbayClone.Data.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Items_OrderId",
+                table: "Items",
+                column: "OrderId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Items_SellerId",
                 table: "Items",
                 column: "SellerId");
@@ -339,6 +365,9 @@ namespace EbayClone.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "Items");
+
+            migrationBuilder.DropTable(
+                name: "Orders");
 
             migrationBuilder.DropTable(
                 name: "Users");

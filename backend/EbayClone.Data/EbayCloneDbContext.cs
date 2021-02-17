@@ -11,6 +11,7 @@ namespace EbayClone.Data
         public override DbSet<User> Users { get; set; }
         public DbSet<FilePath> FilePaths { get; set; }
         public DbSet<BasketItem> BasketItems { get; set; }
+        public DbSet<Order> Orders { get; set; }
 
         public EbayCloneDbContext(DbContextOptions<EbayCloneDbContext> options) : base(options) {}
 
@@ -30,6 +31,9 @@ namespace EbayClone.Data
 
             builder
                 .ApplyConfiguration(new BasketItemConfiguration());
+
+            builder
+                .ApplyConfiguration(new OrderConfiguration());
         }
     }
 }

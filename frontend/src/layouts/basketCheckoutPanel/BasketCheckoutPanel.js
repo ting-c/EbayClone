@@ -1,6 +1,7 @@
 import React from 'react'
 import './styles.scss'
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 const BasketCheckoutPanel = ({ basket }) => {
 	
@@ -11,12 +12,16 @@ const BasketCheckoutPanel = ({ basket }) => {
 
 	return (
 		<div className="basket-checkout-panel">
-			<button id="checkout-button" className="btn btn-primary">
-				Go to checkout
-			</button>
-			<button id="continue-shopping-button" className="btn btn-light">
-				Continue shopping
-			</button>
+			<Link to='/checkout'>
+				<button id="checkout-button" className="btn btn-primary">
+					Go to checkout
+				</button>
+			</Link>
+			<Link to='/'>
+				<button id="continue-shopping-button" className="btn btn-light">
+					Continue shopping
+				</button>
+			</Link>
 			<div className="summary">
 				<div className="align-left">Items ({basket.length})</div>
 				<div className="align-right">£{total.toFixed(2)}</div>

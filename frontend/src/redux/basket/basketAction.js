@@ -71,7 +71,7 @@ export const addBasketItemAsync = (jwt, item, quantity) => {
 			// User is signed in - add item to db
 			const url = `${BASE_URL}/${item.id}/${quantity}`;
 			try {
-				await axios.post(url, getConfig(jwt));
+				await axios.post(url, null, getConfig(jwt));
 				// get updated basket items from db
 				const response = await axios.get(BASE_URL, getConfig(jwt));
 				const basketItems = response.data;
@@ -118,7 +118,7 @@ export const updateQuantityAsync = (jwt, basketItem, quantity) => {
 			// User is signed in - update basketItem quantity in db
 			const url = `${BASE_URL}/${basketItem.id}/${quantity}`;
 			try {
-				await axios.put(url, getConfig(jwt));
+				await axios.put(url, null, getConfig(jwt));
 				// get updated basket items from db
 				const response = await axios.get(BASE_URL, getConfig(jwt));
 				const basketItems = response.data;

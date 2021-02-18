@@ -12,6 +12,8 @@ import UploadImage from './pages/uploadImage/UploadImage';
 import Basket from './pages/basket/Basket';
 import Sell from './pages/sell/Sell';
 import ProtectedRoute from './ProtectedRoute';
+import Checkout from './pages/checkout/Checkout';
+import Order from './pages/order/Order';
 
 function App() {
 
@@ -27,6 +29,8 @@ function App() {
           <Route path='/signin'><SignIn /></Route>
           <Route path='/signup'><SignUp /></Route>
           <Route path='/basket'><Basket /></Route>
+          <Route path='/checkout'><Checkout /></Route>
+          <Route path='/order/:orderId'><Order /></Route>
           <ProtectedRoute path='/sell' component={Sell} />
           <ProtectedRoute path='/upload/:itemId' component={UploadImage} />
         </Switch>

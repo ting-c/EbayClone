@@ -76,13 +76,12 @@ const SignUp = ({ signUpAsync, user }) => {
 				<label htmlFor="addressInput" className="form-label">
 					Address
 				</label>
-				<input
+				<textarea
 					type="text"
 					className="form-control"
 					id="addressInput"
 					aria-describedby="addressInput"
 					value={address}
-					placeholder='optional'
 					onChange={(e) => setAddress(e.target.value)}
 				/>
 			</div>

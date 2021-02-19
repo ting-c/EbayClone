@@ -1,11 +1,12 @@
 .searchbar{
 	max-width: 100rem;
 	width: 100vw;
-	margin: 0 auto;
+	margin: 1rem auto;
 	height: 5.5rem;
 
 	input{
 		border: 1px solid black;
+		height:100%
 	}
 
 	.search-button{

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import './styles.scss';
+import EmptyImage from '../../images/empty.png';
 
 const ImageCarousel = ({ imageUrls }) => {
 
@@ -28,7 +29,10 @@ const ImageCarousel = ({ imageUrls }) => {
 					</ol>
 					<div className="carousel-inner">
 						<div className="carousel-item active">
-							<img src={imageUrls[0].urlPath} className="d-block w-100" alt=""/>
+							<img src={imageUrls.length > 0 ? 
+								imageUrls[0].urlPath :
+								EmptyImage
+							} className="d-block w-100" alt=""/>
 						</div>
 						{ imageUrls.length > 1 ? (
 							imageUrls.slice(1).map((url, idx) => 

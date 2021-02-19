@@ -16,7 +16,8 @@ const Sell = ({ jwt }) => {
 
 	const history = useHistory();
 
-	async function handleSubmit() {
+	async function handleSubmit(e) {
+		e.preventDefault();
 		const data = {
 			title, description, price, condition, isAuction: false
 		};

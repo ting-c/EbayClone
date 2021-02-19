@@ -14,6 +14,7 @@ import ProtectedRoute from './ProtectedRoute';
 import Checkout from './pages/checkout/Checkout';
 import Order from './pages/order/Order';
 import AlertMessage from './components/alertMessage/AlertMessage';
+import SellingItems from './pages/sellingItems/SellingItems';
 
 function App() {
   
@@ -29,6 +30,7 @@ function App() {
           <Route path='/signin'><SignIn /></Route>
           <Route path='/signup'><SignUp /></Route>
           <Route path='/basket'><Basket /></Route>
+          <Route path='/selling'><SellingItems /></Route>
           <ProtectedRoute path='/checkout' component={Checkout} />
           <ProtectedRoute path='/order/:orderId' component={Order} />
           <ProtectedRoute path='/sell' component={Sell} />

@@ -1,14 +1,16 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Redirect } from 'react-router-dom'
+import { Redirect, Route, withRouter } from 'react-router-dom'
 
-const ProtectedRoute = ({ component: Component, user }) => {
+const ProtectedRoute = ({ component: Component, user, path }) => {
 	if (!user) {
 		return (<Redirect to='/signin' />)
 	} else {
 		return (
-			<Component/>
-		)
+			<Route path={path}>
+				<Component />
+			</Route>
+		);
 	}
 
 }
@@ -17,4 +19,4 @@ const mapStateToProps = (state) => {
 	return { user: state.user }
 }
 
-export default connect(mapStateToProps)(ProtectedRoute)
+export default withRouter(connect(mapStateToProps)(ProtectedRoute))

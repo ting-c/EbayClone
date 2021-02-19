@@ -5,7 +5,7 @@ import Upload from '../../components/upload/Upload'
 const UploadImage = ({ match }) => {
 
 	const itemId = match.params.itemId;
-
+	
 	return (
 		<div className="upload-image">
 			<Upload itemId={itemId} />

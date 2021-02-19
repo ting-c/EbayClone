@@ -1,0 +1,42 @@
+.selling-items-page {
+	width: 100%;
+
+	a:hover{
+		text-decoration: none;
+	}
+
+	.header {
+		margin: 1rem;
+	}
+
+	.item {
+		display: flex;
+		flex-wrap: wrap;
+		min-width: 20rem;
+		width: 90%;
+		padding: 1rem;
+
+		.img-container {
+			min-height: 10rem;
+			min-width: 10rem;
+			max-height: 12rem;
+			max-width: 12rem;
+
+			img {
+				object-fit: cover;
+				height: 100%;
+				width: 100%;
+			}
+		}
+
+		.details {
+			font-weight: 500;
+			font-size: 1.1rem;
+			
+			.title {
+				font-weight: 600;
+				font-size: 1.2rem;
+			}
+		}
+	}
+}

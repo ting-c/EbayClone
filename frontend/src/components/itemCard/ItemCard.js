@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
 import './style.scss'
+import EmptyImage from '../../images/empty.png'
 
 const ItemCard = ({ item }) => {
 
@@ -10,7 +11,12 @@ const ItemCard = ({ item }) => {
 		<Link to={`/item/${id}`}>
 			<div className="item">
 				<div className='img-container'>
-					<img className="img" src={imageUrl[0].urlPath} alt={title}/>
+					<img className="img" src={
+						imageUrl.length > 0 ? 
+							imageUrl[0].urlPath :
+							EmptyImage
+						} 
+						alt={title}/>
 				</div>
 				<div className="details">
 					<h5 className="title" href={`/item/${id}`}>{title}</h5>

@@ -2,8 +2,9 @@ import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import './styles.scss'
 import axios from 'axios';
+import { withRouter } from 'react-router-dom';
 
-const Upload = ({ itemId, jwt }) => {
+const Upload = ({ itemId, jwt, history }) => {
 
 	const [selectedImages, setSelectedImages] = useState(null)
 
@@ -15,10 +16,14 @@ const Upload = ({ itemId, jwt }) => {
 		};
 		const url = `https://localhost:5001/api/upload/${itemId}`;
 		const config = {
-			headers: { 'Authorization': `Bearer ${jwt}` },
+			headers: { Authorization: `Bearer ${jwt}` },
 		};
 
-		await axios.post(url, data, config);	
+		const response = await axios.post(url, data, config);
+		console.log(response.status===200);
+		if (response.status === 200) {
+			history.push(`/item/${itemId}`);
+		}
 	}
 
 	function onChangeHandler(event) {
@@ -49,4 +54,4 @@ const mapStateToProps = (state) => {
 	return { jwt: state.jwt }
 };
 
-export default connect(mapStateToProps)(Upload)
+export default withRouter(connect(mapStateToProps)(Upload))

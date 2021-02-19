@@ -11,7 +11,7 @@ const NavBar = ({ user, signOut }) => {
 	return (
 		<nav className="navbar navbar-expand-lg navbar-light">
 			<div className="container-fluid">
-				<Link to='/'>
+				<Link to="/">
 					<img className="navbar-brand" src={Logo} alt="logo" />
 				</Link>
 				<span>Hello.</span>
@@ -85,7 +85,7 @@ const NavBar = ({ user, signOut }) => {
 									className="dropdown-menu"
 									aria-labelledby="dropdownMenuButton"
 								>
-									<li>Selling</li>
+									<Link to="/selling"><li>Selling</li></Link>
 								</ul>
 							</div>
 						</li>

@@ -1,33 +1,37 @@
-.card {
-	width: 260px;
-	height: 400px;
-	padding: 1.2rem;
+.item {
+	display: flex;
+	width: 90%;
+	height: 15rem;
+	padding: 0.5rem;
+	margin-bottom: 0.5rem;
 	border: 1px solid rgb(218, 218, 218);
 	font-family: "Helvetica Neue",Helvetica,Arial,Roboto,sans-serif;
 	text-align: left;
+	background-color: white;
+	color: rgb(4, 4, 4);
 
-	.card-body {
-		margin-top: 1rem;
+	.img-container {
+		width: 15rem;
+		height: 100%;
 
-		.card-title {
-			margin-bottom: 1rem;
+		.img {
+			width: 90%;
+			object-fit: cover;
+			margin: 0;
+			overflow: hidden;
 		}
 	}
 
-	.card-img-top {
-		 width: 100%;
-		 height: 15vw;	
-		 object-fit: cover;
-		 margin: 0;
+	.details {
+		width: 50%;
+		margin-left: 2rem;
+		word-wrap: break-word;
+	
+		.price{
+			font-weight: 600;
+			font-size: 1.4rem;
+		}
 	}
 
-	a {
-		text-decoration: none;
-		color: black;
-	}
 
-	.price{
-		font-weight: 600;
-		font-size: 1.4rem;
-	}
 }

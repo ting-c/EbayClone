@@ -1,8 +1,10 @@
 #carouselIndicators{
 	margin: 0 1rem;
 	border: 1px solid rgb(201, 201, 201);
-	width: 40rem;
-	height: 35rem;
+	max-width: 35rem;
+	max-height: 30rem;
+	min-width: 20rem;
+	min-width: 15rem;
 
 	img{
 		object-fit: cover;

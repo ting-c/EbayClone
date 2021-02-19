@@ -7,15 +7,17 @@ const ItemCard = ({ item }) => {
 	const { id, title, price, imageUrl } = item;
 
 	return (
-		<div className="card">
-			<Link to={`/item/${id}`}>
-			<img className="card-img-top" src={imageUrl[0].urlPath} alt="Card cap"/>
-			<div className="card-body">
-				<h5 className="card-title" href={`/item/${id}`}>{title}</h5>
-				<div className="price">£{price.toFixed(2)}</div>
+		<Link to={`/item/${id}`}>
+			<div className="item">
+				<div className='img-container'>
+					<img className="img" src={imageUrl[0].urlPath} alt={title}/>
+				</div>
+				<div className="details">
+					<h5 className="title" href={`/item/${id}`}>{title}</h5>
+					<div className="price">£{price.toFixed(2)}</div>
+				</div>
 			</div>
-			</Link>
-		</div>
+		</Link>
 	)
 }
 

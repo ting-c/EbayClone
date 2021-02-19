@@ -4,7 +4,7 @@ import './styles.scss'
 
 const ItemContainer = ({ items }) => {
 	return (
-		<div className="item-container container-fluid">
+		<div className="item-container">
 			{ items ? items.map((item, idx) => (
 				<ItemCard item={item} key={idx} />
 			)): null }

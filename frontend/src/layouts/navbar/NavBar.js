@@ -4,40 +4,52 @@ import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import CartIcon from '../../components/cartIcon/CartIcon'
 import { signOut } from '../../redux/auth/authAction'
+import Logo from '../../images/logo.png';
 
 const NavBar = ({ user, signOut }) => {
 	
 	return (
 		<nav className="navbar navbar-expand-lg navbar-light">
 			<div className="container-fluid">
+				<Link to='/'>
+					<img className="navbar-brand" src={Logo} alt="logo" />
+				</Link>
 				<span>Hello.</span>
 				{user ? (
 					<span id="firstName">{user.firstName}</span>
 				) : (
 					<span className="signin-signup">
-						<span><Link to="/signin">Sign in</Link></span>
+						<span>
+							<Link to="/signin">Sign in</Link>
+						</span>
 						<span>or</span>
-						<span><Link to="/signup"> register</Link></span>
+						<span>
+							<Link to="/signup"> register</Link>
+						</span>
 					</span>
 				)}
-				{ user ? (
+				{user ? (
 					<div className="dropdown">
 						<button
 							className="dropdown-toggle"
 							id="dropdownMenuButton"
 							data-toggle="dropdown"
-							aria-haspopup="true" 
+							aria-haspopup="true"
 							aria-expanded="false"
 						></button>
 						<ul
 							className="dropdown-menu"
 							aria-labelledby="dropdownMenuButton"
 						>
-							<li className="dropdown-item" id="signout" onClick={signOut}>
+							<li
+								className="dropdown-item"
+								id="signout"
+								onClick={signOut}
+							>
 								<span>Sign out</span>
 							</li>
 						</ul>
-					</div> 
+					</div>
 				) : null}
 
 				<button

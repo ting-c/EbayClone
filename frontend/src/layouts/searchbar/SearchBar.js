@@ -1,8 +1,9 @@
 import React , { useState } from 'react'
 import './styles.scss'
-import { useHistory } from 'react-router-dom'
+import { useHistory, withRouter, Link } from 'react-router-dom'
 import { fetchItemsAsync } from '../../redux/displayItems/displayItemsAction'
 import { connect } from 'react-redux'
+import Logo from '../../images/logo.png'
 
 const SearchBar = ({ fetchItemsAsync }) => {
 
@@ -18,6 +19,11 @@ const SearchBar = ({ fetchItemsAsync }) => {
 
 	return (
 		<form className="searchbar d-flex p-3" onSubmit={handleSubmit}>
+			<div className='logo-container'>
+				<Link to='/'>
+					<img src={Logo} alt='Logo' className='logo'/>
+				</Link>
+			</div>
 			<input
 				className="form-control"
 				type="search"
@@ -35,4 +41,4 @@ const SearchBar = ({ fetchItemsAsync }) => {
 
 const mapDispatchToProps = { fetchItemsAsync };
 
-export default connect(null, mapDispatchToProps)(SearchBar);
+export default withRouter(connect(null, mapDispatchToProps)(SearchBar))

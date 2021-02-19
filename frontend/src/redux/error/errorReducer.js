@@ -1,6 +1,7 @@
 import { basketActionTypes } from "../basket/basketAction";
 import { authActionTypes } from "../auth/authAction";
 import { displayItemsActionTypes } from "../displayItems/displayItemsAction";
+import { errorActionTypes } from "../error/errorAction";
 
 export const initialState = null;
 
@@ -26,6 +27,10 @@ export default function errorReducer(state = initialState, action) {
 		}
 		case displayItemsActionTypes.UPDATE_ERROR: {
 			return action.errorMessage;
+		}
+
+		case errorActionTypes.CLEAR_ERROR_MESSAGE: {
+			return action.payload; // payload = null
 		}
 		
 		default:

@@ -34,8 +34,11 @@ const Sell = ({ jwt }) => {
 		}
 	};
 
+	if (errorMessage) { alert(errorMessage) }
+
 	return (
 		<div className="sell-page">
+			<h5>Sell an item</h5>
 			<form onSubmit={handleSubmit}>
 				<div class="form-group">
 					<label for="title">Title</label>
@@ -87,7 +90,8 @@ const Sell = ({ jwt }) => {
 }
 
 const mapStateToProps = (state) => {
-	return { jwt: state.jwt }
+	return { 
+		jwt: state.jwt }
 }
 
 export default connect(mapStateToProps)(Sell);

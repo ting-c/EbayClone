@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import ItemContainer from '../../components/itemContainer/ItemContainer'
 import { connect } from 'react-redux'
 import { fetchItemsAsync } from '../../redux/displayItems/displayItemsAction'
+import SearchBar from '../../layouts/searchbar/SearchBar'
 
 const Home = ({ displayItems, fetchItemsAsync }) => {
 
@@ -11,6 +12,7 @@ const Home = ({ displayItems, fetchItemsAsync }) => {
 
 	return (
 		<div>
+			<SearchBar />
 			<ItemContainer items={displayItems}/>
 		</div>
 	)

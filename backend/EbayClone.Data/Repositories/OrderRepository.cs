@@ -15,11 +15,21 @@ namespace EbayClone.Data.Repositories
 		public async Task<IEnumerable<Order>> GetAllByUserIdAsync(int userId)
 		{
 			return await EbayCloneDbContext.Orders
-				.Where(o => o.userId == userId)
-				.Include(o => o.Items)
-				.ThenInclude(i => i.Seller)
-				.ThenInclude(i => i.ImageUrl)
+				.Where(o => o.UserId == userId)
 				.ToListAsync();
+		}
+		public async Task<Order> GetOrderByIdAsync(int orderId)
+		{
+			return await EbayCloneDbContext.Orders
+				.Include(o => o.Items)
+				.ThenInclude(oi => oi.Item)
+				.ThenInclude(i => i.ImageUrl)
+
+				.Include(o => o.Items)
+				.ThenInclude(oi => oi.Item)
+				.ThenInclude(i => i.Seller)
+
+				.SingleOrDefaultAsync(o => o.Id == orderId);
 		}
 
 		private EbayCloneDbContext EbayCloneDbContext

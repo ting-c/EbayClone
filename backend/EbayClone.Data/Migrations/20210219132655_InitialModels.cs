@@ -29,7 +29,7 @@ namespace EbayClone.Data.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Date = table.Column<DateTime>(nullable: false),
-                    userId = table.Column<int>(nullable: false)
+                    UserId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -183,18 +183,11 @@ namespace EbayClone.Data.Migrations
                     Quantity = table.Column<int>(nullable: false),
                     Condition = table.Column<string>(maxLength: 50, nullable: false),
                     IsAuction = table.Column<bool>(nullable: false),
-                    SellerId = table.Column<int>(nullable: false),
-                    OrderId = table.Column<int>(nullable: true)
+                    SellerId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Items", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Items_Orders_OrderId",
-                        column: x => x.OrderId,
-                        principalTable: "Orders",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Items_Users_SellerId",
                         column: x => x.SellerId,
@@ -204,7 +197,7 @@ namespace EbayClone.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "BasketItem",
+                name: "BasketItems",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -215,15 +208,15 @@ namespace EbayClone.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_BasketItem", x => x.Id);
+                    table.PrimaryKey("PK_BasketItems", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_BasketItem_Items_ItemId",
+                        name: "FK_BasketItems_Items_ItemId",
                         column: x => x.ItemId,
                         principalTable: "Items",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_BasketItem_Users_UserId",
+                        name: "FK_BasketItems_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id");
@@ -255,6 +248,33 @@ namespace EbayClone.Data.Migrations
                         principalColumn: "Id");
                 });
 
+            migrationBuilder.CreateTable(
+                name: "OrderItems",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    OrderId = table.Column<int>(nullable: false),
+                    ItemId = table.Column<int>(nullable: false),
+                    Quantity = table.Column<int>(nullable: false),
+                    Price = table.Column<decimal>(type: "decimal(10,2)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OrderItems", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_OrderItems_Items_ItemId",
+                        column: x => x.ItemId,
+                        principalTable: "Items",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_OrderItems_Orders_OrderId",
+                        column: x => x.OrderId,
+                        principalTable: "Orders",
+                        principalColumn: "Id");
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -283,13 +303,13 @@ namespace EbayClone.Data.Migrations
                 column: "RoleId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_BasketItem_ItemId",
-                table: "BasketItem",
+                name: "IX_BasketItems_ItemId",
+                table: "BasketItems",
                 column: "ItemId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_BasketItem_UserId",
-                table: "BasketItem",
+                name: "IX_BasketItems_UserId",
+                table: "BasketItems",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
@@ -303,14 +323,19 @@ namespace EbayClone.Data.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Items_OrderId",
-                table: "Items",
-                column: "OrderId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Items_SellerId",
                 table: "Items",
                 column: "SellerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrderItems_ItemId",
+                table: "OrderItems",
+                column: "ItemId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrderItems_OrderId",
+                table: "OrderItems",
+                column: "OrderId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Users_Email",
@@ -355,10 +380,13 @@ namespace EbayClone.Data.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "BasketItem");
+                name: "BasketItems");
 
             migrationBuilder.DropTable(
                 name: "FilePaths");
+
+            migrationBuilder.DropTable(
+                name: "OrderItems");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

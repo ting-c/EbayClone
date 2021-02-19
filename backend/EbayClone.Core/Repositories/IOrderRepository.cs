@@ -7,5 +7,6 @@ namespace EbayClone.Core.Repositories
 	public interface IOrderRepository : IRepository<Order>
 	{
 		Task<IEnumerable<Order>> GetAllByUserIdAsync(int userId);
+		Task<Order> GetOrderByIdAsync(int orderId);
 	}
 }

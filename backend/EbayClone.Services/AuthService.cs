@@ -51,6 +51,8 @@ namespace EbayClone.Services
 		{
 			// create new user
 			var result = await _userManager.CreateAsync(user, password);
+			if (!result.Succeeded)
+				throw new Exception(result.Errors.First().Description);
 
 			// check if role exists
 			bool isExists = await IsRoleExists(roleName);

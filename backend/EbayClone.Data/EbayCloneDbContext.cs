@@ -12,6 +12,7 @@ namespace EbayClone.Data
         public DbSet<FilePath> FilePaths { get; set; }
         public DbSet<BasketItem> BasketItems { get; set; }
         public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderItem> OrderItems { get; set; }
 
         public EbayCloneDbContext(DbContextOptions<EbayCloneDbContext> options) : base(options) {}
 
@@ -34,6 +35,9 @@ namespace EbayClone.Data
 
             builder
                 .ApplyConfiguration(new OrderConfiguration());
+                
+            builder
+                .ApplyConfiguration(new OrderItemConfiguration());
         }
     }
 }

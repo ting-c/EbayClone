@@ -36,7 +36,7 @@ namespace EbayClone.Data.Configurations
                 .IsRequired();
 
 			builder
-				.ToTable("BasketItem");
+				.ToTable("BasketItems");
 		}
 	}
 }

@@ -13,6 +13,7 @@ namespace EbayClone.Data
 		private FilePathRepository _filePathRepository;
 		private BasketItemRepository _basketItemRepository;
 		private OrderRepository _orderRepository;
+		private OrderItemRepository _orderItemRepository;
 
 		public UnitOfWork(EbayCloneDbContext context)
 		{
@@ -24,6 +25,7 @@ namespace EbayClone.Data
 		public IFilePathRepository FilePaths => _filePathRepository = _filePathRepository ?? new FilePathRepository(_context);
 		public IBasketItemRepository BasketItems => _basketItemRepository = _basketItemRepository ?? new BasketItemRepository(_context);
 		public IOrderRepository Orders => _orderRepository = _orderRepository ?? new OrderRepository(_context);
+		public IOrderItemRepository OrderItems => _orderItemRepository = _orderItemRepository ?? new OrderItemRepository(_context);
 
 		public async Task<int> CommitAsync()
 		{

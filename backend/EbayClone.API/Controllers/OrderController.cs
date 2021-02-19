@@ -15,17 +15,17 @@ namespace EbayClone.API.Controllers
 	public class OrderController : ControllerBase
 	{
 		private readonly IItemService _itemService;
-		private readonly IBasketItemService _basketItemService;
+		private readonly IOrderItemService _orderItemService;
 		private readonly IOrderService _orderService;
 
 		public OrderController(
 			IItemService itemService, 
-			IBasketItemService basketItemService, 
+			IOrderItemService orderItemService, 
 			IOrderService orderService
 		)
 		{
 			this._itemService = itemService;
-			this._basketItemService = basketItemService;
+			this._orderItemService = orderItemService;
 			this._orderService = orderService;
 		}
 
@@ -54,8 +54,9 @@ namespace EbayClone.API.Controllers
 		public async Task<IActionResult> CreateOrder([FromBody] CreateOrderResource createOrderResource)
 		{
 			var userId = getUserId();
-			var order = new Order();
-			order.userId = userId;
+			var order = new Order(userId);
+			var newOrder = await _orderService.CreateOrder(order);
+			
 			var basketItems = createOrderResource.BasketItems;
 			foreach (BasketItem basketItem in basketItems)
 			{
@@ -63,15 +64,13 @@ namespace EbayClone.API.Controllers
 				if (item == null) {
 					return NotFound();
 				}
-				order.Items.Append(item);
+
+				await _orderItemService.CreateOrderItem(new OrderItem(order.Id, item.Id, basketItem.Quantity, item.Price));
 				
 				// update item quantity
-				var quantity = item.Quantity;
-				var updatedQuantity = quantity - basketItem.Quantity;
+				var updatedQuantity = item.Quantity - basketItem.Quantity;
 				await _itemService.UpdateQuantity(basketItem.ItemId, updatedQuantity);
 			}
-
-			var newOrder = await _orderService.CreateOrder(order);
 
 			return Ok(newOrder);
 		}
@@ -87,7 +86,7 @@ namespace EbayClone.API.Controllers
 		{
 			var userId = getUserId();
 			var order = await _orderService.GetOrderById(orderId);
-			if (order.userId == userId)
+			if (order.UserId == userId)
 				return true;
 
 			return false;

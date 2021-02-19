@@ -94,6 +94,8 @@ namespace EbayClone.API
             services.AddTransient<IAuthService, AuthService>();
             services.AddTransient<IFilePathService, FilePathService>();
             services.AddTransient<IBasketItemService, BasketItemService>();
+            services.AddTransient<IOrderService, OrderService>();
+            services.AddTransient<IOrderItemService, OrderItemService>();
 
             services.AddSwaggerGen(options => 
             {

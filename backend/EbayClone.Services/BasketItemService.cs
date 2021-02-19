@@ -38,6 +38,12 @@ namespace EbayClone.Services
 			await _unitOfWork.CommitAsync();
 		}
 
+		public async Task RemoveBasketItems(IEnumerable<BasketItem> basketItems)
+		{
+			_unitOfWork.BasketItems.RemoveRange(basketItems);
+			await _unitOfWork.CommitAsync();
+		}
+
 		public async Task UpdateQuantity(int basketItemId, int quantity)
 		{
 			await _unitOfWork.BasketItems.UpdateQuantityAsync(basketItemId, quantity);

@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EbayClone.Data.Migrations
 {
     [DbContext(typeof(EbayCloneDbContext))]
-    [Migration("20210217001425_InitialModels")]
+    [Migration("20210219132655_InitialModels")]
     partial class InitialModels
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -45,7 +45,7 @@ namespace EbayClone.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("BasketItem");
+                    b.ToTable("BasketItems");
                 });
 
             modelBuilder.Entity("EbayClone.Core.Models.FilePath", b =>
@@ -97,9 +97,6 @@ namespace EbayClone.Data.Migrations
                     b.Property<bool>("IsAuction")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("OrderId")
-                        .HasColumnType("int");
-
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(10,2)");
 
@@ -115,8 +112,6 @@ namespace EbayClone.Data.Migrations
                         .HasMaxLength(100);
 
                     b.HasKey("Id");
-
-                    b.HasIndex("OrderId");
 
                     b.HasIndex("SellerId");
 
@@ -135,12 +130,42 @@ namespace EbayClone.Data.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("userId")
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("EbayClone.Core.Models.OrderItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:IdentityIncrement", 1)
+                        .HasAnnotation("SqlServer:IdentitySeed", 1)
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("ItemId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("OrderId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(10,2)");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ItemId");
+
+                    b.HasIndex("OrderId");
+
+                    b.ToTable("OrderItems");
                 });
 
             modelBuilder.Entity("EbayClone.Core.Models.Role", b =>
@@ -397,14 +422,25 @@ namespace EbayClone.Data.Migrations
 
             modelBuilder.Entity("EbayClone.Core.Models.Item", b =>
                 {
-                    b.HasOne("EbayClone.Core.Models.Order", null)
-                        .WithMany("Items")
-                        .HasForeignKey("OrderId");
-
                     b.HasOne("EbayClone.Core.Models.User", "Seller")
                         .WithMany("SellingItems")
                         .HasForeignKey("SellerId")
                         .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("EbayClone.Core.Models.OrderItem", b =>
+                {
+                    b.HasOne("EbayClone.Core.Models.Item", "Item")
+                        .WithMany()
+                        .HasForeignKey("ItemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("EbayClone.Core.Models.Order", "Order")
+                        .WithMany("Items")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
                 });
 

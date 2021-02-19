@@ -22,13 +22,14 @@ namespace EbayClone.Services
 
 		public async Task<Order> GetOrderById(int id)
 		{
-			var order = await _unitOfWork.Orders.GetByIdAsync(id);
+			var order = await _unitOfWork.Orders.GetOrderByIdAsync(id);
 			return order;
 		}
 
 		public async Task<Order> CreateOrder(Order newOrder)
 		{
 			await _unitOfWork.Orders.AddAsync(newOrder);
+			await _unitOfWork.CommitAsync();
 			return newOrder;
 		}
 	}

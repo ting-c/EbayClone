@@ -1,3 +1,4 @@
+using System.Net.Mime;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -41,6 +42,7 @@ namespace EbayClone.Data.Repositories
 		{
 			return await EbayCloneDbContext.Items
                 .Include(i => i.Seller)
+                .Include(i => i.ImageUrl)
                 .Where(i => i.SellerId == userId)
                 .ToListAsync();
 		}

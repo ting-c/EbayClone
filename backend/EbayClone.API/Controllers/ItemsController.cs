@@ -62,6 +62,14 @@ namespace EbayClone.API.Controllers
             return Ok(itemResource);
         }
 
+		[HttpGet("selling")]
+		public async Task<IActionResult> GetItemsByUserId()
+        {
+            var userId = getUserId();
+            var items = await _itemService.GetItemsByUserId(userId);
+            return Ok(items);
+        }
+
 		[Authorize]
         [HttpPost("")]
         public async Task<IActionResult> CreateItem([FromBody] SaveItemResource saveItemResource)
@@ -118,7 +126,7 @@ namespace EbayClone.API.Controllers
         }
 
 		[Authorize]
-        [HttpDelete("{id}")]
+        [HttpDelete("{itemId}")]
         public async Task<IActionResult> DeleteItem(int itemId)
         {
             var item = await _itemService.GetItemById(itemId);

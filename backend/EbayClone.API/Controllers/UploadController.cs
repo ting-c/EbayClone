@@ -41,9 +41,9 @@ namespace EbayClone.API.Controllers
             if (item == null)
                 return NotFound("Item not found");
 
-			// // check if userId matches item's sellerId
-			// if (userId != item.SellerId)
-			//     return Forbid("Unauthorized Request");
+			// check if userId matches item's sellerId
+			if (userId != item.SellerId)
+			    return Forbid("Unauthorized Request");
 
 			var client = _clientFactory.CreateClient("imgbb");
 			// Loop through files and upload images to imgbb
@@ -62,10 +62,13 @@ namespace EbayClone.API.Controllers
                         });
                         var response = await client.PostAsync(client.BaseAddress.ToString(), content);
 
-                        if ( !response.IsSuccessStatusCode)
-                            throw new Exception($"Failed to upload image {file.Name}");
+                        if (!response.IsSuccessStatusCode)
+                            return BadRequest($"Failed to upload image {file.Name}");
 
                         var imageUrl = await GetImageUrlFromResponse(response);
+
+                        if (imageUrl == null)
+                            return BadRequest($"Failed to obtain image url for {file.Name}");
                         
                         // add url to file path repository
                         await CreateFilePath(itemId, userId, imageUrl);
@@ -83,7 +86,7 @@ namespace EbayClone.API.Controllers
             return imageUrl;
         }
 
-        private async void CreateFilePath(int itemId, int userId, dynamic imageUrl)
+        private async Task<FilePath> CreateFilePath(int itemId, int userId, dynamic imageUrl)
         {
 			var filePath = new FilePath()
 			{
@@ -91,7 +94,7 @@ namespace EbayClone.API.Controllers
 				ItemId = itemId,
 				UserId = userId
 			};
-			await _filePathService.CreateFilePath(filePath);
+			return await _filePathService.CreateFilePath(filePath);
         }
     }
 }

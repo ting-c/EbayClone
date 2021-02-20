@@ -3,26 +3,26 @@ import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { connect } from 'react-redux';
 import getErrorMessage from '../../redux/error/errorMessage';
+import { errorActionTypes, displayErrorMessage } from '../../redux/error/errorAction';
 import './styles.scss'
 
-const Sell = ({ jwt }) => {
+const Sell = ({ jwt, displayErrorMessage }) => {
 
 	const [title, setTitle] = useState('');
 	const [description, setDescription] = useState('');
 	const [price, setPrice] = useState(null);
+	const [quantity, setQuantity] = useState(null);
 	const [condition, setCondition] = useState('');
-
-	const [errorMessage, setErrorMessage] = useState(null);
 
 	const history = useHistory();
 
 	async function handleSubmit(e) {
 		e.preventDefault();
 		const data = {
-			title, description, price, condition, isAuction: false
+			title, description, price, condition, quantity, isAuction: false
 		};
 		const config = {
-			headers: { 'Authorization': `Bearer ${jwt}` }
+			headers: { Authorization: `Bearer ${jwt}` }
 		};
 		const BASE_URL = "https://localhost:5001/api/items";
 		try {
@@ -31,15 +31,16 @@ const Sell = ({ jwt }) => {
 			history.push(`/upload/${id}`)
 		} catch (error) {
 			const errorMessage = getErrorMessage(error);
-			setErrorMessage(errorMessage);
+			displayErrorMessage(
+				errorActionTypes.SELL_ITEM_ERROR,
+				errorMessage
+			);
 		}
 	};
 
-	if (errorMessage) { alert(errorMessage) }
-
 	return (
 		<div className="sell-page">
-			<h5>Sell an item</h5>
+			<h5 className="header">Sell an item</h5>
 			<form onSubmit={handleSubmit}>
 				<div class="form-group">
 					<label for="title">Title</label>
@@ -49,6 +50,7 @@ const Sell = ({ jwt }) => {
 						id="title"
 						value={title}
 						onChange={(e) => setTitle(e.target.value)}
+						required
 					/>
 				</div>
 				<div class="form-group">
@@ -70,6 +72,20 @@ const Sell = ({ jwt }) => {
 						id="price"
 						value={price}
 						onChange={(e) => setPrice(e.target.value)}
+						required
+					/>
+				</div>
+				<div class="form-group">
+					<label for="condition">Quantity</label>
+					<input
+						type="number"
+						class="form-control"
+						min="0"
+						step="1"
+						id="quantity"
+						value={quantity}
+						onChange={(e) => setQuantity(e.target.value)}
+						required
 					/>
 				</div>
 				<div class="form-group">
@@ -80,6 +96,7 @@ const Sell = ({ jwt }) => {
 						id="condition"
 						value={condition}
 						onChange={(e) => setCondition(e.target.value)}
+						required
 					/>
 				</div>
 				<button type="submit" class="btn btn-primary">
@@ -95,4 +112,8 @@ const mapStateToProps = (state) => {
 		jwt: state.jwt }
 }
 
-export default connect(mapStateToProps)(Sell);
+const mapDispatchToProps = {
+	displayErrorMessage
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Sell);

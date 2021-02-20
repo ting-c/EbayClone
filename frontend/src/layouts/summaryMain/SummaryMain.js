@@ -35,10 +35,6 @@ const SummaryMain = ({ jwt, item, basket, addBasketItemAsync }) => {
 						onAddToBasket={onAddToBasket}
 					/>
 				)}
-				<SummaryButton
-					text="♡ Watch this item"
-					styles="outline-primary"
-				/>
 			</div>
 		</div>
 	);

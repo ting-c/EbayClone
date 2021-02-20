@@ -29,6 +29,16 @@ export default function errorReducer(state = initialState, action) {
 			return action.errorMessage;
 		}
 
+		case errorActionTypes.FETCH_SELLING_ITEMS_ERROR: {
+			return action.errorMessage; 
+		}
+		case errorActionTypes.REMOVE_SELLING_ITEM_ERROR: {
+			return action.errorMessage; 
+		}
+		case errorActionTypes.SELL_ITEM_ERROR: {
+			return action.errorMessage; 
+		}
+
 		case errorActionTypes.CLEAR_ERROR_MESSAGE: {
 			return action.payload; // payload = null
 		}

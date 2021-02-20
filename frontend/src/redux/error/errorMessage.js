@@ -1,7 +1,7 @@
 const getErrorMessage = (error) => {
 	if (error.response) {
 		// Request made and server responded
-		return error.response.data;
+		return error.response.data.title;
 	} else if (error.request) {
 		// The request was made but no response was received
 		return error.request;

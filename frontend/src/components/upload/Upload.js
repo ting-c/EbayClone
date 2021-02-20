@@ -20,7 +20,6 @@ const Upload = ({ itemId, jwt, history }) => {
 		};
 
 		const response = await axios.post(url, data, config);
-		console.log(response.status===200);
 		if (response.status === 200) {
 			history.push(`/item/${itemId}`);
 		}
@@ -32,7 +31,6 @@ const Upload = ({ itemId, jwt, history }) => {
 	
 	return (
 		<form className="upload">
-			<h4>Upload images</h4>
 			<div className="input">
 				<input
 					type="file"
